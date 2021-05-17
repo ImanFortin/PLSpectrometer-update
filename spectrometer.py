@@ -1,4 +1,4 @@
-import numpy as np
+
 
 
 class Spectrometer():
@@ -58,7 +58,7 @@ class Spectrometer():
     def move(self,wavelength):
         pass
 
-
+    
     def scan(self,start,end,step):
         pass
     

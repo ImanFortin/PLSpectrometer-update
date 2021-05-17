@@ -1,11 +1,17 @@
+#THIS IS THE UI FILE IT FEEDS THE INPUTS TO THE SPECTROMETER 
+#IF YOU WISH TO CHANGE THE BEHAVIOUR OF THE SPECTROMETER EDIT 'spectrometer.pu'
+#IF YOU WISH TO CHANGE THE WAY DATA IS INPUTED THROUGH THE UI EDIT HERE OR USE
+#'spectrometer.ui' WITH QTDESIGNER AND COMPILE THE UI TO 'qt_designer.py'
+
+
 
 #importing the ui compiled python code class
 from qt_designer import Ui_MainWindow
 #import the widgets, required for inheritance
 from PyQt5 import QtWidgets as qtw
-#unused rn
+#unused for now can be deleted without changing behaviour
 from PyQt5 import QtCore as qtc
-#custom class for the spectrometer
+#custom class for the spectrometer see spectrometer.py
 from spectrometer import Spectrometer
 
 
