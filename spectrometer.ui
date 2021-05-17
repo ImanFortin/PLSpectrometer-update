@@ -78,39 +78,6 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="property_label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Properties</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="current_wavelength_lbl">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>101</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Current Wavelength:</string>
-    </property>
-   </widget>
    <widget class="QDial" name="dial">
     <property name="geometry">
      <rect>
@@ -154,6 +121,39 @@
     <property name="lineWidth">
      <number>3</number>
     </property>
+    <widget class="QLabel" name="property_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Properties</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="current_wavelength_lbl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Current Wavelength:</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="frame2">
     <property name="geometry">
