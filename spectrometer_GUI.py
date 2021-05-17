@@ -77,7 +77,7 @@ class MainWindow(qtw.QMainWindow):
         try:
             destination = float(self.ui.move_input.text())
             
-        #print if it fails
+        #print a message if it fails
         except:
             print('move recieved invalid input')
             
@@ -88,15 +88,16 @@ class MainWindow(qtw.QMainWindow):
         
         
     def recalibrate(self):
+        #try to load in the data as a float
         try:
             actual = float(self.ui.recalibrate_input.text())
-        
+        #if we encounter an error print messagge
         except:
             print('the recalibrate input was invalid')
-            
+        #if we succeed call the recalibrate method of the spectrometer  
         else:
             self.double.recalibrate(actual)
-            
+            #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
             
             

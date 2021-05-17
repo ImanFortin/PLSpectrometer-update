@@ -1,4 +1,4 @@
-
+import nidaqmx
 
 
 class Spectrometer():
@@ -70,14 +70,17 @@ class Spectrometer():
 
     def save(self):
         try:
+            #open the file where we save the information
             f = open('last_position.txt', 'w')
+            #write the last position
             f.write(str(self.position))
         
+        #if there is an error with the write print it
         except:
             print('there was an error writing to last_positoin.txt')
-            
+        #if we succeed print success message    
         else:
             print('position saved')
-            
+        #no matter what happens close the file    
         finally:
             f.close()
