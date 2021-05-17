@@ -4,7 +4,8 @@ import nidaqmx
 class Spectrometer():
     
     '''spectrometer class the only object is the position but the communication
-    with the DAQ is handled in this class and not the UI'''
+    with the DAQ is handled in this class and not the UI, it will eventually also
+    store a DAQ instance'''
     
     
     #init function
@@ -26,18 +27,22 @@ class Spectrometer():
         finally:
             f.close()
         
-        #set the position
-        self.position = last_position
+        #set the position the underscore is necessary
+        #it implies that this should not be accessed directly see the position
+        #function below for how accessing and changing the value work
+        self._position = last_position
     
     #getter method google @property for reasoning
+    #short description it allows us to sanitaze the inputs while keeping the syntax neat
     @property
     def position(self):
         return self._position
     
     #setter method related to @property
+    #IMPORTANT TO UNDERSTAND WHAT THIS DOES
     @position.setter
     def position(self,wavelength):
-        #check these conditons before accepting a value
+        #check these conditons before accepting a value when assigning a value to position
         if isinstance(wavelength, float) and wavelength > 0:
             self._position = wavelength
             
