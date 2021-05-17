@@ -1,4 +1,4 @@
-from qt_designer_GUI import Ui_MainWindow
+from qt_designer import Ui_MainWindow
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer

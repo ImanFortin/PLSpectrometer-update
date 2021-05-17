@@ -452,7 +452,7 @@ QPushButton::pressed{
       <string>End</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="scan_end_input_2">
+    <widget class="QLineEdit" name="scan_end_input">
      <property name="geometry">
       <rect>
        <x>150</x>
