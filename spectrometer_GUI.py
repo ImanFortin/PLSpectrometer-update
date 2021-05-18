@@ -1,4 +1,4 @@
-#THIS IS THE UI FILE IT FEEDS THE INPUTS TO THE SPECTROMETER 
+#THIS IS THE UI FILE IT FEEDS THE INPUTS TO THE SPECTROMETER
 #IF YOU WISH TO CHANGE THE BEHAVIOUR OF THE SPECTROMETER EDIT 'spectrometer.pu'
 #IF YOU WISH TO CHANGE THE WAY DATA IS INPUTED THROUGH THE UI EDIT HERE OR USE
 #'spectrometer.ui' WITH QTDESIGNER AND COMPILE THE UI TO 'qt_designer.py'
@@ -19,7 +19,7 @@ from spectrometer import Spectrometer
 class MainWindow(qtw.QMainWindow):
 
     def __init__(self, *args, **kwargs):
-        
+
         #run the init mathod of the parent class (MainWindow)
         super().__init__(*args, **kwargs)
         #initiate an instance of the compiled qt designer class
@@ -27,22 +27,29 @@ class MainWindow(qtw.QMainWindow):
         #run the setup method to create the window
         self.ui.setupUi(self)
         #run the update function to reformat the labels
-        self.update()
+        self.autoscale_lbls()
         self.connect_buttons()
         self.double = Spectrometer()
-        
+
 
     #method for adjusting the labels so they are consistent between machines
-    def update(self):
+    def autoscale_lbls(self):
+        self.ui.position_lbl.adjustSize()
         self.ui.property_label.adjustSize()
+        self.ui.current_wavelength_lbl.adjustSize()
         self.ui.actual_value_lbl.adjustSize()
-        self.ui.move_to_lbl.adjustSize()
+        self.ui.recalibrate_lbl.adjustSize()
+        self.ui.move_spectrometer_lbl.adjustSize()
+        self.ui.go_to_lbl.adjustSize()
         self.ui.scan_start_lbl.adjustSize()
         self.ui.scan_end_lbl.adjustSize()
-        self.ui.current_wavelength_lbl.adjustSize()
-        
-        
-    
+        self.ui.perform_scan_lbl.adjustSize()
+        self.ui.scan_step_lbl.adjustSize()
+        self.ui.file_name_lbl.adjustSize()
+        self.ui.sample_id_lbl.adjustSize()
+
+
+
     #connect all the buttons to their functions
     def connect_buttons(self):
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
@@ -50,43 +57,43 @@ class MainWindow(qtw.QMainWindow):
         self.ui.move_button.clicked.connect(self.move)
         self.ui.abort_button.clicked.connect(self.abort)
         self.ui.close_button.clicked.connect(self.exit)
-        
-        
-        
-    
+
+
+
+
     def scan(self):
         #try to load in the data
         try:
             start = float(self.ui.scan_start_input.text())
             end = float(self.ui.scan_end_input.text())
             step = float(self.ui.scan_step_input.text())
-            
-        #raise exception    
+
+        #raise exception
         except:
             print('scan did not recieve valid inputs')
-            
+
         #if succesful we run the scan method of spectrometer
         else:
             self.double.scan(start,end,step)
-            
-            
-            
-        
+
+
+
+
     def move(self):
         #try to load the data
         try:
             destination = float(self.ui.move_input.text())
-            
+
         #print a message if it fails
         except:
             print('move recieved invalid input')
-            
+
         #if we succeed run the move method of the spectrometer
         else:
             self.double.move(destination)
-            
-        
-        
+
+
+
     def recalibrate(self):
         #try to load in the data as a float
         try:
@@ -94,27 +101,27 @@ class MainWindow(qtw.QMainWindow):
         #if we encounter an error print messagge
         except:
             print('the recalibrate input was invalid')
-        #if we succeed call the recalibrate method of the spectrometer  
+        #if we succeed call the recalibrate method of the spectrometer
         else:
             self.double.recalibrate(actual)
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
-            
-            
-        
+
+
+
     def exit(self):
         #save the position of the spectrometer
         self.double.save()
         #close the application
         self.close()
-        
-    
+
+
     def abort(self):
         #call the abort function on the spectrometer
         self.double.abort()
-    
-    
-    
+
+
+
     def stop(self):
         pass
 

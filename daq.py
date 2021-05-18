@@ -7,3 +7,4 @@ Created on Mon May 17 16:33:09 2021
 this is where the DAQ class will be implemented and then imported into spectrometer.py
 """
 import nidaqmx
+import numpy as np

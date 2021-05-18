@@ -13,7 +13,8 @@ class Spectrometer():
         #file where we will store the last position
         try:
             f = open('last_position.txt', 'r')
-            last_position = float(f.readline()
+            last_position = float(f.readline())
+
         except:
             print("there was an error trying to load the data from last_position.txt")
             last_postion = 0.0
@@ -69,6 +70,9 @@ class Spectrometer():
         pass
 
     def stop():
+        pass
+
+    def shutter():
         pass
 
     def save(self):
