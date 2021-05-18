@@ -1,5 +1,5 @@
 #THIS IS THE UI FILE IT FEEDS THE INPUTS TO THE SPECTROMETER
-#IF YOU WISH TO CHANGE THE BEHAVIOUR OF THE SPECTROMETER EDIT 'spectrometer.pu'
+#IF YOU WISH TO CHANGE THE BEHAVIOUR OF THE SPECTROMETER EDIT 'spectrometer.py'
 #IF YOU WISH TO CHANGE THE WAY DATA IS INPUTED THROUGH THE UI EDIT HERE OR USE
 #'spectrometer.ui' WITH QTDESIGNER AND COMPILE THE UI TO 'qt_designer.py'
 
@@ -13,6 +13,8 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 #custom class for the spectrometer see spectrometer.py
 from spectrometer import Spectrometer
+
+from matplotlib_embedding import MplCanvas
 
 
 #the main windowclass that will be made it inherits from the widget MainWindow
@@ -30,7 +32,7 @@ class MainWindow(qtw.QMainWindow):
         self.autoscale_lbls()
         self.connect_buttons()
         self.double = Spectrometer()
-
+        self.wave_plot = MplCanvas()
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):

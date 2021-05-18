@@ -1,6 +1,7 @@
 
 
 
+
 class Spectrometer():
 
     '''spectrometer class the only object is the position but the communication
