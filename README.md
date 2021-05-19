@@ -32,7 +32,7 @@ this is the work horse file, it imports the above qt_designer ui and stores it i
 self.ui, it then connects all the buttons to their corresponding functions and upon running will
 display the fully functioning UI. THIS IS THE FILE YOU RUN IF YOU WANT TO SEE THE UI.
 
-if you want to add additional buttons with functions here is what I think is the simplest way. navigate to the qtdesigner_files, open the spectrometer.ui with Qtdesigner (watch youtube tutorials on how to install and find this file if the shortcut i made has been removed or you are working on a different computer) add the additional buttons with appropriate names so you can reference them easily. compile the code into the qt_designer.py file using the method described in the qtdesigner_files section. Then in the spectrometer_GUI.py file (this one) write the function that you want to connect to the button and connect it following the examples that are already written there.
+if you want to add additional buttons with functions here is what I think is the simplest way. navigate to the qtdesigner_files, open the spectrometer.ui with Qtdesigner (watch youtube tutorials on how to install and find this file if the shortcut I made has been removed or you are working on a different computer, the introduction to pyqt5 video has some advice) add the additional buttons with appropriate names so you can reference them easily. compile the code into the qt_designer.py file using the method described in the qtdesigner_files section. Then in the spectrometer_GUI.py file (this one) write the function that you want to connect to the button and connect it following the examples that are already written there.
 
 # spectrometer.py
 
