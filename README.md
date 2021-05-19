@@ -3,9 +3,9 @@ The layout of the directory is as follows:
 # qtdesigner_files
 
 inside the qtdesigner_files folder are the stored UIs that were used to compile qt_designer.py
-they are .ui file and can be opened with qtdesigner and then after changes are made can be
+they are .ui files and can be opened with qtdesigner and then after changes are made can be
 recompiled to qt_designer.py with 'pyuic5 -x <name of .ui file> -o qt_designer.py'. Unless changes
-to the appearance of the UI are desired these files should not be edited (through qt designer not by hand). I have included one identical copy as of May 18 2021 since it can be easy to mess up the ui file and hard to undo. You can always discard the changes but a copy file should updated whenever changes are made to the original just in case.
+to the appearance of the UI are desired these files should not be edited (through qt designer not by hand). I have included one identical copy as of May 18 2021 since it can be easy to mess up the ui file and hard to undo. You can always discard the changes but a copy file should updated whenever changes are made to the original just in case my repository will also have these files if necessary.
 
 # buttonUi.py
 
