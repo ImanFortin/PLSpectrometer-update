@@ -53,3 +53,4 @@ this modular approach can be a bit confusing when looking at the whole picture, 
 3. why you shouldn't edit the qt_designer.py (it's a bit long winded): https://www.youtube.com/watch?v=XXPNpdaK9WA
 4. @property: https://www.programiz.com/python-programming/property
 5. how to interface with the daq: https://www.youtube.com/watch?v=umXMrr6Z0Og&t=589s
+6. the code and examples for nidaqmx python library this is the best resource for documentation I have found https://github.com/ni/nidaqmx-python/blob/master/nidaqmx/_task_modules/ao_channel_collection.py
