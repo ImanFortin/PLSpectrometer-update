@@ -49,7 +49,7 @@ this modular approach can be a bit confusing when looking at the whole picture, 
 
 # learning resources
 
-introduction to classes: https://www.w3schools.com/python/python_classes.asp
-introduction to pyqt5 (first three videos): https://www.youtube.com/watch?v=Vde5SH8e1OQ&list=PLzMcBGfZo4-lB8MZfHPLTEHO9zJDDLpYj
-why you shouldn't edit the qt_designer.py (it's a bit long winded): https://www.youtube.com/watch?v=XXPNpdaK9WA
-@property: https://www.programiz.com/python-programming/property
+1. introduction to classes: https://www.w3schools.com/python/python_classes.asp
+2. introduction to pyqt5 (first three videos): https://www.youtube.com/watch?v=Vde5SH8e1OQ&list=PLzMcBGfZo4-lB8MZfHPLTEHO9zJDDLpYj
+3. why you shouldn't edit the qt_designer.py (it's a bit long winded): https://www.youtube.com/watch?v=XXPNpdaK9WA
+4. @property: https://www.programiz.com/python-programming/property
