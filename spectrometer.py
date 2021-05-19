@@ -8,7 +8,6 @@ class Spectrometer():
     with the DAQ is handled in this class and not the UI, it will eventually also
     store a DAQ instance'''
 
-
     #init function
     def __init__(self):
         #file where we will store the last position
@@ -26,8 +25,8 @@ class Spectrometer():
         finally:
             f.close()
 
-        #set the position the underscore is necessary
-        #it implies that this should not be accessed directly see the position
+
+        #underscore implies that this should not be accessed directly see the position
         #function below for how accessing and changing the value work
         self._position = last_position
 
