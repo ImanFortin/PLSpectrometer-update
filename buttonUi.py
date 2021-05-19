@@ -15,14 +15,23 @@ class ButtonWindow(QtWidgets.QMainWindow):
         self.close_button = QtWidgets.QPushButton('close', self)
         self.close_button.setGeometry(450,0,50,50)
 
+
+        self.do_button = QtWidgets.QPushButton('digital signal',self)
+        self.do_button.setGeometry(150,360,200,100)
+
         self.show()
         self.voltage_button.clicked.connect(self.on_off)
         self.close_button.clicked.connect(self.close)
+        self.do_button.clicked.connect(self.digital)
 
         self.channel1 = nidaqmx.Task()
         self.channel2 = nidaqmx.Task()
         self.task_read = nidaqmx.Task()
+        self.dig_out = nidaqmx.Task()
 
+        self.dig_out.do_channels.add_do_chan('Dev1/port0/line0')
+        self.dig_out.start()
+        self.dig_out.write(False)
 
 
         self.channel1.ao_channels.add_ao_voltage_chan('Dev1/ao0','my_channel',0,5)
@@ -36,7 +45,13 @@ class ButtonWindow(QtWidgets.QMainWindow):
         self.task_read.ai_channels.add_ai_voltage_chan('Dev1/ai1')
         self.task_read.start()
 
-
+    def digital(self):
+        condition = True
+        for i in range(20):
+            print(condition)
+            self.dig_out.write(condition)
+            condition = not condition
+            time.sleep(3)
 
 
 
@@ -56,6 +71,10 @@ class ButtonWindow(QtWidgets.QMainWindow):
         self.task_read.stop()
         self.task_read.close()
 
+        #turn off dig_out and close
+        self.dig_out.write(False)
+        self.dig_out.stop()
+        self.dig_out.close()
         #close the UI
         self.close()
 
