@@ -4,7 +4,7 @@ The layout of the directory is as follows:
 
 inside the qtdesigner_files folder are the stored UIs that were used to compile qt_designer.py
 they are .ui file and can be opened with qtdesigner and then after changes are made can be
-recompiled to qt_designer.py with 'pyuic5 -x <name of .ui file. -o qt_designer.py'. Unless changes
+recompiled to qt_designer.py with 'pyuic5 -x <name of .ui file> -o qt_designer.py'. Unless changes
 to the appearance of the UI are desired these files should not be edited (through qt designer not by hand). I have included one identical copy as of May 18 2021 since it can be easy to mess up the ui file and hard to undo. You can always discard the changes but a copy file should updated whenever changes are made to the original just in case.
 
 # buttonUi.py
@@ -38,7 +38,7 @@ if you want to add additional buttons with functions here is what I think is the
 this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. Here is where the functions that interface directly with the DAQ are written. This is where most debugging will likely occur if you wish to change the way the spectrometer behaves this is where you will work.
 
 # additonal comments
-this modular approach can be a bit confusing when looking at the whole picture, however it makes working with pieces of the code much easier and cleaner. I have done my best to make it clear, some things that may cause you trouble when first working with this directory or being new to classes and pyqt5.
+this modular approach can be a bit confusing when looking at the whole picture, however it makes working with pieces of the code much easier and cleaner. I have done my best to make it clear, some things that may cause you trouble when first working with this directory or being new to classes.
 
 1. Every method (a function inside a class) must take 'self' as its first variable this is just the way python is, and it allows classes to access their properties within a method.
 
