@@ -42,7 +42,7 @@ class Spectrometer():
     @position.setter
     def position(self,wavelength):
         #check these conditons before accepting a value when assigning a value to position
-        if isinstance(wavelength, float) and wavelength > 0:
+        if isinstance(wavelength, float) and wavelength > 0 and wavelength < 1300:
             self._position = wavelength
         else:
             print('not valid entry')
