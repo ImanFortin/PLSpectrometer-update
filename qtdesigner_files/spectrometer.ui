@@ -6,19 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1154</width>
-    <height>862</height>
+    <width>1221</width>
+    <height>932</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(135, 135, 135);
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="abort_button">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>730</y>
+      <y>770</y>
       <width>141</width>
       <height>71</height>
      </rect>
@@ -50,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>730</y>
+      <y>770</y>
       <width>141</width>
       <height>71</height>
      </rect>
@@ -78,44 +83,11 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="property_label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Properties</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="current_wavelength_lbl">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>101</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Current Wavelength:</string>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame1">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>30</y>
       <width>321</width>
       <height>121</height>
      </rect>
@@ -155,6 +127,39 @@
      </property>
      <property name="notchesVisible">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="property_label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Properties</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="current_wavelength_lbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Current Wavelength:</string>
      </property>
     </widget>
    </widget>
@@ -235,7 +240,7 @@
     border-style: outset;
     border-width: 2px;
     border-radius: 10px;
-    border-color: beige;
+    border-color: black;
     font: bold 20px;
     min-width: 2em;
     padding: 6px;
@@ -348,7 +353,7 @@ QPushButton::pressed{
     border-style: outset;
     border-width: 2px;
     border-radius: 10px;
-    border-color: beige;
+    border-color: black;
     font: bold 20px;
     min-width: 2em;
     padding: 6px;
@@ -390,7 +395,7 @@ QPushButton::pressed{
       <x>10</x>
       <y>540</y>
       <width>341</width>
-      <height>181</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -406,7 +411,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>40</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -419,7 +424,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>0</y>
+       <y>20</y>
        <width>41</width>
        <height>21</height>
       </rect>
@@ -432,14 +437,14 @@ QPushButton::pressed{
       </font>
      </property>
      <property name="text">
-      <string>start </string>
+      <string>Start </string>
      </property>
     </widget>
     <widget class="QLabel" name="scan_end_lbl">
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>0</y>
+       <y>20</y>
        <width>41</width>
        <height>21</height>
       </rect>
@@ -459,7 +464,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>30</y>
+       <y>40</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -471,8 +476,8 @@ QPushButton::pressed{
     <widget class="QPushButton" name="scan_button">
      <property name="geometry">
       <rect>
-       <x>230</x>
-       <y>120</y>
+       <x>210</x>
+       <y>160</y>
        <width>101</width>
        <height>51</height>
       </rect>
@@ -494,7 +499,7 @@ QPushButton::pressed{
     border-style: outset;
     border-width: 2px;
     border-radius: 10px;
-    border-color: beige;
+    border-color: black;
     font: bold 20px;
     min-width: 2em;
     padding: 6px;
@@ -532,9 +537,9 @@ QPushButton::pressed{
     <widget class="QProgressBar" name="progressBar_scan">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>90</y>
-       <width>101</width>
+       <x>210</x>
+       <y>120</y>
+       <width>121</width>
        <height>23</height>
       </rect>
      </property>
@@ -546,7 +551,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>0</y>
+       <y>20</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -559,14 +564,14 @@ QPushButton::pressed{
       </font>
      </property>
      <property name="text">
-      <string>step</string>
+      <string>Step</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="scan_step_input">
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>30</y>
+       <y>40</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -579,7 +584,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>90</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -599,7 +604,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>120</y>
        <width>181</width>
        <height>20</height>
       </rect>
@@ -609,7 +614,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>150</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -629,7 +634,7 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>140</y>
+       <y>180</y>
        <width>181</width>
        <height>20</height>
       </rect>
@@ -722,8 +727,8 @@ QPushButton::pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1154</width>
-     <height>31</height>
+     <width>1221</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
