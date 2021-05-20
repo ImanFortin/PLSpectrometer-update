@@ -24,7 +24,7 @@ class MainWindow(qtw.QMainWindow):
         super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
 
         self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
-        
+
         self.ui.setupUi(self) #run the setup method to create the window
 
         self.autoscale_lbls() #autoscdale the labels so they don't cut off
@@ -143,9 +143,6 @@ class MainWindow(qtw.QMainWindow):
         self.double.abort()
 
 
-
-    def stop(self):
-        pass
 
 
 #run the UI
