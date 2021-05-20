@@ -14,25 +14,40 @@ from PyQt5 import QtCore as qtc
 #custom class for the spectrometer see spectrometer.py
 from spectrometer import Spectrometer
 
-from matplotlib_embedding import MplCanvas
+from matplotlib_embedding import Canvas
 
 
 #the main windowclass that will be made it inherits from the widget MainWindow
 class MainWindow(qtw.QMainWindow):
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
 
-        #run the init mathod of the parent class (MainWindow)
-        super().__init__(*args, **kwargs)
-        #initiate an instance of the compiled qt designer class
-        self.ui = Ui_MainWindow()
-        #run the setup method to create the window
-        self.ui.setupUi(self)
-        #run the update function to reformat the labels
-        self.autoscale_lbls()
-        self.connect_buttons()
-        self.double = Spectrometer()
-        self.wave_plot = MplCanvas()
+        self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
+
+        self.ui.setupUi(self) #run the setup method to create the window
+
+        self.autoscale_lbls() #autoscdale the labels so they don't cut off
+
+        self.connect_buttons() #connect all the buttons
+
+        self.make_plots()#add the plots to the UI
+
+        self.double = Spectrometer() #initialize the double spectrometer
+
+
+
+    def make_plots(self):
+        #make the wavelength plot
+        self.wavelength_plot = Canvas(parent = self, width = 5, height = 4)
+        self.wavelength_plot.move(500,35)
+
+        #make the energy plot
+        self.energy_plot = Canvas(parent = self, width = 5, height = 4)
+        self.energy_plot.move(500,475)
+
+
+
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -54,27 +69,32 @@ class MainWindow(qtw.QMainWindow):
 
     #connect all the buttons to their functions
     def connect_buttons(self):
+        #connect the recalibrate function to the recalibrate function below
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
+        #connect scan button to scan function below
         self.ui.scan_button.clicked.connect(self.scan)
+        #connect move button to move function below
         self.ui.move_button.clicked.connect(self.move)
+        #connect the abort button to abort function below
         self.ui.abort_button.clicked.connect(self.abort)
+        #connect the close button to close function below
         self.ui.close_button.clicked.connect(self.exit)
 
 
 
 
     def scan(self):
-        #try to load in the data
+        #try to read the entries
         try:
             start = float(self.ui.scan_start_input.text())
             end = float(self.ui.scan_end_input.text())
             step = float(self.ui.scan_step_input.text())
 
-        #raise exception
+        #raise exception if there is an issue
         except:
             print('scan did not recieve valid inputs')
 
-        #if succesful we run the scan method of spectrometer
+        #if there is no issue we run the scan method of spectrometer see spectrometer.py
         else:
             self.double.scan(start,end,step)
 
@@ -90,7 +110,7 @@ class MainWindow(qtw.QMainWindow):
         except:
             print('move recieved invalid input')
 
-        #if we succeed run the move method of the spectrometer
+        #if no issue run the move method of the spectrometer see spectrometer.py
         else:
             self.double.move(destination)
 
@@ -103,7 +123,7 @@ class MainWindow(qtw.QMainWindow):
         #if we encounter an error print messagge
         except:
             print('the recalibrate input was invalid')
-        #if we succeed call the recalibrate method of the spectrometer
+        #if no issue run the recalibrate method of the spectrometer see spectrometer.py
         else:
             self.double.recalibrate(actual)
             #print success message and the new postion
@@ -112,14 +132,14 @@ class MainWindow(qtw.QMainWindow):
 
 
     def exit(self):
-        #save the position of the spectrometer
+        #save the position of the spectrometer see spectrometer.py
         self.double.save()
         #close the application
         self.close()
 
 
     def abort(self):
-        #call the abort function on the spectrometer
+        #call the abort function on the spectrometer see spectrometer.py
         self.double.abort()
 
 
@@ -127,9 +147,11 @@ class MainWindow(qtw.QMainWindow):
     def stop(self):
         pass
 
+
+#run the UI
 if __name__ == '__main__':
     import sys
-    app = qtw.QApplication(sys.argv)
-    win = MainWindow()
-    win.show()
-    sys.exit(app.exec_())
+    app = qtw.QApplication(sys.argv) #just pyqt5 stuff
+    win = MainWindow() #make our UI
+    win.show() #display our UI
+    sys.exit(app.exec_()) #more pyqt5 stuff

@@ -62,16 +62,19 @@ class Spectrometer():
     def move(self,wavelength):
         pass
 
-
+    #implement me
     def scan(self,start,end,step):
         pass
 
+    #implement me
     def abort():
         pass
 
+    #implement me
     def stop():
         pass
 
+    #implement me
     def shutter():
         pass
 
@@ -82,7 +85,7 @@ class Spectrometer():
             #write the last position
             f.write(str(self.position))
 
-        #if there is an error with the write print it
+        #if there is an error with the write print
         except:
             print('there was an error writing to last_position.txt')
         #if we succeed print success message
