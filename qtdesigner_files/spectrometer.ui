@@ -13,12 +13,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QMainWindow{
-background-color:rgb(94, 94, 94);
-
-}</string>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="abort_button">
     <property name="geometry">
@@ -729,7 +723,7 @@ QPushButton::pressed{
      <x>0</x>
      <y>0</y>
      <width>1154</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
