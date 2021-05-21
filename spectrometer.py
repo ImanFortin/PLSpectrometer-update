@@ -71,10 +71,6 @@ class Spectrometer():
         pass
 
     #implement me
-    def stop():
-        pass
-
-    #implement me
     def shutter():
         pass
 

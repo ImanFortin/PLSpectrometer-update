@@ -40,11 +40,11 @@ class MainWindow(qtw.QMainWindow):
     def make_plots(self):
         #make the wavelength plot
         self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
-        self.wavelength_plot.move(500,10)
+        self.wavelength_plot.move(500,0)
 
         #make the energy plot
-        self.energy_plot = PlotWidget(parent = self, width = 6, height = 4)
-        self.energy_plot.move(500,480)
+        self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
+        self.energy_plot.move(500,470)
 
 
 

@@ -43,10 +43,12 @@ class Window(QMainWindow):
 
 
 class Canvas(FigureCanvas):
-    def __init__(self, parent = None, width = 5, height = 5, dpi = 100):
+    def __init__(self, parent = None, width = 5, height = 5, dpi = 100, scale = 'linear'):
 
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
+        self.axes.grid()
+        self.axes.set_yscale(scale)
         super().__init__(fig)
         self.setParent(parent)
 
@@ -56,13 +58,13 @@ class Canvas(FigureCanvas):
 
 class PlotWidget(QWidget):
 
-    def __init__(self, parent = None, *args, **kwargs):
+    def __init__(self, parent = None, scale = 'linear', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setParent(parent)
         layout = QVBoxLayout()
 
 
-        sc = Canvas(self, width=5, height=4, dpi=100)
+        sc = Canvas(self, width=5, height=4, dpi=100, scale = scale)
 
         sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
 

@@ -210,6 +210,9 @@
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
      </property>
@@ -303,8 +306,20 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="dragEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="cursorMoveStyle">
+      <enum>Qt::LogicalMoveStyle</enum>
      </property>
     </widget>
     <widget class="QLabel" name="go_to_lbl">
@@ -416,6 +431,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
      </property>
@@ -468,6 +486,9 @@ QPushButton::pressed{
        <width>71</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
@@ -546,6 +567,12 @@ QPushButton::pressed{
      <property name="value">
       <number>0</number>
      </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QLabel" name="scan_step_lbl">
      <property name="geometry">
@@ -575,6 +602,9 @@ QPushButton::pressed{
        <width>71</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
@@ -609,6 +639,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QLabel" name="sample_id_lbl">
      <property name="geometry">
@@ -639,6 +672,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QLabel" name="count_time_lbl">
      <property name="geometry">
@@ -668,6 +704,9 @@ QPushButton::pressed{
        <width>71</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
@@ -866,6 +905,9 @@ QPushButton::pressed{
        <width>131</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </widget>
