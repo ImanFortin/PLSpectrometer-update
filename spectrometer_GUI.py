@@ -149,9 +149,6 @@ class MainWindow(qtw.QMainWindow):
 
 
 
-    def stop(self):
-        pass
-
 
 #run the UI
 if __name__ == '__main__':
