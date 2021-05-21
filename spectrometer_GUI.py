@@ -16,6 +16,10 @@ from spectrometer import Spectrometer
 
 from matplotlib_embedding import PlotWidget
 
+from nidaqmx.types import CtrTime
+
+
+
 
 #the main windowclass that will be made it inherits from the widget MainWindow
 class MainWindow(qtw.QMainWindow):
@@ -94,14 +98,32 @@ class MainWindow(qtw.QMainWindow):
             start = float(self.ui.scan_start_input.text())
             end = float(self.ui.scan_end_input.text())
             step = float(self.ui.scan_step_input.text())
+            time = float(self.ui.count_time_input.text())
 
         #raise exception if there is an issue
         except:
             print('scan did not recieve valid inputs')
+            return
 
-        #if there is no issue we run the scan method of spectrometer see spectrometer.py
-        else:
-            self.double.scan(start,end,step)
+        #pseudo code for now
+
+        #move to the starting position
+        self.double.move(start)
+
+        #get the number of pulses per step
+        samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
+
+
+
+        #get the distance that we need to travel
+        distance = (end - start)/step
+
+        for i in range(distance):
+
+            #task.write(samples, auto_start=True)
+            #data = task.read(for time)
+            #emit the data to be plotted and stored
+            break
 
 
 

@@ -63,7 +63,7 @@ class Spectrometer():
         pass
 
     #implement me
-    def scan(self,start,end,step):
+    def read(self,start,end,step):
         pass
 
     #implement me
