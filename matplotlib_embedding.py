@@ -3,6 +3,7 @@ import sys
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import numpy as np
+import mplcursors
 from PyQt5 import QtCore
 
 
@@ -59,17 +60,21 @@ class Canvas(FigureCanvas):
 class PlotWidget(QWidget):
 
     def __init__(self, parent = None, scale = 'linear', *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.setParent(parent)
-        layout = QVBoxLayout()
+        super().__init__(*args, **kwargs) #run the init function of the parent (QWidget)
+        self.setParent(parent) #set our parent to the given argument to that is shows up
+        layout = QVBoxLayout() #make a vertical layout
 
 
-        sc = Canvas(self, width=5, height=4, dpi=100, scale = scale)
+        sc = Canvas(self, width=5, height=4, dpi=100, scale = scale) #make our canvas
 
+        lines = sc.axes.scatter([0,1,2,3,4], [10,1,20,3,40], s = 3)
         sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
-
+        #plot some random data onto it
+        mplcursors.cursor(lines, hover = True)
         # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
         toolbar = NavigationToolbar(sc, self)
+
+        #add our toolbar and plot to the widget
         layout.addWidget(toolbar)
         layout.addWidget(sc)
         self.setLayout(layout)
