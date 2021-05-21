@@ -61,7 +61,7 @@ class PlotWidget(QWidget):
 
     def __init__(self, parent = None, scale = 'linear', *args, **kwargs):
         super().__init__(*args, **kwargs) #run the init function of the parent (QWidget)
-        self.setParent(parent) #set our parent to the given argument to that is shows up
+        self.setParent(parent) # set our parent to the given argument to that is shows up
         layout = QVBoxLayout() #make a vertical layout
 
 

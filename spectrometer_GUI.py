@@ -71,7 +71,7 @@ class MainWindow(qtw.QMainWindow):
 
 
 
-    #connect all the buttons to their functions
+    # connect all the buttons to their functions
     def connect_buttons(self):
         #connect the recalibrate function to the recalibrate function below
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
