@@ -16,7 +16,7 @@ from spectrometer import Spectrometer
 
 from matplotlib_embedding import PlotWidget
 
-from nidaqmx.types import CtrTime
+
 
 
 
@@ -111,7 +111,7 @@ class MainWindow(qtw.QMainWindow):
         self.double.move(start)
 
         #get the number of pulses per step
-        samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
+        # samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
 
 
 
