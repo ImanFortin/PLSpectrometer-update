@@ -14,7 +14,7 @@ from PyQt5 import QtCore as qtc
 #custom class for the spectrometer see spectrometer.py
 from spectrometer import Spectrometer
 
-from matplotlib_embedding import Canvas
+from matplotlib_embedding import PlotWidget
 
 
 #the main windowclass that will be made it inherits from the widget MainWindow
@@ -24,7 +24,7 @@ class MainWindow(qtw.QMainWindow):
         super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
 
         self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
-        
+
         self.ui.setupUi(self) #run the setup method to create the window
 
         self.autoscale_lbls() #autoscdale the labels so they don't cut off
@@ -39,12 +39,12 @@ class MainWindow(qtw.QMainWindow):
 
     def make_plots(self):
         #make the wavelength plot
-        self.wavelength_plot = Canvas(parent = self, width = 5, height = 4)
-        self.wavelength_plot.move(500,35)
+        self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
+        self.wavelength_plot.move(500,10)
 
         #make the energy plot
-        self.energy_plot = Canvas(parent = self, width = 5, height = 4)
-        self.energy_plot.move(500,475)
+        self.energy_plot = PlotWidget(parent = self, width = 6, height = 4)
+        self.energy_plot.move(500,480)
 
 
 
@@ -64,6 +64,10 @@ class MainWindow(qtw.QMainWindow):
         self.ui.scan_step_lbl.adjustSize()
         self.ui.file_name_lbl.adjustSize()
         self.ui.sample_id_lbl.adjustSize()
+        self.ui.count_time_lbl.adjustSize()
+        self.ui.common_variables_lbl.adjustSize()
+        self.ui.spect_select_lbl.adjustSize()
+
 
 
 
@@ -79,7 +83,8 @@ class MainWindow(qtw.QMainWindow):
         self.ui.abort_button.clicked.connect(self.abort)
         #connect the close button to close function below
         self.ui.close_button.clicked.connect(self.exit)
-
+        #default to the double spectrometer
+        self.ui.radioButton.setChecked(True)
 
 
 

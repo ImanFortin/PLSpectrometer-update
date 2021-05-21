@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QFrame
+from PyQt5.QtWidgets import *
 import sys
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import numpy as np
 from PyQt5 import QtCore
@@ -32,8 +32,8 @@ class Window(QMainWindow):
         # frame.setLineWidth(3)
 
 
-        canvas = Canvas(parent = self, width=4, height=4)
-        canvas.move(100,0)
+        canvas = PlotWidget(self)
+        canvas.move(20,20)
 
         button = QPushButton("Click Me", self)
         button.move(100, 450)
@@ -44,18 +44,30 @@ class Window(QMainWindow):
 
 class Canvas(FigureCanvas):
     def __init__(self, parent = None, width = 5, height = 5, dpi = 100):
+
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-
-        FigureCanvas.__init__(self, fig)
+        super().__init__(fig)
         self.setParent(parent)
-        self.axes.grid()
-        self.plot()
 
 
-    def plot(self):
-        x = np.linspace(0,100,1000)
-        y = np.sin(x)
 
 
-        self.axes.plot(x,y)
+
+class PlotWidget(QWidget):
+
+    def __init__(self, parent = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setParent(parent)
+        layout = QVBoxLayout()
+
+
+        sc = Canvas(self, width=5, height=4, dpi=100)
+
+        sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
+
+        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
+        toolbar = NavigationToolbar(sc, self)
+        layout.addWidget(toolbar)
+        layout.addWidget(sc)
+        self.setLayout(layout)
