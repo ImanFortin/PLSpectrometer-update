@@ -64,17 +64,30 @@ class PlotWidget(QWidget):
         self.setParent(parent) # set our parent to the given argument to that is shows up
         layout = QVBoxLayout() #make a vertical layout
 
+        self.ydata = []
+        self.xdata = []
 
-        sc = Canvas(self, width=5, height=4, dpi=100, scale = scale) #make our canvas
 
-        lines = sc.axes.scatter([0,1,2,3,4], [10,1,20,3,40], s = 3)
-        sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
-        #plot some random data onto it
-        mplcursors.cursor(lines, hover = True)
+        self.sc = Canvas(self, width=5, height=4, dpi=100, scale = scale) #make our canvas
+
+        self.lines = self.sc.axes.scatter(self.xdata, self.ydata, s = 3) #plot the dots
+        self.sc.axes.plot(self.xdata, self.ydata) #plot line to connect the dots
+
+        mplcursors.cursor(self.lines, hover = True)
         # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
-        toolbar = NavigationToolbar(sc, self)
+        toolbar = NavigationToolbar(self.sc, self)
 
         #add our toolbar and plot to the widget
         layout.addWidget(toolbar)
-        layout.addWidget(sc)
+        layout.addWidget(self.sc)
         self.setLayout(layout)
+
+    def update(self,xdata,ydata):
+
+        self.ydata.append(ydata)
+        self.xdata.append(xdata)
+        self.sc.axes.cla()
+        self.lines = self.sc.axes.scatter(self.xdata,self.ydata)
+        self.sc.axes.plot(self.xdata,self.ydata)
+        mplcursors.cursor(self.lines, hover = True)
+        self.sc.draw()

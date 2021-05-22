@@ -16,6 +16,7 @@ from spectrometer import Spectrometer
 
 from matplotlib_embedding import PlotWidget
 
+import time
 
 
 
@@ -39,7 +40,8 @@ class MainWindow(qtw.QMainWindow):
 
         self.double = Spectrometer() #initialize the double spectrometer
 
-
+        self.update_plots(2)
+        
 
     def make_plots(self):
         #make the wavelength plot
@@ -49,9 +51,6 @@ class MainWindow(qtw.QMainWindow):
         #make the energy plot
         self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
         self.energy_plot.move(500,470)
-
-
-
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -90,6 +89,9 @@ class MainWindow(qtw.QMainWindow):
         #default to the double spectrometer
         self.ui.radioButton.setChecked(True)
 
+    def update_plots(self,counts):
+        self.wavelength_plot.update(self.double.position,counts)
+        self.energy_plot.update(self.double.position,counts)
 
 
     def scan(self):
@@ -103,7 +105,7 @@ class MainWindow(qtw.QMainWindow):
         #raise exception if there is an issue
         except:
             print('scan did not recieve valid inputs')
-            return
+            return #leave the function
 
         #pseudo code for now
 
@@ -111,7 +113,7 @@ class MainWindow(qtw.QMainWindow):
         self.double.move(start)
 
         #get the number of pulses per step
-        # samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
+        samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
 
 
 
@@ -123,7 +125,7 @@ class MainWindow(qtw.QMainWindow):
             #task.write(samples, auto_start=True)
             #data = task.read(for time)
             #emit the data to be plotted and stored
-            break
+            pass
 
 
 
@@ -167,7 +169,7 @@ class MainWindow(qtw.QMainWindow):
 
     def abort(self):
         #call the abort function on the spectrometer see spectrometer.py
-        self.double.abort()
+        self.double.stop()
 
 
 

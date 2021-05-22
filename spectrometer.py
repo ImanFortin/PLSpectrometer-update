@@ -67,11 +67,11 @@ class Spectrometer():
         pass
 
     #implement me
-    def abort():
+    def stop(self):
         pass
 
     #implement me
-    def shutter():
+    def shutter(self):
         pass
 
     def save(self):
