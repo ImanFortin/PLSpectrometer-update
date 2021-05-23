@@ -3,21 +3,15 @@
 #IF YOU WISH TO CHANGE THE WAY DATA IS INPUTED THROUGH THE UI EDIT HERE OR USE
 #'spectrometer.ui' WITH QTDESIGNER AND COMPILE THE UI TO 'qt_designer.py'
 
-
-
-#importing the ui compiled python code class
 from qt_designer import Ui_MainWindow
-#import the widgets, required for inheritance
 from PyQt5 import QtWidgets as qtw
-#unused for now can be deleted without changing behaviour
 from PyQt5 import QtCore as qtc
-#custom class for the spectrometer see spectrometer.py
 from spectrometer import Spectrometer
-
 from matplotlib_embedding import PlotWidget
-
 import time
-
+from workers.move import moveWorker
+from workers.scan import scanWorker
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 
 
@@ -27,21 +21,14 @@ class MainWindow(qtw.QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
-
         self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
-
         self.ui.setupUi(self) #run the setup method to create the window
-
         self.autoscale_lbls() #autoscdale the labels so they don't cut off
-
         self.connect_buttons() #connect all the buttons
-
-        self.make_plots()#add the plots to the UI
-
+        self.make_plots() #add the plots to the UI
         self.double = Spectrometer() #initialize the double spectrometer
+        self.abort = False #set the abort flag to false
 
-        self.update_plots(2)
-        
 
     def make_plots(self):
         #make the wavelength plot
@@ -89,9 +76,20 @@ class MainWindow(qtw.QMainWindow):
         #default to the double spectrometer
         self.ui.radioButton.setChecked(True)
 
-    def update_plots(self,counts):
-        self.wavelength_plot.update(self.double.position,counts)
-        self.energy_plot.update(self.double.position,counts)
+    #update the plots with data
+    def update_plots(self,data):
+        self.wavelength_plot.update(self.double.position,data)
+        self.energy_plot.update(self.double.position,data)
+
+    #update the spectrometer position
+    def update_position(self,position):
+        self.double.position = position
+
+    #update the progress bar function arugment is a list that contains the current
+    #step and the maximum amount of steps
+    def update_progress(self,step_max):
+        self.ui.progressBar_scan.setValue(step_max[0])
+        self.ui.progressBar_scan.setMaximum(step_max[1])
 
 
     def scan(self):
@@ -107,26 +105,27 @@ class MainWindow(qtw.QMainWindow):
             print('scan did not recieve valid inputs')
             return #leave the function
 
-        #pseudo code for now
-
-        #move to the starting position
-        self.double.move(start)
-
-        #get the number of pulses per step
-        samples = [CtrTime(high_time = 1, low_time = 1)]*int(step/0.001)
 
 
 
-        #get the distance that we need to travel
-        distance = (end - start)/step
-
-        for i in range(distance):
-
-            #task.write(samples, auto_start=True)
-            #data = task.read(for time)
-            #emit the data to be plotted and stored
-            pass
-
+        print('starting scan')
+        # Step 2: Create a QThread object
+        self.scan_thread = QThread()
+        # Step 3: Create a worker object
+        self.worker = scanWorker(self.double,start,end,step,time)
+        # # Step 4: Move worker to the thread
+        self.worker.moveToThread(self.scan_thread)
+        #
+        # # Step 5: Connect signals and slots
+        self.scan_thread.started.connect(self.worker.scan)
+        self.worker.finished.connect(self.scan_thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.scan_thread.finished.connect(self.scan_thread.deleteLater)
+        self.worker.progress.connect(self.update_progress)
+        self.worker.position.connect(self.update_position)
+        self.worker.data.connect(self.update_plots)
+        # Step 6: Start the thread
+        self.scan_thread.start()
 
 
 
@@ -138,10 +137,29 @@ class MainWindow(qtw.QMainWindow):
         #print a message if it fails
         except:
             print('move recieved invalid input')
+            return
 
         #if no issue run the move method of the spectrometer see spectrometer.py
-        else:
-            self.double.move(destination)
+        print('starting move to',destination)
+        # Step 2: Create a QThread object
+        self.thread = QThread()
+        # Step 3: Create a worker object
+        self.worker = moveWorker(self.double,destination)
+        # # Step 4: Move worker to the thread
+        self.worker.moveToThread(self.thread)
+
+        # # Step 5: Connect signals and slots
+        self.thread.started.connect(self.worker.move)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.worker.progress.connect(self.update_progress)
+        self.worker.position.connect(self.update_position)
+        # # Step 6: Start the thread
+        self.thread.start()
+
+
+
 
 
 
@@ -180,4 +198,5 @@ if __name__ == '__main__':
     app = qtw.QApplication(sys.argv) #just pyqt5 stuff
     win = MainWindow() #make our UI
     win.show() #display our UI
+
     sys.exit(app.exec_()) #more pyqt5 stuff
