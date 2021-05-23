@@ -117,7 +117,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.recalibrate_button.setEnabled(False)
         self.ui.move_button.setEnabled(False)
         self.ui.scan_button.setEnabled(False)
-        
+
 
         print('starting scan')
         # Step 2: Create a QThread object
@@ -128,13 +128,23 @@ class MainWindow(qtw.QMainWindow):
         self.worker.moveToThread(self.scan_thread)
         #
         # # Step 5: Connect signals and slots
+        #connect start to our scan function from the worker folder
         self.scan_thread.started.connect(self.worker.scan)
+        #clear the plots on start
+        self.scan_thread.started.connect(self.wavelength_plot.clear)
+        self.scan_thread.started.connect(self.energy_plot.clear)
+        #when done quit and delete the threads
         self.worker.finished.connect(self.scan_thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
+        #re-enable the buttons
         self.worker.finished.connect(self.enable_buttons)
+        #when done delete thread
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)
+        #connect the progress to the progress bar
         self.worker.progress.connect(self.update_progress)
+        #connect position to update position
         self.worker.position.connect(self.update_position)
+        #connect the data to update plots
         self.worker.data.connect(self.update_plots)
         # Step 6: Start the thread
 

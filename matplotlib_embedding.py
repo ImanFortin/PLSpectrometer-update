@@ -57,3 +57,8 @@ class PlotWidget(QWidget):
         mplcursors.cursor(self.lines, hover = True)#add the cursor
         self.sc.axes.grid()#make the grid
         self.sc.draw()#show the plot
+
+    def clear(self):
+        self.ydata.clear()
+        self.xdata.clear()
+        self.sc.axes.cla()
