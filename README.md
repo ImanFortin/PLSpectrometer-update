@@ -37,6 +37,10 @@ if you want to add additional buttons with functions here is what I think is the
 
 this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. it will also store which devices to communicate with
 
+# workers
+
+in order for us to be able to interrupt and update our UI in real time we have to use QThreads. The move.py file holds the class and the functions that the thread will run in, the thread being set up and connected occurs in the GUI.py file under the corresponding method name ex. move, scan.
+
 # additonal comments
 this modular approach can be a bit confusing when looking at the whole picture, however it makes working with pieces of the code much easier and cleaner. I have done my best to make it clear, some things that may cause you trouble when first working with this directory or being new to classes.
 
