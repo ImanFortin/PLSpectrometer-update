@@ -19,7 +19,7 @@ and written to when the close button is used. If this file isn't present or the 
 
 # matplotlib_embedding.py
 
-work in progress to implement a matplotlib plot into our ui
+this is where the plot classes are made, they are a combination of the plot and a toolbar stored in a vertical layout widget.
 
 # qt_designer.py
 
@@ -35,7 +35,7 @@ if you want to add additional buttons with functions here is what I think is the
 
 # spectrometer.py
 
-this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. Here is where the functions that interface directly with the DAQ are written. This is where most debugging will likely occur if you wish to change the way the spectrometer behaves this is where you will work.
+this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. it will also store which devices to communicate with
 
 # additonal comments
 this modular approach can be a bit confusing when looking at the whole picture, however it makes working with pieces of the code much easier and cleaner. I have done my best to make it clear, some things that may cause you trouble when first working with this directory or being new to classes.
@@ -45,6 +45,8 @@ this modular approach can be a bit confusing when looking at the whole picture, 
 2. when you add or access any variable stored in a class it must be proceeded by self.example where example is the property you are trying to access (when outside the function self is replaced by the name you assign to the class, for example; double = spectrometer(), to access the position use double.position).
 
 3. in spectrometer.py there is a niche bit of code using a decorator, the @property above self.position and again below. What this does is allow us to write conditions on the assigning of a value, it really isn't complicated (you don't need to understand decorators) once you know what it does. There are good simple examples of the @property online.
+
+4. threading, in order for our GUI to be responsive and update in real time we have to introduce threads using QThreads, these essentially allow us to do two things at once, the UI on it's own can't be collecting data and updating itself at the same time, so instead we make a thread to collect the data and emit it to the main UI update functions.
 
 # learning resources
 

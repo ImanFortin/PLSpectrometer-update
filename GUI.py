@@ -117,6 +117,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.recalibrate_button.setEnabled(False)
         self.ui.move_button.setEnabled(False)
         self.ui.scan_button.setEnabled(False)
+        
 
         print('starting scan')
         # Step 2: Create a QThread object
@@ -194,8 +195,6 @@ class MainWindow(qtw.QMainWindow):
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
 
-
-
     def exit(self):
         #save the position of the spectrometer see spectrometer.py
         self.double.save()
@@ -205,7 +204,7 @@ class MainWindow(qtw.QMainWindow):
 
     def abort(self):
         #call the abort function on the spectrometer see spectrometer.py
-        self.double.stop()
+        self.abort = True
 
 
 
