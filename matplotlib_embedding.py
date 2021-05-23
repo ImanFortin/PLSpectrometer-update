@@ -7,41 +7,6 @@ import mplcursors
 from PyQt5 import QtCore
 
 
-class Window(QMainWindow):
-    def __init__(self):
-        super().__init__()
-
-        title = "Matplotlib Embeding In PyQt5"
-        top = 400
-        left = 400
-        width = 900
-        height = 500
-
-        self.setWindowTitle(title)
-        self.setGeometry(top, left, width, height)
-
-        self.MyUI()
-
-
-    def MyUI(self):
-
-
-        # frame = QFrame(self)
-        # frame.setGeometry(QtCore.QRect(100, 40, 500, 500))
-        # frame.setFrameShape(QFrame.Box)
-        # frame.setFrameShadow(QFrame.Plain)
-        # frame.setLineWidth(3)
-
-
-        canvas = PlotWidget(self)
-        canvas.move(20,20)
-
-        button = QPushButton("Click Me", self)
-        button.move(100, 450)
-
-        button2 = QPushButton("Click Me Two", self)
-        button2.move(250, 450)
-
 
 class Canvas(FigureCanvas):
     def __init__(self, parent = None, width = 5, height = 5, dpi = 100, scale = 'linear'):
@@ -72,7 +37,7 @@ class PlotWidget(QWidget):
 
         self.lines = self.sc.axes.scatter(self.xdata, self.ydata, s = 3) #plot the dots
         self.sc.axes.plot(self.xdata, self.ydata) #plot line to connect the dots
-
+        self.sc.axes.grid()
         mplcursors.cursor(self.lines, hover = True)
         # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
         toolbar = NavigationToolbar(self.sc, self)
@@ -84,10 +49,11 @@ class PlotWidget(QWidget):
 
     def update(self,xdata,ydata):
 
-        self.ydata.append(ydata)
-        self.xdata.append(xdata)
-        self.sc.axes.cla()
-        self.lines = self.sc.axes.scatter(self.xdata,self.ydata)
-        self.sc.axes.plot(self.xdata,self.ydata)
-        mplcursors.cursor(self.lines, hover = True)
-        self.sc.draw()
+        self.ydata.append(ydata)#append the y data
+        self.xdata.append(xdata)#append the x data
+        self.sc.axes.cla()#clear the canvas
+        self.lines = self.sc.axes.scatter(self.xdata,self.ydata, s = 3)#add new data
+        self.sc.axes.plot(self.xdata,self.ydata)#reconnect the lines
+        mplcursors.cursor(self.lines, hover = True)#add the cursor
+        self.sc.axes.grid()#make the grid
+        self.sc.draw()#show the plot
