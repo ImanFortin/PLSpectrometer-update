@@ -16,11 +16,15 @@ class moveWorker(QObject):
 
 
     def move(self):
-        
+
         start = int(self.spectrometer.position)#get the current position
         end = int(self.end)#get the end position
         distance = abs(end - start)#get the distance
-        direction = int((end - start)/distance)#get the direction
+        try:
+            direction = int((end - start)/distance)#get the direction
+        except:
+            direction = 1
+            
         self.progress.emit([0, abs(start - end)])#set progress to zero
 
         print(start, end + direction, direction)

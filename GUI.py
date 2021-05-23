@@ -169,7 +169,7 @@ class MainWindow(qtw.QMainWindow):
         self.thread.started.connect(self.worker.move)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
-        self.worker.finished.connect(self.worker.enable_buttons)
+        self.worker.finished.connect(self.enable_buttons)
         self.thread.finished.connect(self.thread.deleteLater)
         self.worker.progress.connect(self.update_progress)
         self.worker.position.connect(self.update_position)

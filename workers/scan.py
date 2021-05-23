@@ -25,9 +25,13 @@ class scanWorker(QObject):
         start = int(self.spectrometer.position)
         end = int(self.start)#we want to move to the start point
         distance = abs(end - start)
-        direction = int((end - start)/distance)
-        print(start,end,direction)
 
+        try:
+            direction = int((end - start)/distance)
+        except:
+            direction = 1
+
+        print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
         for i in range(start, end + direction, direction):
 
@@ -43,7 +47,12 @@ class scanWorker(QObject):
         end = int(self.end) #set end to the end position of the scan
 
         distance = abs(end - start)
-        direction = int((end - start)/distance)
+        try:
+            direction = int((end - start)/distance)
+
+        except:
+            direction = 1
+
         print(start,end,direction)
 
         for i in range(start, end + direction, direction):
