@@ -52,9 +52,11 @@ class PlotWidget(QWidget):
         self.ydata.append(ydata)#append the y data
         self.xdata.append(xdata)#append the x data
         self.sc.axes.cla()#clear the canvas
+
         self.lines = self.sc.axes.scatter(self.xdata,self.ydata, s = 3)#add new data
         self.sc.axes.plot(self.xdata,self.ydata)#reconnect the lines
         mplcursors.cursor(self.lines, hover = True)#add the cursor
+
         self.sc.axes.grid()#make the grid
         self.sc.draw()#show the plot
 

@@ -31,7 +31,6 @@ class moveWorker(QObject):
 
         self.progress.emit([0, abs(start - end)])#set progress to zero
 
-        print(start, end + direction, direction)
         for i in range(start, end, direction):
             time.sleep(1)#simulate the move
             self.progress.emit([abs(i-start),abs(start - end)]) #emit the progress

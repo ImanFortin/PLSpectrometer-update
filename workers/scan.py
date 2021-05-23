@@ -1,5 +1,7 @@
 import time
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from datetime import datetime
+
 
 #this is the scan worker he does the scanning
 class scanWorker(QObject):
@@ -18,6 +20,12 @@ class scanWorker(QObject):
         self.end = end
         self.step = step
         self.time = time
+        #leaving these empty for now so i don't have to input them when testing
+        self.filename = ''
+        self.sample_id = ''
+
+
+
 
     def scan(self):
 
@@ -29,7 +37,7 @@ class scanWorker(QObject):
         try:
             direction = int((end - start)/distance)
         except:
-            direction = 1
+            direction = 1 #this will need to be changed when we are actaully sending pulses
 
         print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
@@ -50,6 +58,7 @@ class scanWorker(QObject):
         except:
             self.finished.emit()#scan distance is zero
             return
+
 
         print(start,end,direction)
         for i in range(start, end + direction, direction):

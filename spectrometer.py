@@ -25,7 +25,7 @@ class Spectrometer():
         finally:
             f.close()
 
-        
+
 
 
     #getter method google @property for reasoning
@@ -67,3 +67,9 @@ class Spectrometer():
         #no matter what happens close the file
         finally:
             f.close()
+
+    def step(self,stepsize):
+        pass
+
+    def read(self,time):
+        pass

@@ -118,6 +118,10 @@ class MainWindow(qtw.QMainWindow):
         self.ui.move_button.setEnabled(False)
         self.ui.scan_button.setEnabled(False)
 
+        #clear the plots
+        self.wavelength_plot.clear()
+        self.energy_plot.clear()
+        self.wavelength_plot.sc.axes.set_xlim([start,end])
 
         print('starting scan')
         # Step 2: Create a QThread object
@@ -126,13 +130,10 @@ class MainWindow(qtw.QMainWindow):
         self.worker = scanWorker(self.double,start,end,step,time)
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)
-        #
+        
         # # Step 5: Connect signals and slots
         #connect start to our scan function from the worker folder
         self.scan_thread.started.connect(self.worker.scan)
-        #clear the plots on start
-        self.scan_thread.started.connect(self.wavelength_plot.clear)
-        self.scan_thread.started.connect(self.energy_plot.clear)
         #when done quit and delete the threads
         self.worker.finished.connect(self.scan_thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
