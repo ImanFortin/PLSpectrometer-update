@@ -34,9 +34,6 @@ class scanWorker(QObject):
         print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
         for i in range(start, end + direction, direction):
-
-
-
             print(i)
             self.position.emit(i) #emit the position
             time.sleep(1)#simulate the move collection
@@ -45,25 +42,20 @@ class scanWorker(QObject):
         #set the new start to be the current position
         start = int(self.spectrometer.position)
         end = int(self.end) #set end to the end position of the scan
-
         distance = abs(end - start)
+
+        #check for divide by zero
         try:
             direction = int((end - start)/distance)
-
         except:
-            direction = 1
+            self.finished.emit()#scan distance is zero
+            return
 
         print(start,end,direction)
-
         for i in range(start, end + direction, direction):
-
-
-
             print(i)
             self.position.emit(i) #emit the position
-
             self.data.emit(i/2)
-
             time.sleep(1) #simulate collecting data for one second
             self.progress.emit([abs(i-start),abs(start - end)])
 

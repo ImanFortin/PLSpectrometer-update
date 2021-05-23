@@ -4,12 +4,12 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 #this is the move worker he does the moving
 class moveWorker(QObject):
 
-    progress = pyqtSignal(list)
+    progress = pyqtSignal(list)#give the data type to be emitted
     position = pyqtSignal(float)
     finished = pyqtSignal()
 
 
-    def __init__(self,spectrometer,end):
+    def __init__(self,spectrometer,end,abort):
         super().__init__()
         self.spectrometer = spectrometer
         self.end = end
@@ -20,11 +20,15 @@ class moveWorker(QObject):
         start = int(self.spectrometer.position)#get the current position
         end = int(self.end)#get the end position
         distance = abs(end - start)#get the distance
+
+        #try block to catch divide by zero error
         try:
             direction = int((end - start)/distance)#get the direction
         except:
-            direction = 1
-            
+            #if we divide by zero we are at the destination
+            self.finished.emit() #emit done
+            return #return
+
         self.progress.emit([0, abs(start - end)])#set progress to zero
 
         print(start, end + direction, direction)
