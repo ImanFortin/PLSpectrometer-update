@@ -13,11 +13,11 @@ class Spectrometer():
         #file where we will store the last position
         try:
             f = open('last_position.txt', 'r')
-            last_position = float(f.readline())
+            self._position = float(f.readline())
 
         except:
             print("there was an error trying to load the data from last_position.txt")
-            last_postion = 0.0
+            self._postion = 0.0
         #print success if the except doesn't trigger
         else:
             print('successfully loaded last position\n')
@@ -25,10 +25,8 @@ class Spectrometer():
         finally:
             f.close()
 
+        
 
-        #underscore implies that this should not be accessed directly see the position
-        #function below for how accessing and changing the value work
-        self._position = last_position
 
     #getter method google @property for reasoning
     #short description it allows us to sanitaze the inputs while keeping the syntax neat
@@ -52,27 +50,6 @@ class Spectrometer():
         #for now will only print the position
         return float(self.position)
 
-
-    def recalibrate(self,wavelength):
-        self.position = wavelength
-
-
-
-#Methods to be implemented later
-    def move(self,wavelength):
-        pass
-
-    #implement me
-    def read(self,start,end,step):
-        pass
-
-    #implement me
-    def stop(self):
-        pass
-
-    #implement me
-    def shutter(self):
-        pass
 
     def save(self):
         try:
