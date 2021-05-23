@@ -5,3 +5,5 @@ To-do list:
 2. maybe figure out a way to set the xlim of the wavelength plots
 3. add the optimize audio thing
 4. start writing data to the DAQ
+5. need to fix the scan move thing
+6. the abort button
