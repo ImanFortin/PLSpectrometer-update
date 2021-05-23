@@ -11,7 +11,7 @@ class scanWorker(QObject):
     finished = pyqtSignal()
 
 
-    def __init__(self,UI,spectrometer,start,end,step,time):
+    def __init__(self,spectrometer,start,end,step,time):
         super().__init__()
         self.spectrometer = spectrometer
         self.start = start
@@ -48,7 +48,7 @@ class scanWorker(QObject):
 
         for i in range(start, end + direction, direction):
 
-            
+
 
             print(i)
             self.position.emit(i) #emit the position

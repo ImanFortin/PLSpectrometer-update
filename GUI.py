@@ -125,6 +125,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.position.connect(self.update_position)
         self.worker.data.connect(self.update_plots)
         # Step 6: Start the thread
+
         self.scan_thread.start()
 
 
