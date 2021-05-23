@@ -91,6 +91,13 @@ class MainWindow(qtw.QMainWindow):
         self.ui.progressBar_scan.setValue(step_max[0])
         self.ui.progressBar_scan.setMaximum(step_max[1])
 
+    #function that sets the buttons to enabled, to be called after
+    #a scan or a move (connected to the finished of the Thread)
+    def enable_buttons(self):
+        self.ui.recalibrate_button.setEnabled(True)
+        self.ui.move_button.setEnabled(True)
+        self.ui.scan_button.setEnabled(True)
+
 
     def scan(self):
         #try to read the entries
@@ -106,7 +113,10 @@ class MainWindow(qtw.QMainWindow):
             return #leave the function
 
 
-
+        #disable the buttons to prevent crashing
+        self.ui.recalibrate_button.setEnabled(False)
+        self.ui.move_button.setEnabled(False)
+        self.ui.scan_button.setEnabled(False)
 
         print('starting scan')
         # Step 2: Create a QThread object
@@ -120,6 +130,7 @@ class MainWindow(qtw.QMainWindow):
         self.scan_thread.started.connect(self.worker.scan)
         self.worker.finished.connect(self.scan_thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
+        self.worker.finished.connect(self.enable_buttons)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)
         self.worker.progress.connect(self.update_progress)
         self.worker.position.connect(self.update_position)
@@ -140,6 +151,11 @@ class MainWindow(qtw.QMainWindow):
             print('move recieved invalid input')
             return
 
+        #disable the buttons to prevent crashing
+        self.ui.recalibrate_button.setEnabled(False)
+        self.ui.move_button.setEnabled(False)
+        self.ui.scan_button.setEnabled(False)
+
         #if no issue run the move method of the spectrometer see spectrometer.py
         print('starting move to',destination)
         # Step 2: Create a QThread object
@@ -153,6 +169,7 @@ class MainWindow(qtw.QMainWindow):
         self.thread.started.connect(self.worker.move)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
+        self.worker.finished.connect(self.enable_buttons)
         self.thread.finished.connect(self.thread.deleteLater)
         self.worker.progress.connect(self.update_progress)
         self.worker.position.connect(self.update_position)

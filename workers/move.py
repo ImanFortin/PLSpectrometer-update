@@ -14,8 +14,9 @@ class moveWorker(QObject):
         self.spectrometer = spectrometer
         self.end = end
 
-    def move(self):
 
+    def move(self):
+        
         start = int(self.spectrometer.position)#get the current position
         end = int(self.end)#get the end position
         distance = abs(end - start)#get the distance
