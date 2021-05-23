@@ -27,7 +27,7 @@ class MainWindow(qtw.QMainWindow):
         self.connect_buttons() #connect all the buttons
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer() #initialize the double spectrometer
-        self.abort = False #set the abort flag to false
+
 
 
     def make_plots(self):
@@ -69,12 +69,13 @@ class MainWindow(qtw.QMainWindow):
         self.ui.scan_button.clicked.connect(self.scan)
         #connect move button to move function below
         self.ui.move_button.clicked.connect(self.move)
-        #connect the abort button to abort function below
-        self.ui.abort_button.clicked.connect(self.abort)
         #connect the close button to close function below
         self.ui.close_button.clicked.connect(self.exit)
         #default to the double spectrometer
         self.ui.radioButton.setChecked(True)
+
+        self.ui.abort_button.clicked.connect(self.abort)
+
 
     #update the plots with data
     def update_plots(self,data):
@@ -121,7 +122,7 @@ class MainWindow(qtw.QMainWindow):
         #clear the plots
         self.wavelength_plot.clear()
         self.energy_plot.clear()
-        self.wavelength_plot.sc.axes.set_xlim([start,end])
+
 
         print('starting scan')
         # Step 2: Create a QThread object
@@ -130,7 +131,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker = scanWorker(self.double,start,end,step,time)
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)
-        
+        #
         # # Step 5: Connect signals and slots
         #connect start to our scan function from the worker folder
         self.scan_thread.started.connect(self.worker.scan)
@@ -178,6 +179,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.moveToThread(self.thread)
 
         # # Step 5: Connect signals and slots
+
         self.thread.started.connect(self.worker.move)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
@@ -212,10 +214,8 @@ class MainWindow(qtw.QMainWindow):
         #close the application
         self.close()
 
-
     def abort(self):
-        #call the abort function on the spectrometer see spectrometer.py
-        self.abort = True
+        pass
 
 
 
