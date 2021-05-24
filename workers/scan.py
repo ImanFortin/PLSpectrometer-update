@@ -43,7 +43,7 @@ class scanWorker(QObject):
         print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
         for i in range(start, end + direction, direction):
-            if self.abort:
+            if self.abort:#check the abort flag
                 self.finished.emit()
                 return
             print(i)
@@ -66,8 +66,8 @@ class scanWorker(QObject):
 
         print(start,end,direction)
         for i in range(start, end + direction, direction):
-            if self.abort:
-                self.finished.emit()
+            if self.abort:#check for the abort flag
+                self.finished.emit()#if it is abort
                 return
             print(i)
             self.position.emit(i) #emit the position

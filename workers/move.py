@@ -32,7 +32,7 @@ class moveWorker(QObject):
         self.progress.emit([0, abs(start - end)])#set progress to zero
 
         for i in range(start, end + direction, direction):
-            if self.abort:
+            if self.abort:#check the abort flag
                 self.finished.emit()
                 return
 
