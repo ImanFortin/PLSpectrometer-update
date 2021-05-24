@@ -13,7 +13,7 @@ class moveWorker(QObject):
         super().__init__()
         self.spectrometer = spectrometer
         self.end = end
-
+        self.abort = False
 
     def move(self):
 
@@ -32,6 +32,10 @@ class moveWorker(QObject):
         self.progress.emit([0, abs(start - end)])#set progress to zero
 
         for i in range(start, end + direction, direction):
+            if self.abort:
+                self.finished.emit()
+                return
+
             print(i)
             time.sleep(1)#simulate the move
             self.progress.emit([abs(i-start),abs(start - end)]) #emit the progress

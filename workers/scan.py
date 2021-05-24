@@ -20,6 +20,7 @@ class scanWorker(QObject):
         self.end = end
         self.step = step
         self.time = time
+        self.abort = False
         #leaving these empty for now so i don't have to input them when testing
         self.filename = ''
         self.sample_id = ''
@@ -42,6 +43,9 @@ class scanWorker(QObject):
         print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
         for i in range(start, end + direction, direction):
+            if self.abort:
+                self.finished.emit()
+                return
             print(i)
             self.position.emit(i) #emit the position
             time.sleep(1)#simulate the move collection
@@ -62,6 +66,9 @@ class scanWorker(QObject):
 
         print(start,end,direction)
         for i in range(start, end + direction, direction):
+            if self.abort:
+                self.finished.emit()
+                return
             print(i)
             self.position.emit(i) #emit the position
             self.data.emit(i/2)

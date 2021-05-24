@@ -73,7 +73,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.close_button.clicked.connect(self.exit)
         #default to the double spectrometer
         self.ui.radioButton.setChecked(True)
-
+        #connect the abort button
         self.ui.abort_button.clicked.connect(self.abort)
 
 
@@ -215,7 +215,7 @@ class MainWindow(qtw.QMainWindow):
         self.close()
 
     def abort(self):
-        pass
+        self.worker.abort = True
 
 
 
