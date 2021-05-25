@@ -86,11 +86,25 @@ class MainWindow(qtw.QMainWindow):
     def update_position(self,position):
         self.double.position = position
 
+        current = self.ui.current_wavelength_lbl.text()
+        #keep up to the ': ' of the current string
+        keep = current[:current.find(':')+1]
+        #append on the new position
+        new_string = keep + str(position)
+        #set the new label
+        self.ui.current_wavelength_lbl.setText(new_string)
+        self.ui.current_wavelength_lbl.adjustSize()
+
+
     #update the progress bar function arugment is a list that contains the current
     #step and the maximum amount of steps
-    def update_progress(self,step_max):
-        self.ui.progressBar_scan.setValue(step_max[0])
-        self.ui.progressBar_scan.setMaximum(step_max[1])
+    def update_scan_progress(self,step_max):
+        self.ui.scan_progress.setValue(step_max[0])
+        self.ui.scan_progress.setMaximum(step_max[1])
+
+    def update_move_progress(self,step_max):
+        self.ui.move_progress.setValue(step_max[0])
+        self.ui.move_progress.setMaximum(step_max[1])
 
     #function that sets the buttons to enabled, to be called after
     #a scan or a move (connected to the finished of the Thread)
@@ -143,7 +157,7 @@ class MainWindow(qtw.QMainWindow):
         #when done delete thread
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)
         #connect the progress to the progress bar
-        self.worker.progress.connect(self.update_progress)
+        self.worker.progress.connect(self.update_scan_progress)
         #connect position to update position
         self.worker.position.connect(self.update_position)
         #connect the data to update plots
@@ -185,7 +199,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.worker.deleteLater)
         self.worker.finished.connect(self.enable_buttons)
         self.thread.finished.connect(self.thread.deleteLater)
-        self.worker.progress.connect(self.update_progress)
+        self.worker.progress.connect(self.update_move_progress)
         self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread
         self.thread.start()
