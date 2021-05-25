@@ -19,13 +19,13 @@ and written to when the close button is used. If this file isn't present or the 
 
 # matplotlib_embedding.py
 
-this is where the plot classes are made, they are a combination of the plot and a toolbar stored in a vertical layout widget.
+this is where the plot classes are made, they are a combination of the plot and a toolbar stored in a vertical layout widget as well as a cursor.
 
 # qt_designer.py
 
 this is the compiled code from Qtdesigner it is messy as a result of being compile by a robot. It is where all the names of the buttons and labels are defined and where they are given there size and position on the UI window, this file should not be edited from as all changes will be lost if you want to change the look and recompile a new .ui file see learning resources for more details.
 
-# spectrometer_GUI.py
+# GUI.py
 
 this is the work horse file, it imports the above qt_designer.py UI and stores it in an object called
 self.ui, it then connects all the buttons to their corresponding functions and upon running will
@@ -35,7 +35,7 @@ if you want to add additional buttons with functions here is what I think is the
 
 # spectrometer.py
 
-this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. it will also store which devices to communicate with
+this is where the spectrometer class is created which is then imported and loaded in the spectrometer_GUI.py file. it will also store which devices to communicate with.
 
 # workers
 
@@ -50,7 +50,7 @@ this modular approach can be a bit confusing when looking at the whole picture, 
 
 3. in spectrometer.py there is a niche bit of code using a decorator, the @property above self.position and again below. What this does is allow us to write conditions on the assigning of a value, it really isn't complicated (you don't need to understand decorators) once you know what it does. There are good simple examples of the @property online.
 
-4. threading, in order for our GUI to be responsive and update in real time we have to introduce threads using QThreads, these essentially allow us to do two things at once, the UI on it's own can't be collecting data and updating itself at the same time, so instead we make a thread to collect the data and emit it to the main UI update functions.
+4. threading, in order for our GUI to be responsive and update in real time we have to introduce threads using QThreads, these essentially allow us to do two things at once, the UI on it's own can't be collecting data and updating itself at the same time, so instead we make a thread to collect the data and emit it to the main UI update functions. Threads need only be used for long running processes for example a thread is not needed for the recalibrate function since it is near instant, however if you desire a responsive UI that can be interrupted the simplest method I know is QThread.
 
 # learning resources
 
@@ -60,3 +60,4 @@ this modular approach can be a bit confusing when looking at the whole picture, 
 4. @property: https://www.programiz.com/python-programming/property
 5. how to interface with the daq: https://www.youtube.com/watch?v=umXMrr6Z0Og&t=589s
 6. the code and examples for nidaqmx python library this is the best resource for documentation I have found https://github.com/ni/nidaqmx-python/blob/master/nidaqmx/_task_modules/ao_channel_collection.py
+7. best tutorial I could find for QThread: https://realpython.com/python-pyqt-qthread/
