@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 import nidaqmx
 import time
+from nidaqmx.types import CtrTime
 
 class ButtonWindow(QtWidgets.QMainWindow):
 
@@ -28,6 +29,9 @@ class ButtonWindow(QtWidgets.QMainWindow):
         self.channel2 = nidaqmx.Task()
         self.task_read = nidaqmx.Task()
         self.dig_out = nidaqmx.Task()
+        self.ctr_out = nidaqmx.Task()
+
+
 
         self.dig_out.do_channels.add_do_chan('Dev1/port0/line0')
         self.dig_out.start()
@@ -47,11 +51,12 @@ class ButtonWindow(QtWidgets.QMainWindow):
 
     def digital(self):
         condition = True
-        for i in range(20):
+
+        for i in range(2000):
             print(condition)
             self.dig_out.write(condition)
             condition = not condition
-            time.sleep(3)
+            time.sleep(0.000001)
 
 
 

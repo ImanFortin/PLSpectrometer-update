@@ -154,7 +154,7 @@
       <rect>
        <x>20</x>
        <y>30</y>
-       <width>131</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -220,7 +220,7 @@
     <widget class="QPushButton" name="recalibrate_button">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>240</x>
        <y>10</y>
        <width>151</width>
        <height>51</height>
@@ -345,9 +345,9 @@ QPushButton::pressed{
     <widget class="QPushButton" name="move_button">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>240</x>
        <y>10</y>
-       <width>121</width>
+       <width>151</width>
        <height>51</height>
       </rect>
      </property>
@@ -510,9 +510,9 @@ QPushButton::pressed{
     <widget class="QPushButton" name="scan_button">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>240</x>
        <y>30</y>
-       <width>121</width>
+       <width>151</width>
        <height>51</height>
       </rect>
      </property>
@@ -694,7 +694,7 @@ QPushButton::pressed{
       <rect>
        <x>120</x>
        <y>60</y>
-       <width>121</width>
+       <width>111</width>
        <height>21</height>
       </rect>
      </property>
