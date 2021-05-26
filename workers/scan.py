@@ -42,6 +42,7 @@ class scanWorker(QObject):
 
         print(start,end,direction)
         # self.progress.emit([0, abs(start - end)])
+        self.spectrometer.set_direction(direction)
         for i in range(start, end + direction, direction):
             if self.abort:#check the abort flag
                 self.finished.emit()
@@ -63,7 +64,7 @@ class scanWorker(QObject):
             self.finished.emit()#scan distance is zero
             return
 
-
+        self.spectrometer.set_direction(direction)
         print(start,end,direction)
         for i in range(start, end + direction, direction):
             if self.abort:#check for the abort flag
