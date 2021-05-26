@@ -11,14 +11,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1221, 932)
+        MainWindow.resize(1217, 1072)
         MainWindow.setStyleSheet("background-color: rgb(135, 135, 135);\n"
 "\n"
 "")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.abort_button = QtWidgets.QPushButton(self.centralwidget)
-        self.abort_button.setGeometry(QtCore.QRect(40, 810, 141, 71))
+        self.abort_button.setGeometry(QtCore.QRect(50, 920, 141, 71))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.abort_button.setFont(font)
@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.abort_button.setFlat(False)
         self.abort_button.setObjectName("abort_button")
         self.close_button = QtWidgets.QPushButton(self.centralwidget)
-        self.close_button.setGeometry(QtCore.QRect(240, 810, 141, 71))
+        self.close_button.setGeometry(QtCore.QRect(230, 920, 141, 71))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.close_button.setFont(font)
@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
         self.close_button.setFlat(False)
         self.close_button.setObjectName("close_button")
         self.frame1 = QtWidgets.QFrame(self.centralwidget)
-        self.frame1.setGeometry(QtCore.QRect(10, 30, 401, 101))
+        self.frame1.setGeometry(QtCore.QRect(10, 30, 401, 81))
         self.frame1.setFrameShape(QtWidgets.QFrame.Box)
         self.frame1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame1.setLineWidth(3)
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.shutter_btn.setChecked(False)
         self.shutter_btn.setObjectName("shutter_btn")
         self.frame2 = QtWidgets.QFrame(self.centralwidget)
-        self.frame2.setGeometry(QtCore.QRect(10, 300, 401, 71))
+        self.frame2.setGeometry(QtCore.QRect(10, 280, 401, 71))
         self.frame2.setFrameShape(QtWidgets.QFrame.Box)
         self.frame2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame2.setLineWidth(3)
@@ -121,7 +121,7 @@ class Ui_MainWindow(object):
         self.recalibrate_button.setFlat(False)
         self.recalibrate_button.setObjectName("recalibrate_button")
         self.frame3 = QtWidgets.QFrame(self.centralwidget)
-        self.frame3.setGeometry(QtCore.QRect(10, 410, 401, 111))
+        self.frame3.setGeometry(QtCore.QRect(10, 390, 401, 111))
         self.frame3.setFrameShape(QtWidgets.QFrame.Box)
         self.frame3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame3.setLineWidth(3)
@@ -184,7 +184,7 @@ class Ui_MainWindow(object):
         self.move_progress.setProperty("value", 0)
         self.move_progress.setObjectName("move_progress")
         self.frame4 = QtWidgets.QFrame(self.centralwidget)
-        self.frame4.setGeometry(QtCore.QRect(10, 560, 401, 221))
+        self.frame4.setGeometry(QtCore.QRect(10, 540, 401, 221))
         self.frame4.setFrameShape(QtWidgets.QFrame.Box)
         self.frame4.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame4.setLineWidth(3)
@@ -309,7 +309,7 @@ class Ui_MainWindow(object):
         self.count_time_input.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
         self.count_time_input.setObjectName("count_time_input")
         self.perform_scan_lbl = QtWidgets.QLabel(self.centralwidget)
-        self.perform_scan_lbl.setGeometry(QtCore.QRect(10, 530, 91, 21))
+        self.perform_scan_lbl.setGeometry(QtCore.QRect(10, 510, 91, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -317,7 +317,7 @@ class Ui_MainWindow(object):
         self.perform_scan_lbl.setFont(font)
         self.perform_scan_lbl.setObjectName("perform_scan_lbl")
         self.move_spectrometer_lbl = QtWidgets.QLabel(self.centralwidget)
-        self.move_spectrometer_lbl.setGeometry(QtCore.QRect(10, 380, 181, 21))
+        self.move_spectrometer_lbl.setGeometry(QtCore.QRect(10, 360, 181, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -325,7 +325,7 @@ class Ui_MainWindow(object):
         self.move_spectrometer_lbl.setFont(font)
         self.move_spectrometer_lbl.setObjectName("move_spectrometer_lbl")
         self.recalibrate_lbl = QtWidgets.QLabel(self.centralwidget)
-        self.recalibrate_lbl.setGeometry(QtCore.QRect(10, 270, 171, 21))
+        self.recalibrate_lbl.setGeometry(QtCore.QRect(10, 250, 171, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -341,7 +341,7 @@ class Ui_MainWindow(object):
         self.position_lbl.setFont(font)
         self.position_lbl.setObjectName("position_lbl")
         self.common_variables_lbl = QtWidgets.QLabel(self.centralwidget)
-        self.common_variables_lbl.setGeometry(QtCore.QRect(10, 140, 171, 21))
+        self.common_variables_lbl.setGeometry(QtCore.QRect(10, 120, 171, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -349,7 +349,7 @@ class Ui_MainWindow(object):
         self.common_variables_lbl.setFont(font)
         self.common_variables_lbl.setObjectName("common_variables_lbl")
         self.frame2_2 = QtWidgets.QFrame(self.centralwidget)
-        self.frame2_2.setGeometry(QtCore.QRect(10, 170, 401, 91))
+        self.frame2_2.setGeometry(QtCore.QRect(10, 150, 401, 91))
         self.frame2_2.setFrameShape(QtWidgets.QFrame.Box)
         self.frame2_2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame2_2.setLineWidth(3)
@@ -380,9 +380,63 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(250, 50, 131, 20))
         self.lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.lineEdit.setObjectName("lineEdit")
+        self.frame5 = QtWidgets.QFrame(self.centralwidget)
+        self.frame5.setGeometry(QtCore.QRect(10, 800, 401, 91))
+        self.frame5.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame5.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.frame5.setLineWidth(3)
+        self.frame5.setObjectName("frame5")
+        self.scan_button_2 = QtWidgets.QPushButton(self.frame5)
+        self.scan_button_2.setGeometry(QtCore.QRect(10, 20, 101, 51))
+        font = QtGui.QFont()
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.scan_button_2.setFont(font)
+        self.scan_button_2.setMouseTracking(False)
+        self.scan_button_2.setStyleSheet("QPushButton{\n"
+"    background-color: rgb(64, 137, 255);\n"
+"    border-style: outset;\n"
+"    border-width: 2px;\n"
+"    border-radius: 10px;\n"
+"    border-color: black;\n"
+"    font: bold 20px;\n"
+"    min-width: 2em;\n"
+"    padding: 6px;\n"
+"    \n"
+"}\n"
+"\n"
+"QPushButton::pressed{\n"
+"    background-color: rgb(11, 15, 255);\n"
+"    border-style: outset;\n"
+"    border-width: 2px;\n"
+"    border-radius: 10px;\n"
+"    border-color: beige;\n"
+"    font: bold 18px;\n"
+"    min-width: 5em;\n"
+"    padding: 6px;\n"
+"    \n"
+"}")
+        self.scan_button_2.setCheckable(False)
+        self.scan_button_2.setAutoDefault(False)
+        self.scan_button_2.setDefault(False)
+        self.scan_button_2.setFlat(False)
+        self.scan_button_2.setObjectName("scan_button_2")
+        self.label = QtWidgets.QLabel(self.frame5)
+        self.label.setGeometry(QtCore.QRect(240, 40, 151, 16))
+        self.label.setObjectName("label")
+        self.optimize_lbl = QtWidgets.QLabel(self.centralwidget)
+        self.optimize_lbl.setGeometry(QtCore.QRect(10, 770, 91, 21))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.optimize_lbl.setFont(font)
+        self.optimize_lbl.setObjectName("optimize_lbl")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1221, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1217, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -400,10 +454,6 @@ class Ui_MainWindow(object):
         self.actionsave_as.setObjectName("actionsave_as")
         self.actioncopy = QtWidgets.QAction(MainWindow)
         self.actioncopy.setObjectName("actioncopy")
-        self.menuFile.addAction(self.actionnew)
-        self.menuFile.addAction(self.actionsave)
-        self.menuFile.addAction(self.actionsave_as)
-        self.menuFile.addAction(self.actioncopy)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
 
@@ -438,6 +488,9 @@ class Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "single"))
         self.spect_select_lbl.setText(_translate("MainWindow", "spectrometer"))
         self.spect_select_lbl_2.setText(_translate("MainWindow", "Pulse Frequency"))
+        self.scan_button_2.setText(_translate("MainWindow", "Go"))
+        self.label.setText(_translate("MainWindow", "Count/Sec:"))
+        self.optimize_lbl.setText(_translate("MainWindow", "Optimize"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.actionnew.setText(_translate("MainWindow", "new"))

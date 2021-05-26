@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1221</width>
-    <height>932</height>
+    <width>1217</width>
+    <height>1072</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
    <widget class="QPushButton" name="abort_button">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>770</y>
+      <x>50</x>
+      <y>920</y>
       <width>141</width>
       <height>71</height>
      </rect>
@@ -54,8 +54,8 @@
    <widget class="QPushButton" name="close_button">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>770</y>
+      <x>230</x>
+      <y>920</y>
       <width>141</width>
       <height>71</height>
      </rect>
@@ -89,7 +89,7 @@
       <x>10</x>
       <y>30</y>
       <width>401</width>
-      <height>101</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -101,34 +101,6 @@
     <property name="lineWidth">
      <number>3</number>
     </property>
-    <widget class="QDial" name="dial">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>10</y>
-       <width>50</width>
-       <height>64</height>
-      </rect>
-     </property>
-     <property name="singleStep">
-      <number>1</number>
-     </property>
-     <property name="sliderPosition">
-      <number>0</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-     <property name="wrapping">
-      <bool>false</bool>
-     </property>
-     <property name="notchesVisible">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="property_label">
      <property name="geometry">
       <rect>
@@ -154,12 +126,34 @@
       <rect>
        <x>20</x>
        <y>30</y>
-       <width>131</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
      <property name="text">
       <string>Current Wavelength:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="shutter_btn">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>20</y>
+       <width>81</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>close shutter</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
@@ -169,7 +163,7 @@
       <x>10</x>
       <y>280</y>
       <width>401</width>
-      <height>91</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -193,8 +187,8 @@
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -210,6 +204,9 @@
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
      </property>
@@ -217,8 +214,8 @@
     <widget class="QPushButton" name="recalibrate_button">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>20</y>
+       <x>240</x>
+       <y>10</y>
        <width>151</width>
        <height>51</height>
       </rect>
@@ -280,9 +277,9 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>390</y>
       <width>401</width>
-      <height>91</height>
+      <height>111</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -303,8 +300,20 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="dragEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="cursorMoveStyle">
+      <enum>Qt::LogicalMoveStyle</enum>
      </property>
     </widget>
     <widget class="QLabel" name="go_to_lbl">
@@ -319,8 +328,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -330,9 +339,9 @@ QPushButton::pressed{
     <widget class="QPushButton" name="move_button">
      <property name="geometry">
       <rect>
-       <x>250</x>
-       <y>20</y>
-       <width>121</width>
+       <x>240</x>
+       <y>10</y>
+       <width>151</width>
        <height>51</height>
       </rect>
      </property>
@@ -388,6 +397,19 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
+    <widget class="QProgressBar" name="move_progress">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>381</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="frame4">
     <property name="geometry">
@@ -416,6 +438,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
      </property>
@@ -432,8 +457,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -452,8 +477,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -469,6 +494,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
      </property>
@@ -476,9 +504,9 @@ QPushButton::pressed{
     <widget class="QPushButton" name="scan_button">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>240</x>
        <y>30</y>
-       <width>121</width>
+       <width>151</width>
        <height>51</height>
       </rect>
      </property>
@@ -534,7 +562,7 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QProgressBar" name="progressBar_scan">
+    <widget class="QProgressBar" name="scan_progress">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -544,7 +572,13 @@ QPushButton::pressed{
       </rect>
      </property>
      <property name="value">
-      <number>24</number>
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="invertedAppearance">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QLabel" name="scan_step_lbl">
@@ -559,8 +593,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -575,6 +609,9 @@ QPushButton::pressed{
        <width>71</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
@@ -592,8 +629,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -609,6 +646,9 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QLabel" name="sample_id_lbl">
      <property name="geometry">
@@ -622,8 +662,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -639,21 +679,24 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
     <widget class="QLabel" name="count_time_lbl">
      <property name="geometry">
       <rect>
        <x>120</x>
        <y>60</y>
-       <width>121</width>
+       <width>111</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -668,6 +711,9 @@ QPushButton::pressed{
        <width>71</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhDigitsOnly</set>
@@ -698,7 +744,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>380</y>
+      <y>360</y>
       <width>181</width>
       <height>21</height>
      </rect>
@@ -758,7 +804,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>140</y>
+      <y>120</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -778,7 +824,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>150</y>
       <width>401</width>
       <height>91</height>
      </rect>
@@ -830,8 +876,8 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
@@ -867,7 +913,123 @@ QPushButton::pressed{
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
     </widget>
+   </widget>
+   <widget class="QFrame" name="frame5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>800</y>
+      <width>401</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>3</number>
+    </property>
+    <widget class="QPushButton" name="scan_button_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>101</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	background-color: rgb(64, 137, 255);
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: black;
+    font: bold 20px;
+    min-width: 2em;
+    padding: 6px;
+	
+}
+
+QPushButton::pressed{
+	background-color: rgb(11, 15, 255);
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 18px;
+    min-width: 5em;
+    padding: 6px;
+	
+}</string>
+     </property>
+     <property name="text">
+      <string>Go</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>40</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Count/Sec:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="optimize_lbl">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>770</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Optimize</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -875,7 +1037,7 @@ QPushButton::pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1221</width>
+     <width>1217</width>
      <height>21</height>
     </rect>
    </property>
@@ -883,10 +1045,6 @@ QPushButton::pressed{
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionnew"/>
-    <addaction name="actionsave"/>
-    <addaction name="actionsave_as"/>
-    <addaction name="actioncopy"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
