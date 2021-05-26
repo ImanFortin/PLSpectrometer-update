@@ -29,7 +29,7 @@ class moveWorker(QObject):
             self.finished.emit() #emit done
             return #return
 
-        #set the direction
+        #set the direction voltage
         self.spectrometer.set_direction(direction)
 
         self.progress.emit([0, abs(start - end)])#set progress to zero
