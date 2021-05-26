@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 import nidaqmx
 import time
 from nidaqmx.types import CtrTime
-
+from nidaqmx.constants import LineGrouping, Edge, AcquisitionType
 class ButtonWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
@@ -33,9 +33,10 @@ class ButtonWindow(QtWidgets.QMainWindow):
 
 
 
-        self.dig_out.do_channels.add_do_chan('Dev1/port0/line0')
+        self.dig_out.di_channels.add_di_chan('Dev1/port0/line0')
+        self.dig_out.timing.cfg_samp_clk_timing(100)
         self.dig_out.start()
-        self.dig_out.write(False)
+
 
 
         self.channel1.ao_channels.add_ao_voltage_chan('Dev1/ao0','my_channel',0,5)
@@ -50,13 +51,7 @@ class ButtonWindow(QtWidgets.QMainWindow):
         self.task_read.start()
 
     def digital(self):
-        condition = True
-
-        for i in range(2000):
-            print(condition)
-            self.dig_out.write(condition)
-            condition = not condition
-            time.sleep(0.000001)
+        self.dig_out.write(3)
 
 
 

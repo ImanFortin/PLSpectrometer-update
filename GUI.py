@@ -23,12 +23,12 @@ class MainWindow(qtw.QMainWindow):
         super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
         self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
         self.ui.setupUi(self) #run the setup method to create the window
-        self.autoscale_lbls() #autoscdale the labels so they don't cut off
+
         self.connect_buttons() #connect all the buttons
         self.make_plots() #add the plots to the UI
-        self.double = Spectrometer() #initialize the double spectrometer
-
-
+        self.double = Spectrometer('Dev1') #initialize the double spectrometer
+        self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+        self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     def make_plots(self):
         #make the wavelength plot
@@ -75,6 +75,8 @@ class MainWindow(qtw.QMainWindow):
         self.ui.radioButton.setChecked(True)
         #connect the abort button
         self.ui.abort_button.clicked.connect(self.abort)
+        #connect the dial
+        self.ui.shutter_btn.clicked.connect(self.shutter)
 
 
     #update the plots with data
@@ -113,6 +115,13 @@ class MainWindow(qtw.QMainWindow):
         self.ui.move_button.setEnabled(True)
         self.ui.scan_button.setEnabled(True)
 
+    def shutter(self):
+        if self.ui.shutter_btn.isChecked():
+            self.double.close_shutter()
+            self.ui.shutter_btn.setText('open shutter')
+        else:
+            self.double.open_shutter()
+            self.ui.shutter_btn.setText('close shutter')
 
     def scan(self):
         #try to read the entries
@@ -225,13 +234,12 @@ class MainWindow(qtw.QMainWindow):
     def exit(self):
         #save the position of the spectrometer see spectrometer.py
         self.double.save()
+        self.double.close_channels()
         #close the application
         self.close()
 
     def abort(self):
         self.worker.abort = True
-
-
 
 
 #run the UI

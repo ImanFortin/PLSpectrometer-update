@@ -1,6 +1,6 @@
+import nidaqmx
 
-
-
+import time
 
 class Spectrometer():
 
@@ -9,7 +9,7 @@ class Spectrometer():
     store a DAQ instance'''
 
     #init function
-    def __init__(self):
+    def __init__(self,device):
         #file where we will store the last position
         try:
             f = open('last_position.txt', 'r')
@@ -25,8 +25,18 @@ class Spectrometer():
         finally:
             f.close()
 
+        self.shutter = nidaqmx.Task()
+        #probably need to change the path name when in real spectrometer
+        self.shutter.do_channels.add_do_chan(device +'/port0/line0')
+        self.shutter.start()
 
+        self.direction = nidaqmx.Task()
+        self.direction.do_channels.add_do_chan(device +'/port0/line7')
+        self.direction.start()
 
+        self.move = nidaqmx.Task()
+        self.move.do_channels.add_do_chan(device +'/port0/line2')
+        self.move.start()
 
     #getter method google @property for reasoning
     #short description it allows us to sanitaze the inputs while keeping the syntax neat
@@ -42,7 +52,7 @@ class Spectrometer():
         if isinstance(wavelength, float) and wavelength > 0 and wavelength < 1300:
             self._position = wavelength
         else:
-            print('not valid entry')
+            print('invalid input')
         return
 
     #print function for the spectrometer function
@@ -50,6 +60,27 @@ class Spectrometer():
         #for now will only print the position
         return float(self.position)
 
+    def open_shutter(self):
+        #set voltage to zero
+        self.shutter.write(False)
+
+    def close_shutter(self):
+        #set voltage to 5
+        self.shutter.write(True)
+
+    #sets the direction of the move to be called before the move and
+    def set_direction(self,direction):
+        if direction > 0:
+            self.direction.write(True)
+        else:
+            self.direction.write(False)
+
+    def take_steps(self,n,hightime,lowtime):
+        for i in range(n):
+            self.move.write(True)
+            time.sleep(hightime)
+            self.move.write(False)
+            time.sleep(lowtime)
 
     def save(self):
         try:
@@ -68,8 +99,22 @@ class Spectrometer():
         finally:
             f.close()
 
-    def step(self,stepsize):
-        pass
 
-    def read(self,time):
-        pass
+    def recalibrate(self,wavelength):
+        self.position = wavelength
+
+    #closes the tasks properly
+    def close_channesl(self):
+
+        self.shutter.write(False)
+        self.direction.write(False)
+        self.shutter.stop()
+        self.shutter.close()
+        self.direction.stop()
+        self.direction.close()
+        print('deleted')
+
+
+if __name__ == '__main__':
+    test = Spectrometer('Dev1')
+    time.sleep(20)
