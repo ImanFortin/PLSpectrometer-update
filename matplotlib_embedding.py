@@ -11,7 +11,7 @@ from PyQt5 import QtCore
 class Canvas(FigureCanvas):
     def __init__(self, parent = None, width = 5, height = 5, dpi = 100, scale = 'linear'):
 
-        fig = Figure(figsize=(width, height), dpi=dpi)
+        fig = Figure(figsize=(width, height), dpi=dpi, linewidth = 5, edgecolor = (0,0,0))
         fig.set_facecolor((170/255,170/255,170/255,170/255))
         self.axes = fig.add_subplot(111)
         self.axes.set_facecolor((0,0,0,1))

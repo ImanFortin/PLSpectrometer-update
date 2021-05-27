@@ -38,7 +38,7 @@ class MainWindow(qtw.QMainWindow):
 
         #make the energy plot
         self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
-        self.energy_plot.setGeometry(500,500,800,530)
+        self.energy_plot.setGeometry(500,530,800,530)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
