@@ -12,7 +12,9 @@ class Canvas(FigureCanvas):
     def __init__(self, parent = None, width = 5, height = 5, dpi = 100, scale = 'linear'):
 
         fig = Figure(figsize=(width, height), dpi=dpi)
+        fig.set_facecolor((170/255,170/255,170/255,170/255))
         self.axes = fig.add_subplot(111)
+        self.axes.set_facecolor((0,0,0,1))
         self.axes.grid()
         self.axes.set_yscale(scale)
         super().__init__(fig)
@@ -32,8 +34,8 @@ class PlotWidget(QWidget):
         self.ydata = []
         self.xdata = []
 
-
-        self.sc = Canvas(self, width=5, height=4, dpi=100, scale = scale) #make our canvas
+        self.scale = scale
+        self.sc = Canvas(self, width=10, height=4, dpi=100, scale = scale) #make our canvas
 
         self.lines = self.sc.axes.scatter(self.xdata, self.ydata, s = 3) #plot the dots
         self.sc.axes.plot(self.xdata, self.ydata) #plot line to connect the dots
@@ -55,6 +57,7 @@ class PlotWidget(QWidget):
 
         self.lines = self.sc.axes.scatter(self.xdata,self.ydata, s = 3)#add new data
         self.sc.axes.plot(self.xdata,self.ydata)#reconnect the lines
+        self.sc.axes.set_yscale(self.scale)
         mplcursors.cursor(self.lines, hover = True)#add the cursor
 
         self.sc.axes.grid()#make the grid

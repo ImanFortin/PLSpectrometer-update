@@ -11,8 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1217, 1072)
-        MainWindow.setStyleSheet("background-color: rgb(135, 135, 135);\n"
+        MainWindow.resize(1641, 1072)
+        MainWindow.setStyleSheet("background-color: rgb(209, 209, 209);\n"
 "\n"
 "")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -386,16 +386,16 @@ class Ui_MainWindow(object):
         self.frame5.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame5.setLineWidth(3)
         self.frame5.setObjectName("frame5")
-        self.scan_button_2 = QtWidgets.QPushButton(self.frame5)
-        self.scan_button_2.setGeometry(QtCore.QRect(10, 20, 101, 51))
+        self.optimize_btn = QtWidgets.QPushButton(self.frame5)
+        self.optimize_btn.setGeometry(QtCore.QRect(10, 20, 101, 51))
         font = QtGui.QFont()
         font.setPointSize(-1)
         font.setBold(True)
         font.setItalic(False)
         font.setWeight(75)
-        self.scan_button_2.setFont(font)
-        self.scan_button_2.setMouseTracking(False)
-        self.scan_button_2.setStyleSheet("QPushButton{\n"
+        self.optimize_btn.setFont(font)
+        self.optimize_btn.setMouseTracking(False)
+        self.optimize_btn.setStyleSheet("QPushButton{\n"
 "    background-color: rgb(64, 137, 255);\n"
 "    border-style: outset;\n"
 "    border-width: 2px;\n"
@@ -418,11 +418,11 @@ class Ui_MainWindow(object):
 "    padding: 6px;\n"
 "    \n"
 "}")
-        self.scan_button_2.setCheckable(False)
-        self.scan_button_2.setAutoDefault(False)
-        self.scan_button_2.setDefault(False)
-        self.scan_button_2.setFlat(False)
-        self.scan_button_2.setObjectName("scan_button_2")
+        self.optimize_btn.setCheckable(False)
+        self.optimize_btn.setAutoDefault(False)
+        self.optimize_btn.setDefault(False)
+        self.optimize_btn.setFlat(False)
+        self.optimize_btn.setObjectName("optimize_btn")
         self.label = QtWidgets.QLabel(self.frame5)
         self.label.setGeometry(QtCore.QRect(240, 40, 151, 16))
         self.label.setObjectName("label")
@@ -436,7 +436,7 @@ class Ui_MainWindow(object):
         self.optimize_lbl.setObjectName("optimize_lbl")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1217, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1641, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -488,7 +488,7 @@ class Ui_MainWindow(object):
         self.radioButton_2.setText(_translate("MainWindow", "single"))
         self.spect_select_lbl.setText(_translate("MainWindow", "spectrometer"))
         self.spect_select_lbl_2.setText(_translate("MainWindow", "Pulse Frequency"))
-        self.scan_button_2.setText(_translate("MainWindow", "Go"))
+        self.optimize_btn.setText(_translate("MainWindow", "Go"))
         self.label.setText(_translate("MainWindow", "Count/Sec:"))
         self.optimize_lbl.setText(_translate("MainWindow", "Optimize"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))

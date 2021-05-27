@@ -10,33 +10,38 @@ class Spectrometer():
 
     #init function
     def __init__(self,device):
-        #file where we will store the last position
+        #open file where we will store the last position
         try:
-            f = open('last_position.txt', 'r')
+            f = open(device + '_last_position.txt', 'r')
             self._position = float(f.readline())
-
+            f.close()
+        #if file was missing or empty set the value to zero
         except:
             print("there was an error trying to load the data from last_position.txt")
-            self._postion = 0.0
+            self._position = 0.0
         #print success if the except doesn't trigger
         else:
-            print('successfully loaded last position\n')
-        #close the file always
-        finally:
-            f.close()
+            print(f'successfully loaded last position for {device}\n')
 
-        self.shutter = nidaqmx.Task()
-        #probably need to change the path name when in real spectrometer
-        self.shutter.do_channels.add_do_chan(device +'/port0/line0')
-        self.shutter.start()
+        try:
+            self.shutter = nidaqmx.Task()
+            #probably need to change the path name when in real spectrometer
+            self.shutter.do_channels.add_do_chan(device +'/port0/line0')
+            self.shutter.start()
 
-        self.direction = nidaqmx.Task()
-        self.direction.do_channels.add_do_chan(device +'/port0/line7')
-        self.direction.start()
+            self.direction = nidaqmx.Task()
+            self.direction.do_channels.add_do_chan(device +'/port0/line7')
+            self.direction.start()
 
-        self.move = nidaqmx.Task()
-        self.move.do_channels.add_do_chan(device +'/port0/line2')
-        self.move.start()
+            self.move = nidaqmx.Task()
+            self.move.do_channels.add_do_chan(device +'/port0/line2')
+            self.move.start()
+
+        except:
+            print(f'the device or channel name you entered for {device} may be incorrect or you may have an unclosed window running')
+            print(f'you will be unable to send commands to this daq: {device}\n')
+
+        self.name = device
 
     #getter method google @property for reasoning
     #short description it allows us to sanitaze the inputs while keeping the syntax neat
@@ -49,7 +54,7 @@ class Spectrometer():
     @position.setter
     def position(self,wavelength):
         #check these conditons before accepting a value when assigning a value to position
-        if isinstance(wavelength, float) and wavelength > 0 and wavelength < 1300:
+        if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1300:
             self._position = wavelength
         else:
             print('invalid input')
@@ -85,26 +90,25 @@ class Spectrometer():
     def save(self):
         try:
             #open the file where we save the information
-            f = open('last_position.txt', 'w')
+            f = open(self.name + '_last_position.txt', 'w')
             #write the last position
             f.write(str(self.position))
-
+            #close
+            f.close()
         #if there is an error with the write print
         except:
-            print('there was an error writing to last_position.txt')
+            print(f'there was an error writing to {self.name}_last_position.txt')
         #if we succeed print success message
         else:
-            print('position saved')
-        #no matter what happens close the file
-        finally:
-            f.close()
+            print(f'position of {self.name} saved')
+
 
 
     def recalibrate(self,wavelength):
         self.position = wavelength
 
     #closes the tasks properly
-    def close_channesl(self):
+    def close_channels(self):
 
         self.shutter.write(False)
         self.direction.write(False)
@@ -112,7 +116,7 @@ class Spectrometer():
         self.shutter.close()
         self.direction.stop()
         self.direction.close()
-        print('deleted')
+        print('spectrometer closed')
 
 
 if __name__ == '__main__':

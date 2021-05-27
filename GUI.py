@@ -27,17 +27,18 @@ class MainWindow(qtw.QMainWindow):
         self.connect_buttons() #connect all the buttons
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer('Dev1') #initialize the double spectrometer
+        self.single = Spectrometer('Dev2') #initialize the single spectrometer
         self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     def make_plots(self):
         #make the wavelength plot
         self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
-        self.wavelength_plot.move(500,0)
+        self.wavelength_plot.setGeometry(500,0,800,530)
 
         #make the energy plot
         self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
-        self.energy_plot.move(500,470)
+        self.energy_plot.setGeometry(500,500,800,530)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -77,7 +78,17 @@ class MainWindow(qtw.QMainWindow):
         self.ui.abort_button.clicked.connect(self.abort)
         #connect the dial
         self.ui.shutter_btn.clicked.connect(self.shutter)
+        #connect radio buttons
+        self.ui.radioButton.toggled.connect(self.switch_spectrometer)
 
+    def switch_spectrometer(self):
+        if self.ui.radioButton.isChecked():
+            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+            self.autoscale_lbls() #autoscale the labels so they don't cut off
+        else:
+            print('need to change this to single position')
+            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(50))#display the current position
+            self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     #update the plots with data
     def update_plots(self,data):
@@ -114,6 +125,14 @@ class MainWindow(qtw.QMainWindow):
         self.ui.recalibrate_button.setEnabled(True)
         self.ui.move_button.setEnabled(True)
         self.ui.scan_button.setEnabled(True)
+        self.ui.optimize_btn.setEnabled(True)
+
+    def disable_buttons(self):
+        self.ui.recalibrate_button.setEnabled(False)
+        self.ui.move_button.setEnabled(False)
+        self.ui.scan_button.setEnabled(False)
+        self.ui.optimize_btn.setEnabled(False)
+
 
     def shutter(self):
         if self.ui.shutter_btn.isChecked():
@@ -138,9 +157,7 @@ class MainWindow(qtw.QMainWindow):
 
 
         #disable the buttons to prevent crashing
-        self.ui.recalibrate_button.setEnabled(False)
-        self.ui.move_button.setEnabled(False)
-        self.ui.scan_button.setEnabled(False)
+        self.disable_buttons()
 
         #clear the plots
         self.wavelength_plot.clear()
@@ -151,7 +168,11 @@ class MainWindow(qtw.QMainWindow):
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
-        self.worker = scanWorker(self.double,start,end,step,time)
+        if self.ui.radioButton.isChecked():#if the double is checked
+            self.worker = scanWorker(self.double,start,end,step,time)#input the double spectrometer
+        else:#otherwise
+            self.worker = scanWorker(self.single,start,end,step,time)#input the single spectrometer
+
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)
         #
@@ -188,16 +209,17 @@ class MainWindow(qtw.QMainWindow):
             return
 
         #disable the buttons to prevent crashing
-        self.ui.recalibrate_button.setEnabled(False)
-        self.ui.move_button.setEnabled(False)
-        self.ui.scan_button.setEnabled(False)
+        self.disable_buttons()
 
         #if no issue run the move method of the spectrometer see spectrometer.py
         print('starting move to',destination)
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
-        self.worker = moveWorker(self.double,destination)
+        if self.ui.radioButton.isChecked():#if we have double selected
+            self.worker = moveWorker(self.double,destination)#input double
+        else:#otherwise
+            self.worker = moveWorker(self.single,destination)#input single
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
 
@@ -212,9 +234,6 @@ class MainWindow(qtw.QMainWindow):
         self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread
         self.thread.start()
-
-
-
 
 
 
@@ -235,6 +254,8 @@ class MainWindow(qtw.QMainWindow):
         #save the position of the spectrometer see spectrometer.py
         self.double.save()
         self.double.close_channels()
+        self.single.save()
+        self.single.close_channels()
         #close the application
         self.close()
 

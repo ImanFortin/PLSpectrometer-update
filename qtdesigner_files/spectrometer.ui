@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1217</width>
+    <width>1641</width>
     <height>1072</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(135, 135, 135);
+   <string notr="true">background-color: rgb(209, 209, 209);
 
 </string>
   </property>
@@ -936,7 +936,7 @@ QPushButton::pressed{
     <property name="lineWidth">
      <number>3</number>
     </property>
-    <widget class="QPushButton" name="scan_button_2">
+    <widget class="QPushButton" name="optimize_btn">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1037,7 +1037,7 @@ QPushButton::pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1217</width>
+     <width>1641</width>
      <height>21</height>
     </rect>
    </property>
