@@ -12,7 +12,7 @@ class scanWorker(QObject):
     position = pyqtSignal(float)
     finished = pyqtSignal()
 
-
+    #needs to take a spectrometer, start, end, step, and time
     def __init__(self,spectrometer,start,end,step,time):
         super().__init__()
         self.spectrometer = spectrometer
@@ -30,7 +30,7 @@ class scanWorker(QObject):
 
     def scan(self):
 
-        #first copy the move function above to move to the start
+        #first copy the move function to get into position
         start = int(self.spectrometer.position)
         end = int(self.start)#we want to move to the start point
         distance = abs(end - start)
@@ -41,7 +41,7 @@ class scanWorker(QObject):
             direction = 1 #this will need to be changed when we are actaully sending pulses
 
         print(start,end,direction)
-        # self.progress.emit([0, abs(start - end)])
+        
         self.spectrometer.set_direction(direction)
         for i in range(start, end + direction, direction):
             if self.abort:#check the abort flag

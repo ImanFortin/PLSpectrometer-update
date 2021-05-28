@@ -34,11 +34,11 @@ class MainWindow(qtw.QMainWindow):
     def make_plots(self):
         #make the wavelength plot
         self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
-        self.wavelength_plot.setGeometry(500,0,800,530)
+        self.wavelength_plot.setGeometry(500,0,800,500)
 
         #make the energy plot
         self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
-        self.energy_plot.setGeometry(500,530,800,530)
+        self.energy_plot.setGeometry(500,500,800,500)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -127,13 +127,14 @@ class MainWindow(qtw.QMainWindow):
         self.ui.scan_button.setEnabled(True)
         self.ui.optimize_btn.setEnabled(True)
 
+    #disable buttons
     def disable_buttons(self):
         self.ui.recalibrate_button.setEnabled(False)
         self.ui.move_button.setEnabled(False)
         self.ui.scan_button.setEnabled(False)
         self.ui.optimize_btn.setEnabled(False)
 
-
+    #shutter function
     def shutter(self):
         if self.ui.shutter_btn.isChecked():
             self.double.close_shutter()
@@ -174,26 +175,18 @@ class MainWindow(qtw.QMainWindow):
             self.worker = scanWorker(self.single,start,end,step,time)#input the single spectrometer
 
         # # Step 4: Move worker to the thread
-        self.worker.moveToThread(self.scan_thread)
-        #
+        self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
-        #connect start to our scan function from the worker folder
-        self.scan_thread.started.connect(self.worker.scan)
-        #when done quit and delete the threads
-        self.worker.finished.connect(self.scan_thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        #re-enable the buttons
-        self.worker.finished.connect(self.enable_buttons)
-        #when done delete thread
-        self.scan_thread.finished.connect(self.scan_thread.deleteLater)
-        #connect the progress to the progress bar
-        self.worker.progress.connect(self.update_scan_progress)
-        #connect position to update position
-        self.worker.position.connect(self.update_position)
-        #connect the data to update plots
-        self.worker.data.connect(self.update_plots)
-        # Step 6: Start the thread
+        self.scan_thread.started.connect(self.worker.scan)#connect to the scan method
+        self.worker.finished.connect(self.scan_thread.quit)#quit when done
+        self.worker.finished.connect(self.worker.deleteLater)#delete when done
+        self.worker.finished.connect(self.enable_buttons)#enable buttons when done
+        self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
+        self.worker.progress.connect(self.update_scan_progress)#update the progress bar as we go
+        self.worker.position.connect(self.update_position)#update the position as we go
+        self.worker.data.connect(self.update_plots)#update the plots as we take data
 
+        #start the thread
         self.scan_thread.start()
 
 
@@ -211,19 +204,19 @@ class MainWindow(qtw.QMainWindow):
         #disable the buttons to prevent crashing
         self.disable_buttons()
 
-        #if no issue run the move method of the spectrometer see spectrometer.py
+
         print('starting move to',destination)
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
         if self.ui.radioButton.isChecked():#if we have double selected
             self.worker = moveWorker(self.double,destination)#input double
-        else:#otherwise
+        else:
             self.worker = moveWorker(self.single,destination)#input single
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
 
-        # # Step 5: Connect signals and slots
+        # # Step 5: Connect signals and slots see scan fordetailed documentation
 
         self.thread.started.connect(self.worker.move)
         self.worker.finished.connect(self.thread.quit)
@@ -246,7 +239,10 @@ class MainWindow(qtw.QMainWindow):
             print('the recalibrate input was invalid')
         #if no issue run the recalibrate method of the spectrometer see spectrometer.py
         else:
-            self.double.recalibrate(actual)
+            if self.ui.radioButton.isChecked():
+                self.double.recalibrate(actual)
+            else:
+                self.single.recalibrate(actual)
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
 
@@ -260,14 +256,15 @@ class MainWindow(qtw.QMainWindow):
         self.close()
 
     def abort(self):
+        #changes the abort flag inside the worker to be true
         self.worker.abort = True
 
 
 #run the UI
 if __name__ == '__main__':
     import sys
-    app = qtw.QApplication(sys.argv) #just pyqt5 stuff
+    app = qtw.QApplication(sys.argv) #makes the app
     win = MainWindow() #make our UI
     win.show() #display our UI
 
-    sys.exit(app.exec_()) #more pyqt5 stuff
+    sys.exit(app.exec_()) #executes the app
