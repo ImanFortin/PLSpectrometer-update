@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'qtdesigner_files/spectrometer-Copy.ui'
+# Form implementation generated from reading ui file 'qtdesigner_files/spectrometer.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.frame1.setGeometry(QtCore.QRect(10, 30, 401, 81))
         self.frame1.setFrameShape(QtWidgets.QFrame.Box)
         self.frame1.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame1.setLineWidth(3)
+        self.frame1.setLineWidth(1)
         self.frame1.setObjectName("frame1")
         self.property_label = QtWidgets.QLabel(self.frame1)
         self.property_label.setGeometry(QtCore.QRect(20, 10, 101, 16))
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.frame2.setGeometry(QtCore.QRect(10, 280, 401, 71))
         self.frame2.setFrameShape(QtWidgets.QFrame.Box)
         self.frame2.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame2.setLineWidth(3)
+        self.frame2.setLineWidth(1)
         self.frame2.setObjectName("frame2")
         self.actual_value_lbl = QtWidgets.QLabel(self.frame2)
         self.actual_value_lbl.setGeometry(QtCore.QRect(10, 10, 151, 21))
@@ -124,7 +124,7 @@ class Ui_MainWindow(object):
         self.frame3.setGeometry(QtCore.QRect(10, 390, 401, 111))
         self.frame3.setFrameShape(QtWidgets.QFrame.Box)
         self.frame3.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame3.setLineWidth(3)
+        self.frame3.setLineWidth(1)
         self.frame3.setObjectName("frame3")
         self.move_input = QtWidgets.QLineEdit(self.frame3)
         self.move_input.setGeometry(QtCore.QRect(10, 40, 113, 20))
@@ -187,7 +187,7 @@ class Ui_MainWindow(object):
         self.frame4.setGeometry(QtCore.QRect(10, 540, 401, 221))
         self.frame4.setFrameShape(QtWidgets.QFrame.Box)
         self.frame4.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame4.setLineWidth(3)
+        self.frame4.setLineWidth(1)
         self.frame4.setObjectName("frame4")
         self.scan_start_input = QtWidgets.QLineEdit(self.frame4)
         self.scan_start_input.setGeometry(QtCore.QRect(10, 30, 71, 20))
@@ -352,7 +352,7 @@ class Ui_MainWindow(object):
         self.frame2_2.setGeometry(QtCore.QRect(10, 150, 401, 91))
         self.frame2_2.setFrameShape(QtWidgets.QFrame.Box)
         self.frame2_2.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame2_2.setLineWidth(3)
+        self.frame2_2.setLineWidth(1)
         self.frame2_2.setObjectName("frame2_2")
         self.radioButton = QtWidgets.QRadioButton(self.frame2_2)
         self.radioButton.setGeometry(QtCore.QRect(20, 50, 51, 17))
@@ -384,7 +384,7 @@ class Ui_MainWindow(object):
         self.frame5.setGeometry(QtCore.QRect(10, 800, 401, 91))
         self.frame5.setFrameShape(QtWidgets.QFrame.Box)
         self.frame5.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame5.setLineWidth(3)
+        self.frame5.setLineWidth(1)
         self.frame5.setObjectName("frame5")
         self.optimize_btn = QtWidgets.QPushButton(self.frame5)
         self.optimize_btn.setGeometry(QtCore.QRect(10, 20, 101, 51))

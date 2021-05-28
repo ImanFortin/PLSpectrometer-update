@@ -99,7 +99,7 @@
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QLabel" name="property_label">
      <property name="geometry">
@@ -173,7 +173,7 @@
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QLabel" name="actual_value_lbl">
      <property name="geometry">
@@ -289,7 +289,7 @@ QPushButton::pressed{
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QLineEdit" name="move_input">
      <property name="geometry">
@@ -427,7 +427,7 @@ QPushButton::pressed{
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QLineEdit" name="scan_start_input">
      <property name="geometry">
@@ -836,7 +836,7 @@ QPushButton::pressed{
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QRadioButton" name="radioButton">
      <property name="geometry">
@@ -934,7 +934,7 @@ QPushButton::pressed{
      <enum>QFrame::Plain</enum>
     </property>
     <property name="lineWidth">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QPushButton" name="optimize_btn">
      <property name="geometry">
