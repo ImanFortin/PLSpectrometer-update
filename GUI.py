@@ -5,6 +5,7 @@
 
 from qt_designer import Ui_MainWindow
 from PyQt5 import QtWidgets as qtw
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer
 from matplotlib_embedding import PlotWidget
@@ -28,7 +29,7 @@ class MainWindow(qtw.QMainWindow):
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer('Dev1') #initialize the double spectrometer
         self.single = Spectrometer('Dev2') #initialize the single spectrometer
-        self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+        self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     def make_plots(self):
@@ -70,8 +71,6 @@ class MainWindow(qtw.QMainWindow):
         self.ui.scan_button.clicked.connect(self.scan)
         #connect move button to move function below
         self.ui.move_button.clicked.connect(self.move)
-        #connect the close button to close function below
-        self.ui.close_button.clicked.connect(self.exit)
         #default to the double spectrometer
         self.ui.radioButton.setChecked(True)
         #connect the abort button
@@ -109,7 +108,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.current_wavelength_lbl.adjustSize()
 
 
-    #update the progress bar function arugment is a list that contains the current
+    #update the progress bar function the arugment is a list that contains the current
     #step and the maximum amount of steps
     def update_scan_progress(self,step_max):
         self.ui.scan_progress.setValue(step_max[0])
@@ -246,14 +245,30 @@ class MainWindow(qtw.QMainWindow):
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
 
-    def exit(self):
-        #save the position of the spectrometer see spectrometer.py
-        self.double.save()
-        self.double.close_channels()
-        self.single.save()
-        self.single.close_channels()
-        #close the application
-        self.close()
+    #this overwrites the close button of the UI, therefore it doesn't
+    #need to be connected to another button
+    def closeEvent(self,event):
+
+
+        close = QMessageBox()
+
+        close.setText("You sure?")
+        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+
+        close = close.exec()
+
+        if close == QMessageBox.Yes:
+            self.double.save()
+            self.double.close_channels()
+            self.single.save()
+            self.single.close_channels()
+            event.accept()
+        else:
+            event.ignore()
+
+
+
+
 
     def abort(self):
         #changes the abort flag inside the worker to be true

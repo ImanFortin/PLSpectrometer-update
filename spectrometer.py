@@ -109,14 +109,19 @@ class Spectrometer():
 
     #closes the tasks properly
     def close_channels(self):
-
-        self.shutter.write(False)
-        self.direction.write(False)
-        self.shutter.stop()
-        self.shutter.close()
-        self.direction.stop()
-        self.direction.close()
-        print('spectrometer closed')
+        try:
+            self.shutter.write(False)
+            self.direction.write(False)
+            self.shutter.stop()
+            self.shutter.close()
+            self.direction.stop()
+            self.direction.close()
+            self.move.stop()
+            self.move.close()
+        except:
+            print('there was an error when closing the tasks')
+        else:
+            print('spectrometer closed')
 
 
 if __name__ == '__main__':
