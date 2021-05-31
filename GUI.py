@@ -82,11 +82,11 @@ class MainWindow(qtw.QMainWindow):
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
-            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
         else:
             print('need to change this to single position')
-            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(50))#display the current position
+            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(50))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     #update the plots with data
