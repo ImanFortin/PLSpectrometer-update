@@ -242,6 +242,8 @@ class MainWindow(qtw.QMainWindow):
                 self.double.recalibrate(actual)
             else:
                 self.single.recalibrate(actual)
+
+            self.update_position(actual)
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
 
