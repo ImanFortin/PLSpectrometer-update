@@ -162,7 +162,8 @@ class MainWindow(qtw.QMainWindow):
         #clear the plots
         self.wavelength_plot.clear()
         self.energy_plot.clear()
-
+        self.wavelength_plot.range = (start,end)
+        self.energy_plot.range = (start,end)
 
         print('starting scan')
         # Step 2: Create a QThread object

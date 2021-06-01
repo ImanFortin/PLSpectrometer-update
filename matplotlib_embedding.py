@@ -33,6 +33,7 @@ class PlotWidget(QWidget):
 
         self.ydata = []
         self.xdata = []
+        self.range = None
 
         self.scale = scale
         self.sc = Canvas(self, width=10, height=4, dpi=100, scale = scale) #make our canvas
@@ -59,6 +60,9 @@ class PlotWidget(QWidget):
         self.sc.axes.plot(self.xdata,self.ydata)#reconnect the lines
         self.sc.axes.set_yscale(self.scale)
         mplcursors.cursor(self.lines, hover = True)#add the cursor
+
+        if self.range != None:
+            self.sc.axes.set_xlim(self.range)
 
         self.sc.axes.grid()#make the grid
         self.sc.draw()#show the plot
