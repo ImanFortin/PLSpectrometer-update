@@ -1,18 +1,39 @@
-import nidaqmx
-from nidaqmx.constants import AcquisitionType
+# coding= latin-1
 
-task = nidaqmx.Task()
+from PyDAQmx.DAQmxFunctions import *
+from PyDAQmx.DAQmxConstants import *
+import time
 
-task.do_channels.add_do_chan("Dev1/port0/line0")
+class ContinuousPulseTrainGeneration():
+    """ Class to create a continuous pulse train on a counter
 
-task.timing.cfg_samp_clk_timing(1, sample_mode=AcquisitionType.FINITE, samps_per_chan=2)
+    Usage:  pulse = ContinuousTrainGeneration(period [s],
+                duty_cycle (default = 0.5), counter (default = "dev1/ctr0"),
+                reset = True/False)
+            pulse.start()
+            pulse.stop()
+            pulse.clear()
+    """
+    def __init__(self, period=1., duty_cycle=0.5, counter="Dev2/ctr0", reset=False):
+        if reset:
+            DAQmxResetDevice(counter.split('/')[0])
+        taskHandle = TaskHandle(0)
+        DAQmxCreateTask("",byref(taskHandle))
+        DAQmxCreateCOPulseChanFreq(taskHandle,counter,"",DAQmx_Val_Hz,DAQmx_Val_Low,
+                                                                   0.0,1/float(period),duty_cycle)
+        DAQmxCfgImplicitTiming(taskHandle,DAQmx_Val_ContSamps,1000)
+        self.taskHandle = taskHandle
+    def start(self):
+        DAQmxStartTask(self.taskHandle)
+    def stop(self):
+        DAQmxStopTask(self.taskHandle)
+    def clear(self):
+        DAQmxClearTask(self.taskHandle)
 
-task.write([True, False])
 
-
-
-task.start()
-
-task.wait_until_done()
-
-task.stop()
+if __name__=="__main__":
+    pulse_gene1 = ContinuousPulseTrainGeneration(1.,0.5, "Dev2/ctr0", reset=True)
+    pulse_gene1.start()
+    time.sleep(20)
+    pulse_gene1.stop()
+    pulse_gene1.clear()
