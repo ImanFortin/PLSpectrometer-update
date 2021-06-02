@@ -1,39 +1,19 @@
-# coding= latin-1
-
-from PyDAQmx.DAQmxFunctions import *
-from PyDAQmx.DAQmxConstants import *
-import time
-
-class ContinuousPulseTrainGeneration():
-    """ Class to create a continuous pulse train on a counter
-
-    Usage:  pulse = ContinuousTrainGeneration(period [s],
-                duty_cycle (default = 0.5), counter (default = "dev1/ctr0"),
-                reset = True/False)
-            pulse.start()
-            pulse.stop()
-            pulse.clear()
-    """
-    def __init__(self, period=1., duty_cycle=0.5, counter="Dev2/ctr0", reset=False):
-        if reset:
-            DAQmxResetDevice(counter.split('/')[0])
-        taskHandle = TaskHandle(0)
-        DAQmxCreateTask("",byref(taskHandle))
-        DAQmxCreateCOPulseChanFreq(taskHandle,counter,"",DAQmx_Val_Hz,DAQmx_Val_Low,
-                                                                   0.0,1/float(period),duty_cycle)
-        DAQmxCfgImplicitTiming(taskHandle,DAQmx_Val_ContSamps,1000)
-        self.taskHandle = taskHandle
-    def start(self):
-        DAQmxStartTask(self.taskHandle)
-    def stop(self):
-        DAQmxStopTask(self.taskHandle)
-    def clear(self):
-        DAQmxClearTask(self.taskHandle)
+import nidaqmx
+from nidaqmx.types import CtrTime
 
 
-if __name__=="__main__":
-    pulse_gene1 = ContinuousPulseTrainGeneration(1.,0.5, "Dev2/ctr0", reset=True)
-    pulse_gene1.start()
-    time.sleep(20)
-    pulse_gene1.stop()
-    pulse_gene1.clear()
+with nidaqmx.Task() as task:
+    task.co_channels.add_co_pulse_chan_time("Dev2/ctr0")
+
+    sample = CtrTime(high_time=0.001, low_time=0.002)
+
+    print('1 Channel 1 Sample Write: ')
+    print(task.write(sample))
+
+    samples = []
+    for i in range(1, 5):
+        x = i/float(1000)
+        samples.append(CtrTime(high_time=x, low_time=x))
+
+    print('1 Channel N Samples Write: ')
+    print(task.write(samples, auto_start=True))
