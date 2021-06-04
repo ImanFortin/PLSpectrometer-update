@@ -54,3 +54,9 @@ class moveWorker(QObject):
 
         self.position.emit(end)
         self.finished.emit()#emit that we're done
+
+
+    def check_abort(self):
+        if self.abort:
+            self.finished.emit()
+            return

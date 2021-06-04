@@ -96,6 +96,7 @@ class MainWindow(qtw.QMainWindow):
 
     #update the spectrometer position
     def update_position(self,position):
+        position = round(position, 3)
         self.double.position = position
 
         current = self.ui.current_wavelength_lbl.text()
@@ -273,6 +274,8 @@ class MainWindow(qtw.QMainWindow):
     def abort(self):
         #changes the abort flag inside the worker to be true
         self.worker.abort = True
+        
+
 
 
 #run the UI

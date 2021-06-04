@@ -49,8 +49,10 @@ class scanWorker(QObject):
         if direction < 0:#if the direction is backwards
             self.spectrometer.move(distance + 10, high_time = high, low_time = low)#first move to ten nm back
             direction = 1
+            self.check_abort()
             self.spectrometer.set_direction(direction) #change directions
             self.spectrometer.move(9.97, high_time = high, low_time = low) #move to 0.03 nm of the position
+            self.check_abort()
             self.spectrometer.move(0.03, high_time = high, low_time = 1) #do the last 0.03 nm with 1s in between each pulse
 
         elif direction > 0:#if the direction is forwards
@@ -67,14 +69,17 @@ class scanWorker(QObject):
         self.position.emit(end)
 
         #prepare for the scan
-        start = self.spectrometer.position
+        start = self.start
         end = self.end
         distance = abs(end - start)
         direction = 1
         f = open(self.filename, 'w')
         number_of_steps = int(distance/self.step)
+        print(distance)
+        print(number_of_steps)
         #start the scanning process
         for i in range(number_of_steps):
+            self.check_abort()
             self.spectrometer.move(self.step, high_time = high, low_time = low)
             self.position.emit(self.spectrometer.position + self.step)
             self.progress.emit([i + 1,number_of_steps])
@@ -85,3 +90,8 @@ class scanWorker(QObject):
 
         f.close()
         self.finished.emit()#emit that we're done
+
+    def check_abort(self):
+        if self.abort:
+            self.finished.emit()
+            return

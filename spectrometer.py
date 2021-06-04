@@ -101,27 +101,28 @@ class Spectrometer():
 
         pulse_count = int(distance/0.001)
         print(pulse_count)
-        with nidaqmx.Task() as task:
-            task.co_channels.add_co_pulse_chan_time(self.name + "/ctr0",**kwargs)
-            task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE, samps_per_chan=pulse_count)
-            task.start()
-            task.wait_until_done(timeout = math.inf)
+        with nidaqmx.Task() as self.task:
+            self.task.co_channels.add_co_pulse_chan_time(self.name + "/ctr0",**kwargs)
+            self.task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE, samps_per_chan=pulse_count)
+            self.task.start()
+            self.task.wait_until_done(timeout = math.inf)
         print('done')
 
 
     def read(self, count_time):
-        with nidaqmx.Task() as task:#open a task
-             
-             task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
-             task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
-             task.start()#start counting
+        with nidaqmx.Task() as self.task:#open a task
+
+             self.task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
+             self.task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
+             self.task.start()#start counting
              time.sleep(count_time)#wait the count time
-             data = task.read(1)#read the counts
+             data = self.task.read(1)#read the counts
 
         return data[0]/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
         self.position = wavelength
+
 
     #closes the tasks properly
     def close_channels(self):
