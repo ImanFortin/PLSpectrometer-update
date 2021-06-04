@@ -27,8 +27,8 @@ class MainWindow(qtw.QMainWindow):
 
         self.connect_buttons() #connect all the buttons
         self.make_plots() #add the plots to the UI
-        self.double = Spectrometer('Dev1') #initialize the double spectrometer
-        self.single = Spectrometer('Dev2') #initialize the single spectrometer
+        self.double = Spectrometer('Dev2') #initialize the double spectrometer
+        self.single = Spectrometer('Dev1') #initialize the single spectrometer
         self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
 
@@ -86,7 +86,7 @@ class MainWindow(qtw.QMainWindow):
             self.autoscale_lbls() #autoscale the labels so they don't cut off
         else:
             print('need to change this to single position')
-            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(50))#display the current position
+            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.single.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     #update the plots with data
@@ -113,10 +113,6 @@ class MainWindow(qtw.QMainWindow):
     def update_scan_progress(self,step_max):
         self.ui.scan_progress.setValue(step_max[0])
         self.ui.scan_progress.setMaximum(step_max[1])
-
-    def update_move_progress(self,step_max):
-        self.ui.move_progress.setValue(step_max[0])
-        self.ui.move_progress.setMaximum(step_max[1])
 
     #function that sets the buttons to enabled, to be called after
     #a scan or a move (connected to the finished of the Thread)
@@ -149,6 +145,7 @@ class MainWindow(qtw.QMainWindow):
             end = float(self.ui.scan_end_input.text())
             step = float(self.ui.scan_step_input.text())
             time = float(self.ui.count_time_input.text())
+            filename = self.ui.file_name_input.text()
 
         #raise exception if there is an issue
         except:
@@ -170,9 +167,9 @@ class MainWindow(qtw.QMainWindow):
         self.scan_thread = QThread()
         # Step 3: Create a worker object
         if self.ui.radioButton.isChecked():#if the double is checked
-            self.worker = scanWorker(self.double,start,end,step,time)#input the double spectrometer
+            self.worker = scanWorker(self.double,start,end,step,time,filename)#input the double spectrometer
         else:#otherwise
-            self.worker = scanWorker(self.single,start,end,step,time)#input the single spectrometer
+            self.worker = scanWorker(self.single,start,end,step,time,filename)#input the single spectrometer
 
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
@@ -223,9 +220,9 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.worker.deleteLater)
         self.worker.finished.connect(self.enable_buttons)
         self.thread.finished.connect(self.thread.deleteLater)
-        self.worker.progress.connect(self.update_move_progress)
         self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread
+
         self.thread.start()
 
 

@@ -1,6 +1,7 @@
 import nidaqmx
-
+import math
 import time
+from nidaqmx.constants import AcquisitionType
 
 class Spectrometer():
 
@@ -14,6 +15,7 @@ class Spectrometer():
         try:
             f = open(device + '_last_position.txt', 'r')
             self._position = float(f.readline())
+            print(self.position)
             f.close()
         #if file was missing or empty set the value to zero
         except:
@@ -33,15 +35,12 @@ class Spectrometer():
             self.direction.do_channels.add_do_chan(device +'/port0/line7')
             self.direction.start()
 
-            self.move = nidaqmx.Task()
-            self.move.do_channels.add_do_chan(device +'/port0/line2')
-            self.move.start()
-
         except:
             print(f'the device or channel name you entered for {device} may be incorrect or you may have an unclosed window running')
             print(f'you will be unable to send commands to this daq: {device}\n')
 
         self.name = device
+        self.frequency = 2000
 
     #getter method google @property for reasoning
     #short description it allows us to sanitaze the inputs while keeping the syntax neat
@@ -80,12 +79,6 @@ class Spectrometer():
         else:
             self.direction.write(False)
 
-    def take_steps(self,n,hightime,lowtime):
-        for i in range(n):
-            self.move.write(True)
-            time.sleep(hightime)
-            self.move.write(False)
-            time.sleep(lowtime)
 
     def save(self):
         try:
@@ -100,9 +93,33 @@ class Spectrometer():
             print(f'there was an error writing to {self.name}_last_position.txt')
         #if we succeed print success message
         else:
+            print(self.position)
             print(f'position of {self.name} saved')
 
 
+    def move(self,distance,**kwargs):
+
+        pulse_count = int(distance/0.001)
+        print(pulse_count)
+        with nidaqmx.Task() as task:
+            task.co_channels.add_co_pulse_chan_time(self.name + "/ctr0",**kwargs)
+            task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE, samps_per_chan=pulse_count)
+            task.start()
+            task.wait_until_done(timeout = math.inf)
+        print('done')
+
+
+    def read(self, count_time):
+        with nidaqmx.Task() as task:#open a task
+             print('in read')
+             task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
+             task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
+             print('starting')
+             task.start()#start counting
+             time.sleep(count_time)#wait the count time
+             data = task.read(1)#read the counts
+        print('leaving read')
+        return data/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
         self.position = wavelength
@@ -116,8 +133,7 @@ class Spectrometer():
             self.shutter.close()
             self.direction.stop()
             self.direction.close()
-            self.move.stop()
-            self.move.close()
+
         except:
             print('there was an error when closing the tasks')
         else:

@@ -5,7 +5,6 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 class moveWorker(QObject):
 
     #these are the signals that are connected to functions in GUI.py
-    progress = pyqtSignal(list)#give the data type to be emitted
     position = pyqtSignal(float)
     finished = pyqtSignal()
 
@@ -18,9 +17,9 @@ class moveWorker(QObject):
 
     def move(self):
 
-        start = int(self.spectrometer.position)#get the current position
-        end = int(self.end)#get the end position
-        distance = abs(end - start)#get the distance
+        start = self.spectrometer.position#get the current position
+        end = self.end#get the end position
+        distance = abs(end  - start)#get the distance
 
         #try block to catch divide by zero error
         try:
@@ -30,20 +29,28 @@ class moveWorker(QObject):
             self.finished.emit() #emit done
             return #return
 
+        high = 1/(self.spectrometer.frequency)
+        low = high
         #set the direction voltage
         self.spectrometer.set_direction(direction)#see spectrometer.py for the method
-        self.progress.emit([0, abs(start - end)])#set progress to zero
 
-        for i in range(start, end + direction, direction):
-            if self.abort:#check the abort flag
-                self.finished.emit()#signal done
-                return
+        if direction < 0:#if the direction is backwards
+            self.spectrometer.move(distance + 10, high_time = high, low_time = low)#first move to ten nm back
+            direction = 1
+            self.spectrometer.set_direction(direction) #change directions
+            self.spectrometer.move(9.97, high_time = high, low_time = low) #move to with 0.03 nm of the positin
+            self.spectrometer.move(0.03, high_time = high, low_time = 1) #do the last 0.03 nm with 1s in between each pulse
 
-            print(i)
-            time.sleep(1)#simulate the move
-            self.progress.emit([abs(i-start),abs(start - end)]) #emit the progress
-            self.position.emit(i) #emit the position
+        elif direction > 0:#if the direction is forwards
+            if distance < 10:#if distance is less than ten we need to go backwards
+                self.spectrometer.set_direction(-1)#change direction
+                self.spectrometer.move(abs(distance - 10), high_time = high, low_time = low)#move backwards the correct amount
+                self.spectrometer.set_direction(1)#change direction
+                self.spectrometer.move(9.97, high_time = high, low_time = low)#move forward with 0.03nm
+                self.spectrometer.move(0.03, high_time = high, low_time = 1)#do the last 0.03 nm with 1s lows
+            else:#otherwise just move forwards within 0.03 and then slow down
+                self.spectrometer.move(distance - 0.03, high_time = high, low_time = low)
+                self.spectrometer.move(0.03, high_time = high, low_time = 1)
 
-
-        self.progress.emit([abs(start - end), abs(start - end)])#emit that progress is done
+        self.position.emit(end)
         self.finished.emit()#emit that we're done

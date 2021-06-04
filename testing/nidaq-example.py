@@ -1,19 +1,28 @@
 import nidaqmx
 from nidaqmx.types import CtrTime
+from nidaqmx.constants import AcquisitionType
+import time
+import math
 
 
-with nidaqmx.Task() as task:
-    task.co_channels.add_co_pulse_chan_time("Dev2/ctr0")
 
-    sample = CtrTime(high_time=0.001, low_time=0.002)
+def move(self,stepsize,**kwargs):
+    pulse_count = int(stepsize/0.001)
+    print(pulse_count)
+    with nidaqmx.Task() as task:
+        task.co_channels.add_co_pulse_chan_time("Dev2/ctr0",**kwargs)
+        task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE, samps_per_chan=pulse_count)
 
-    print('1 Channel 1 Sample Write: ')
-    print(task.write(sample))
+        task.start()
 
-    samples = []
-    for i in range(1, 5):
-        x = i/float(1000)
-        samples.append(CtrTime(high_time=x, low_time=x))
+        task.wait_until_done(timeout = math.inf)
 
-    print('1 Channel N Samples Write: ')
-    print(task.write(samples, auto_start=True))
+
+
+
+
+move('self',0.01, high_time = 0.001, low_time = 0.001)
+
+#
+#      shutter.stop()
+#      shutter.close()
