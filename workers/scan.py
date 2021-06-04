@@ -1,6 +1,6 @@
 import time
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
-from miscellaneous import available_name
+from miscellaneous import available_name, make_header
 
 #this is the scan worker he does the scanning
 class scanWorker(QObject):
@@ -12,7 +12,7 @@ class scanWorker(QObject):
     finished = pyqtSignal()
 
     #needs to take a spectrometer, start, end, step, and time
-    def __init__(self,spectrometer,start,end,step,time,filename):
+    def __init__(self,spectrometer,start,end,step,time,filename,sample_id):
         super().__init__()
         self.spectrometer = spectrometer
         self.start = start
@@ -21,8 +21,8 @@ class scanWorker(QObject):
         self.time = time
         self.abort = False
         #leaving these empty for now so i don't have to input them when testing
-        self.filename = available_name(filename + '.dat')
-        self.sample_id = ''
+        self.filename = available_name(filename)
+        self.sample_id = sample_id
 
 
 
@@ -73,8 +73,10 @@ class scanWorker(QObject):
         distance = abs(end - start)
         direction = 1
         f = open(self.filename, 'w')
+        make_header(f,self.sample_id,self.time)
+        f.close()
         number_of_steps = int(distance/self.step)
-        print(distance)
+
         print(number_of_steps)
         #start the scanning process
         for i in range(number_of_steps):
@@ -85,9 +87,11 @@ class scanWorker(QObject):
             counts = self.spectrometer.read(self.time)
             self.data.emit(counts + 1)
             print(counts)
+            #opening and closing in here means in case of a crash we keep the data
+            f = open(self.filename, 'a')
             f.write(str(self.spectrometer.position) + '\t' + str(counts) + '\n')
+            f.close()
 
-        f.close()
         self.finished.emit()#emit that we're done
 
     def check_abort(self):

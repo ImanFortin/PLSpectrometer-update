@@ -147,6 +147,7 @@ class MainWindow(qtw.QMainWindow):
             step = float(self.ui.scan_step_input.text())
             time = float(self.ui.count_time_input.text())
             filename = self.ui.file_name_input.text()
+            sample_id = self.ui.sample_ID_input.text()
 
         #raise exception if there is an issue
         except:
@@ -167,10 +168,11 @@ class MainWindow(qtw.QMainWindow):
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
+        args = [self.double,start,end,step,time,filename,sample_id]#collect the arguments
         if self.ui.radioButton.isChecked():#if the double is checked
-            self.worker = scanWorker(self.double,start,end,step,time,filename)#input the double spectrometer
+            self.worker = scanWorker(*args)#input the double spectrometer
         else:#otherwise
-            self.worker = scanWorker(self.single,start,end,step,time,filename)#input the single spectrometer
+            self.worker = scanWorker(*args)#input the single spectrometer
 
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
