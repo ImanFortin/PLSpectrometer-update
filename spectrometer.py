@@ -111,15 +111,14 @@ class Spectrometer():
 
     def read(self, count_time):
         with nidaqmx.Task() as task:#open a task
-             print('in read')
+             
              task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
              task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
-             print('starting')
              task.start()#start counting
              time.sleep(count_time)#wait the count time
              data = task.read(1)#read the counts
-        print('leaving read')
-        return data/count_time#return the average count/s
+
+        return data[0]/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
         self.position = wavelength
