@@ -201,18 +201,29 @@ class MainWindow(qtw.QMainWindow):
             print('move recieved invalid input')
             return
 
-        #disable the buttons to prevent crashing
-        self.disable_buttons()
-
-
         print('starting move to',destination)
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
         if self.ui.radioButton.isChecked():#if we have double selected
+            if abs(destination - self.double.position) > 100:#safety measure
+                intent = self.check_intent()
+                if not intent:
+                    return
+
             self.worker = moveWorker(self.double,destination)#input double
-        else:
+
+        else:#if single is selected
+            if abs(destination - self.single.position) > 100:
+                intent = self.check_intent()
+                if not intent:
+                    return
+
             self.worker = moveWorker(self.single,destination)#input single
+
+        #disable the buttons to prevent crashing
+        self.disable_buttons()
+
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
 
@@ -247,6 +258,19 @@ class MainWindow(qtw.QMainWindow):
             self.update_position(actual)
             #print success message and the new postion
             print('succesfully recalibrated', self.double.position)
+
+
+    def check_intent(self):
+        check = QMessageBox()
+        check.setText("you have requested to move over 100nm is this correct")
+        check.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        check.setIcon(QMessageBox.Warning)
+        check = check.exec()
+
+        if check == QMessageBox.Yes:
+            return True
+        else:
+            return False
 
     #this overwrites the close button of the UI, therefore it doesn't
     #need to be connected to another button

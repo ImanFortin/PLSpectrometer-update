@@ -35,6 +35,7 @@ def available_name(filename):
 
     return filename
 
+#function to make header it takes f as in f = open(filename, 'w'), the smaple id and the count time
 def make_header(f, sample_id, time_avg):
     f.write('Sample ID:\t\t' + sample_id + '\n')
     dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
