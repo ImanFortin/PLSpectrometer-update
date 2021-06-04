@@ -268,13 +268,10 @@ class MainWindow(qtw.QMainWindow):
             event.ignore()
 
 
-
-
-
     def abort(self):
         #changes the abort flag inside the worker to be true
         self.worker.abort = True
-        
+
 
 
 

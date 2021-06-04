@@ -1,7 +1,6 @@
 import time
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
-from datetime import datetime
-
+from miscellaneous import available_name
 
 #this is the scan worker he does the scanning
 class scanWorker(QObject):
@@ -22,7 +21,7 @@ class scanWorker(QObject):
         self.time = time
         self.abort = False
         #leaving these empty for now so i don't have to input them when testing
-        self.filename = filename
+        self.filename = available_name(filename + '.dat')
         self.sample_id = ''
 
 

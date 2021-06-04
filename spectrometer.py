@@ -2,6 +2,7 @@ import nidaqmx
 import math
 import time
 from nidaqmx.constants import AcquisitionType
+from miscellaneous import sleep
 
 class Spectrometer():
 
@@ -115,7 +116,7 @@ class Spectrometer():
              self.task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
              self.task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
              self.task.start()#start counting
-             time.sleep(count_time)#wait the count time
+             sleep(count_time)#wait the count time
              data = self.task.read(1)#read the counts
 
         return data[0]/count_time#return the average count/s
