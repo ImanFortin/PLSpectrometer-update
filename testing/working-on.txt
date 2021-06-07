@@ -1,8 +1,5 @@
 adding the writing to file part of scan
 
 To-do list:
-1. start collecting data from the DAQ
-2. maybe figure out a way to set the xlim of the wavelength  (optional)
-3. add the optimize audio thing
-4. start writing data to the DAQ
-5. need to fix the scan move thing (optional)
+
+1. add the optimize audio thing

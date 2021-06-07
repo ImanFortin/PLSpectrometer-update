@@ -1,6 +1,6 @@
 import nidaqmx
 from nidaqmx.types import CtrTime
-from nidaqmx.constants import AcquisitionType
+from nidaqmx.constants import AcquisitionType, Edge
 import time
 import math
 
@@ -20,9 +20,22 @@ def move(self,stepsize,**kwargs):
 
 
 
+with nidaqmx.Task() as task:
+    task.ci_channels.add_ci_count_edges_chan("Dev2/ctr0")
+    task.ci_channels[0].ci_count_edges_term = '/Dev2/PFI15'#set the terminal
+    out = nidaqmx.Task()
+    out.do_channels.add_do_chan("Dev2/port0/line4")
 
-move('self',0.01, high_time = 0.001, low_time = 0.001)
 
-#
-#      shutter.stop()
-#      shutter.close()
+    task.start()#start counting
+    out.write(True)
+    out.write(False)
+    out.write(True)
+    out.write(False)
+    out.write(True)
+    out.write(False)
+    out.write(True)
+    out.write(False)
+    print(task.read())
+    out.stop()
+    out.close()
