@@ -26,7 +26,7 @@ class Spectrometer():
         else:
             print(f'successfully loaded last position for {device}\n')
 
-        try:
+        try:#try to make the tasks for the shutter and direction
             self.shutter = nidaqmx.Task()
             #probably need to change the path name when in real spectrometer
             self.shutter.do_channels.add_do_chan(device +'/port0/line0')

@@ -54,7 +54,7 @@ class scanWorker(QObject):
             self.check_abort()
             self.spectrometer.move(0.03, high_time = high, low_time = 1) #do the last 0.03 nm with 1s in between each pulse
 
-        elif direction > 0:#if the direction is forwards
+        elif direction >= 0:#if the direction is forwards
             if distance < 10:#if distance is less than ten we need to go backwards
                 self.spectrometer.set_direction(-1)#change direction
                 self.spectrometer.move(abs(distance - 10), high_time = high, low_time = low)#move backwards the correct amount
