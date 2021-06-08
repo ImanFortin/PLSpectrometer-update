@@ -158,6 +158,8 @@ class MainWindow(qtw.QMainWindow):
         #disable the buttons to prevent crashing
         self.disable_buttons()
 
+        #set progress bar to zero
+        self.ui.scan_progress.setValue(0)
         #clear the plots
         self.wavelength_plot.clear()
         self.energy_plot.clear()
@@ -169,11 +171,8 @@ class MainWindow(qtw.QMainWindow):
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
-        args = [self.double,start,end,step,time,filename,sample_id]#collect the arguments
-        if self.ui.radioButton.isChecked():#if the double is checked
-            self.worker = scanWorker(*args)#input the double spectrometer
-        else:#otherwise
-            self.worker = scanWorker(*args)#input the single spectrometer
+        self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input the double spectrometer
+
 
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread

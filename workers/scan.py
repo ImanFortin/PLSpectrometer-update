@@ -79,18 +79,22 @@ class scanWorker(QObject):
 
         print(number_of_steps)
         #start the scanning process
-        for i in range(number_of_steps):
+        for i in range(number_of_steps + 1):
             self.check_abort()
-            self.spectrometer.move(self.step, high_time = high, low_time = low)
-            self.position.emit(self.spectrometer.position + self.step)
-            self.progress.emit([i + 1,number_of_steps])
             counts = self.spectrometer.read(self.time)
-            self.data.emit(counts + 1)
+            self.data.emit(counts)
             print(counts)
             #opening and closing in here means in case of a crash we keep the data
             f = open(self.filename, 'a')
             f.write(str(self.spectrometer.position) + '\t' + str(counts) + '\n')
             f.close()
+            #we need to take one extra data point at the last point and not step forward
+            if i != number_of_steps:
+                self.spectrometer.move(self.step, high_time = high, low_time = low)
+                self.position.emit(self.spectrometer.position + self.step)
+
+            self.progress.emit([i + 1,number_of_steps + 1])
+
 
         self.finished.emit()#emit that we're done
 

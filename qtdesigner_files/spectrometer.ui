@@ -23,19 +23,23 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>900</y>
-      <width>211</width>
+      <y>870</y>
+      <width>91</width>
       <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>20</pointsize>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-	background-color: rgb(255, 0, 0)
+	background-color: rgb(255, 0, 0);
+	font: 20px;
 }</string>
     </property>
     <property name="text">
@@ -191,9 +195,9 @@
      <property name="font">
       <font>
        <pointsize>-1</pointsize>
-       <weight>75</weight>
+       <weight>50</weight>
        <italic>false</italic>
-       <bold>true</bold>
+       <bold>false</bold>
       </font>
      </property>
      <property name="mouseTracking">
@@ -202,23 +206,15 @@
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: black;
-    font: bold 20px;
+    font: 20px;
     min-width: 2em;
     padding: 6px;
 	
 }
 
 QPushButton::pressed{
-	background-color: rgb(11, 15, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: bold 18px;
+	
+	background-color: rgb(64, 137, 255);
     min-width: 5em;
     padding: 6px;
 	
@@ -247,7 +243,7 @@ QPushButton::pressed{
       <x>10</x>
       <y>390</y>
       <width>401</width>
-      <height>111</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -316,9 +312,9 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>-1</pointsize>
-       <weight>75</weight>
+       <weight>50</weight>
        <italic>false</italic>
-       <bold>true</bold>
+       <bold>false</bold>
       </font>
      </property>
      <property name="mouseTracking">
@@ -327,23 +323,15 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: black;
-    font: bold 20px;
+    font: 20px;
     min-width: 2em;
     padding: 6px;
 	
 }
 
 QPushButton::pressed{
-	background-color: rgb(11, 15, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: bold 18px;
+	
+	background-color: rgb(64, 137, 255);
     min-width: 5em;
     padding: 6px;
 	
@@ -365,25 +353,12 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QProgressBar" name="move_progress">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>381</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-    </widget>
    </widget>
    <widget class="QFrame" name="frame4">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>540</y>
+      <y>500</y>
       <width>401</width>
       <height>221</height>
      </rect>
@@ -481,9 +456,9 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>-1</pointsize>
-       <weight>75</weight>
+       <weight>50</weight>
        <italic>false</italic>
-       <bold>true</bold>
+       <bold>false</bold>
       </font>
      </property>
      <property name="mouseTracking">
@@ -492,23 +467,15 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: black;
-    font: bold 20px;
+    font: 20px;
     min-width: 2em;
     padding: 6px;
 	
 }
 
 QPushButton::pressed{
-	background-color: rgb(11, 15, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: bold 18px;
+	
+	background-color: rgb(64, 137, 255);
     min-width: 5em;
     padding: 6px;
 	
@@ -692,7 +659,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>510</y>
+      <y>470</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -890,7 +857,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>800</y>
+      <y>760</y>
       <width>401</width>
       <height>91</height>
      </rect>
@@ -916,9 +883,9 @@ QPushButton::pressed{
      <property name="font">
       <font>
        <pointsize>-1</pointsize>
-       <weight>75</weight>
+       <weight>50</weight>
        <italic>false</italic>
-       <bold>true</bold>
+       <bold>false</bold>
       </font>
      </property>
      <property name="mouseTracking">
@@ -927,23 +894,15 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: black;
-    font: bold 20px;
+    font: 20px;
     min-width: 2em;
     padding: 6px;
 	
 }
 
 QPushButton::pressed{
-	background-color: rgb(11, 15, 255);
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: bold 18px;
+	
+	background-color: rgb(64, 137, 255);
     min-width: 5em;
     padding: 6px;
 	
@@ -983,7 +942,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>770</y>
+      <y>730</y>
       <width>91</width>
       <height>21</height>
      </rect>
