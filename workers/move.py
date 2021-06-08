@@ -42,12 +42,8 @@ class moveWorker(QObject):
             self.spectrometer.move(0.03, high_time = high, low_time = 1) #do the last 0.03 nm with 1s in between each pulse
 
         elif direction > 0:#if the direction is forwards
-            if distance < 10:#if distance is less than ten we need to go backwards
-                self.spectrometer.set_direction(-1)#change direction
-                self.spectrometer.move(abs(distance - 10), high_time = high, low_time = low)#move backwards the correct amount
-                self.spectrometer.set_direction(1)#change direction
-                self.spectrometer.move(9.97, high_time = high, low_time = low)#move forward with 0.03nm
-                self.spectrometer.move(0.03, high_time = high, low_time = 1)#do the last 0.03 nm with 1s lows
+            if distance < 0.03:#if distance is less than ten we need to go backwards
+                self.spectrometer.move(distance, high_time = high, low_time = 1)
             else:#otherwise just move forwards within 0.03 and then slow down
                 self.spectrometer.move(distance - 0.03, high_time = high, low_time = low)
                 self.spectrometer.move(0.03, high_time = high, low_time = 1)

@@ -97,7 +97,7 @@ class MainWindow(qtw.QMainWindow):
     def update_position(self,position):
         position = round(position, 3)
         self.double.position = position
-        if self.ui.radioButton.isChecked():#only update the display if double is selected
+        if self.ui.radioButton.isChecked():#only update the display with double if double is selected
             current = self.ui.current_wavelength_lbl.text()
             #keep up to the ': ' of the current string
             keep = current[:current.find(':')+1]
