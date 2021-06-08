@@ -85,7 +85,6 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
         else:
-            print('need to change this to single position')
             self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.single.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
 
@@ -98,15 +97,15 @@ class MainWindow(qtw.QMainWindow):
     def update_position(self,position):
         position = round(position, 3)
         self.double.position = position
-
-        current = self.ui.current_wavelength_lbl.text()
-        #keep up to the ': ' of the current string
-        keep = current[:current.find(':')+1]
-        #append on the new position
-        new_string = keep + str(position)
-        #set the new label
-        self.ui.current_wavelength_lbl.setText(new_string)
-        self.ui.current_wavelength_lbl.adjustSize()
+        if self.ui.radioButton.isChecked():#only update the display if double is selected
+            current = self.ui.current_wavelength_lbl.text()
+            #keep up to the ': ' of the current string
+            keep = current[:current.find(':')+1]
+            #append on the new position
+            new_string = keep + str(position)
+            #set the new label
+            self.ui.current_wavelength_lbl.setText(new_string)
+            self.ui.current_wavelength_lbl.adjustSize()
 
 
     #update the progress bar function the arugment is a list that contains the current
