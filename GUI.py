@@ -29,7 +29,7 @@ class MainWindow(qtw.QMainWindow):
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
         self.single = Spectrometer('Dev1') #initialize the single spectrometer
-        self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+        self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     def make_plots(self):
@@ -80,10 +80,10 @@ class MainWindow(qtw.QMainWindow):
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
-            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
+            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
         else:
-            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.single.position))#display the current position
+            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     #update the plots with data
@@ -268,7 +268,7 @@ class MainWindow(qtw.QMainWindow):
 
         close = QMessageBox()
 
-        close.setText("You sure?")
+        close.setText("Are you sure?")
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
 
         close = close.exec()
