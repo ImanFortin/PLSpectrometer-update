@@ -22,9 +22,9 @@
    <widget class="QPushButton" name="abort_button">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>870</y>
-      <width>91</width>
+      <x>20</x>
+      <y>800</y>
+      <width>111</width>
       <height>51</height>
      </rect>
     </property>
@@ -39,7 +39,7 @@
     <property name="styleSheet">
      <string notr="true">QPushButton{
 	background-color: rgb(255, 0, 0);
-	font: 20px;
+	font: 18px;
 }</string>
     </property>
     <property name="text">
@@ -60,8 +60,8 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>401</width>
-      <height>81</height>
+      <width>381</width>
+      <height>151</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -73,44 +73,29 @@
     <property name="lineWidth">
      <number>1</number>
     </property>
-    <widget class="QLabel" name="property_label">
+    <widget class="QLabel" name="current_wavelength_lbl">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>101</width>
-       <height>16</height>
+       <x>10</x>
+       <y>70</y>
+       <width>181</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>Properties</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="current_wavelength_lbl">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Current Wavelength:</string>
+      <string>Spectrometer Position (nm):</string>
      </property>
     </widget>
     <widget class="QPushButton" name="shutter_btn">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>20</y>
+       <x>290</x>
+       <y>100</y>
        <width>81</width>
        <height>41</height>
       </rect>
@@ -119,7 +104,7 @@
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>close shutter</string>
+      <string>Close Shutter</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -128,13 +113,107 @@
       <bool>false</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Status: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="spect_select_lbl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Spectrometer</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>71</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>double</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>40</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>single</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="spect_select_lbl_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Pulse Frequency (Hz): 2000 </string>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="frame2">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>280</y>
-      <width>401</width>
+      <y>220</y>
+      <width>381</width>
       <height>71</height>
      </rect>
     </property>
@@ -164,7 +243,7 @@
       </font>
      </property>
      <property name="text">
-      <string>actual value (nm)</string>
+      <string>Actual Value (nm)</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="recalibrate_input">
@@ -186,9 +265,9 @@
     <widget class="QPushButton" name="recalibrate_button">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>260</x>
        <y>10</y>
-       <width>151</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
@@ -206,7 +285,7 @@
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    font: 20px;
+    font: 18px;
     min-width: 2em;
     padding: 6px;
 	
@@ -241,8 +320,8 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>390</y>
-      <width>401</width>
+      <y>330</y>
+      <width>381</width>
       <height>71</height>
      </rect>
     </property>
@@ -297,15 +376,15 @@ QPushButton::pressed{
       </font>
      </property>
      <property name="text">
-      <string>go to value (nm)</string>
+      <string>Go to Value (nm)</string>
      </property>
     </widget>
     <widget class="QPushButton" name="move_button">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>260</x>
        <y>10</y>
-       <width>151</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
@@ -323,7 +402,7 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    font: 20px;
+    font: 18px;
     min-width: 2em;
     padding: 6px;
 	
@@ -358,9 +437,9 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>500</y>
-      <width>401</width>
-      <height>221</height>
+      <y>440</y>
+      <width>381</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -394,7 +473,7 @@ QPushButton::pressed{
        <x>10</x>
        <y>10</y>
        <width>101</width>
-       <height>21</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -411,10 +490,10 @@ QPushButton::pressed{
     <widget class="QLabel" name="scan_end_lbl">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>60</y>
+       <x>120</x>
+       <y>10</y>
        <width>101</width>
-       <height>21</height>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -447,9 +526,9 @@ QPushButton::pressed{
     <widget class="QPushButton" name="scan_button">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>30</y>
-       <width>151</width>
+       <x>260</x>
+       <y>10</y>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
@@ -467,7 +546,7 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    font: 20px;
+    font: 18px;
     min-width: 2em;
     padding: 6px;
 	
@@ -497,32 +576,13 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QProgressBar" name="scan_progress">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>381</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="scan_step_lbl">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>10</y>
-       <width>121</width>
-       <height>21</height>
+       <x>10</x>
+       <y>60</y>
+       <width>91</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -533,7 +593,7 @@ QPushButton::pressed{
       </font>
      </property>
      <property name="text">
-      <string>Step size (nm)</string>
+      <string>Step Size (nm)</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="scan_step_input">
@@ -576,8 +636,8 @@ QPushButton::pressed{
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>140</y>
-       <width>181</width>
+       <y>130</y>
+       <width>231</width>
        <height>20</height>
       </rect>
      </property>
@@ -588,8 +648,8 @@ QPushButton::pressed{
     <widget class="QLabel" name="sample_id_lbl">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>110</y>
+       <x>10</x>
+       <y>160</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -608,9 +668,9 @@ QPushButton::pressed{
     <widget class="QLineEdit" name="sample_ID_input">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>140</y>
-       <width>181</width>
+       <x>10</x>
+       <y>180</y>
+       <width>231</width>
        <height>20</height>
       </rect>
      </property>
@@ -623,8 +683,8 @@ QPushButton::pressed{
       <rect>
        <x>120</x>
        <y>60</y>
-       <width>111</width>
-       <height>21</height>
+       <width>91</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="font">
@@ -659,7 +719,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>470</y>
+      <y>410</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -679,7 +739,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>360</y>
+      <y>300</y>
       <width>181</width>
       <height>21</height>
      </rect>
@@ -699,7 +759,7 @@ QPushButton::pressed{
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>190</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -732,133 +792,15 @@ QPushButton::pressed{
      </font>
     </property>
     <property name="text">
-     <string>Position and movement</string>
+     <string>Position and Movement</string>
     </property>
-   </widget>
-   <widget class="QLabel" name="common_variables_lbl">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>171</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Common Variables</string>
-    </property>
-   </widget>
-   <widget class="QFrame" name="frame2_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>401</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="lineWidth">
-     <number>1</number>
-    </property>
-    <widget class="QRadioButton" name="radioButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>50</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>double</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_2">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>50</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>single</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="spect_select_lbl">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>spectrometer</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="spect_select_lbl_2">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>20</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Pulse Frequency</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>50</y>
-       <width>131</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QFrame" name="frame5">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>760</y>
-      <width>401</width>
+      <y>690</y>
+      <width>381</width>
       <height>91</height>
      </rect>
     </property>
@@ -871,12 +813,25 @@ QPushButton::pressed{
     <property name="lineWidth">
      <number>1</number>
     </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>40</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Count/Sec:</string>
+     </property>
+    </widget>
     <widget class="QPushButton" name="optimize_btn">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>101</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
@@ -894,7 +849,7 @@ QPushButton::pressed{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	background-color: rgb(64, 137, 255);
-    font: 20px;
+    font: 18px;
     min-width: 2em;
     padding: 6px;
 	
@@ -924,25 +879,12 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>240</x>
-       <y>40</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Count/Sec:</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QLabel" name="optimize_lbl">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>730</y>
+      <y>660</y>
       <width>91</width>
       <height>21</height>
      </rect>

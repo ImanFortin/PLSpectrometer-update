@@ -7,7 +7,6 @@ class scanWorker(QObject):
 
     #this is all the information we will be sending to UI while we run
     data = pyqtSignal(float)
-    progress = pyqtSignal(list)
     position = pyqtSignal(float)
     finished = pyqtSignal()
 
@@ -90,9 +89,9 @@ class scanWorker(QObject):
             if i != number_of_steps:
                 self.spectrometer.move(self.step, high_time = high, low_time = low)
                 self.position.emit(self.spectrometer.position + self.step)
-                
 
-            self.progress.emit([i + 1,number_of_steps + 1])
+
+            
 
 
         self.finished.emit()#emit that we're done

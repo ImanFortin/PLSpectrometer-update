@@ -29,22 +29,21 @@ class MainWindow(qtw.QMainWindow):
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
         self.single = Spectrometer('Dev1') #initialize the single spectrometer
-        self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
+        self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     def make_plots(self):
         #make the wavelength plot
         self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
-        self.wavelength_plot.setGeometry(500,0,800,500)
+        self.wavelength_plot.setGeometry(400,0,900,500)
 
         #make the energy plot
         self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
-        self.energy_plot.setGeometry(500,500,800,500)
+        self.energy_plot.setGeometry(400,500,900,500)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
         self.ui.position_lbl.adjustSize()
-        self.ui.property_label.adjustSize()
         self.ui.current_wavelength_lbl.adjustSize()
         self.ui.actual_value_lbl.adjustSize()
         self.ui.recalibrate_lbl.adjustSize()
@@ -57,7 +56,6 @@ class MainWindow(qtw.QMainWindow):
         self.ui.file_name_lbl.adjustSize()
         self.ui.sample_id_lbl.adjustSize()
         self.ui.count_time_lbl.adjustSize()
-        self.ui.common_variables_lbl.adjustSize()
         self.ui.spect_select_lbl.adjustSize()
 
 
@@ -82,10 +80,10 @@ class MainWindow(qtw.QMainWindow):
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
-            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.double.position))#display the current position
+            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.double.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
         else:
-            self.ui.current_wavelength_lbl.setText('Current Wavelength:'+str(self.single.position))#display the current position
+            self.ui.current_wavelength_lbl.setText('Current Wavelength: '+str(self.single.position))#display the current position
             self.autoscale_lbls() #autoscale the labels so they don't cut off
 
     #update the plots with data
@@ -100,19 +98,13 @@ class MainWindow(qtw.QMainWindow):
         if self.ui.radioButton.isChecked():#only update the display with double if double is selected
             current = self.ui.current_wavelength_lbl.text()
             #keep up to the ': ' of the current string
-            keep = current[:current.find(':')+1]
+            keep = current[:current.find(':')+2]
             #append on the new position
             new_string = keep + str(position)
             #set the new label
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
-
-    #update the progress bar function the arugment is a list that contains the current
-    #step and the maximum amount of steps
-    def update_scan_progress(self,step_max):
-        self.ui.scan_progress.setValue(step_max[0])
-        self.ui.scan_progress.setMaximum(step_max[1])
 
     #function that sets the buttons to enabled, to be called after
     #a scan or a move (connected to the finished of the Thread)
@@ -133,10 +125,10 @@ class MainWindow(qtw.QMainWindow):
     def shutter(self):
         if self.ui.shutter_btn.isChecked():
             self.double.close_shutter()
-            self.ui.shutter_btn.setText('open shutter')
+            self.ui.shutter_btn.setText('Open Shutter')
         else:
             self.double.open_shutter()
-            self.ui.shutter_btn.setText('close shutter')
+            self.ui.shutter_btn.setText('Close Shutter')
 
     def scan(self):
         #try to read the entries
@@ -157,8 +149,7 @@ class MainWindow(qtw.QMainWindow):
         #disable the buttons to prevent crashing
         self.disable_buttons()
 
-        #set progress bar to zero
-        self.ui.scan_progress.setValue(0)
+
         #clear the plots
         self.wavelength_plot.clear()
         self.energy_plot.clear()
@@ -181,7 +172,6 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.worker.deleteLater)#delete when done
         self.worker.finished.connect(self.enable_buttons)#enable buttons when done
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
-        self.worker.progress.connect(self.update_scan_progress)#update the progress bar as we go
         self.worker.position.connect(self.update_position)#update the position as we go
         self.worker.data.connect(self.update_plots)#update the plots as we take data
 
