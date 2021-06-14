@@ -507,7 +507,7 @@ QPushButton::pressed{
       <string>End (nm)</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="scan_end_input">
+    <widget class="QLineEdit" name="scan_step_input">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -596,7 +596,7 @@ QPushButton::pressed{
       <string>Step Size (nm)</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="scan_step_input">
+    <widget class="QLineEdit" name="scan_end_input">
      <property name="geometry">
       <rect>
        <x>120</x>

@@ -29,7 +29,7 @@ class moveWorker(QObject):
             self.finished.emit() #emit done
             return #return
 
-        high = 1/(self.spectrometer.frequency)
+        high = 1/(2*self.spectrometer.frequency)
         low = high
         #set the direction voltage
         self.spectrometer.set_direction(direction)#see spectrometer.py for the method
@@ -39,14 +39,14 @@ class moveWorker(QObject):
             direction = 1
             self.spectrometer.set_direction(direction) #change directions
             self.spectrometer.move(9.97, high_time = high, low_time = low) #move to with 0.03 nm of the positin
-            self.spectrometer.move(0.03, high_time = high, low_time = 1) #do the last 0.03 nm with 1s in between each pulse
+            self.spectrometer.move(0.03, high_time = high, low_time = 0.25) #do the last 0.03 nm with 1s in between each pulse
 
         elif direction > 0:#if the direction is forwards
             if distance < 0.03:#if distance is less than ten we need to go backwards
-                self.spectrometer.move(distance, high_time = high, low_time = 1)
+                self.spectrometer.move(distance, high_time = high, low_time = 0.25)
             else:#otherwise just move forwards within 0.03 and then slow down
                 self.spectrometer.move(distance - 0.03, high_time = high, low_time = low)
-                self.spectrometer.move(0.03, high_time = high, low_time = 1)
+                self.spectrometer.move(0.03, high_time = high, low_time = 0.25)
 
         self.position.emit(end)
         self.finished.emit()#emit that we're done

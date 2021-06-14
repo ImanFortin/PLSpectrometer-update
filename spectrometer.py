@@ -29,11 +29,11 @@ class Spectrometer():
         try:#try to make the tasks for the shutter and direction
             self.shutter = nidaqmx.Task()
             #probably need to change the path name when in real spectrometer
-            self.shutter.do_channels.add_do_chan(device +'/port0/line0')
+            self.shutter.do_channels.add_do_chan(device +'/port1/line1')
             self.shutter.start()
 
             self.direction = nidaqmx.Task()
-            self.direction.do_channels.add_do_chan(device +'/port0/line7')
+            self.direction.do_channels.add_do_chan(device +'/port1/line3')
             self.direction.start()
 
         except:
@@ -100,7 +100,7 @@ class Spectrometer():
 
     def move(self,distance,**kwargs):
 
-        pulse_count = int(distance/0.001)
+        pulse_count = int(distance * 4000)
         print(pulse_count)
         with nidaqmx.Task() as task:
             task.co_channels.add_co_pulse_chan_time(self.name + "/ctr0",**kwargs)
@@ -114,7 +114,7 @@ class Spectrometer():
         with nidaqmx.Task() as task:#open a task
 
              task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
-             task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI15'#set the terminal
+             task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI0'#set the terminal
              task.start()#start counting
              sleep(count_time)#wait the count time
              data = task.read()#read the counts
