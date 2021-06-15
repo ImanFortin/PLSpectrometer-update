@@ -105,6 +105,8 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
+    def change_status(self,status = ''):
+        self.ui.status_lbl.setText('Status: ' + status)
 
     #function that sets the buttons to enabled, to be called after
     #a scan or a move (connected to the finished of the Thread)
@@ -148,7 +150,7 @@ class MainWindow(qtw.QMainWindow):
 
         #disable the buttons to prevent crashing
         self.disable_buttons()
-
+        self.change_status('Scanning')
 
         #clear the plots
         self.wavelength_plot.clear()
@@ -156,8 +158,6 @@ class MainWindow(qtw.QMainWindow):
         #set the range
         self.wavelength_plot.range = (start,end)
         self.energy_plot.range = (start,end)
-
-        print('starting scan')
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
@@ -171,6 +171,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.scan_thread.quit)#quit when done
         self.worker.finished.connect(self.worker.deleteLater)#delete when done
         self.worker.finished.connect(self.enable_buttons)#enable buttons when done
+        self.worker.finished.connect(self.change_status)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
         self.worker.position.connect(self.update_position)#update the position as we go
         self.worker.data.connect(self.update_plots)#update the plots as we take data
@@ -191,6 +192,7 @@ class MainWindow(qtw.QMainWindow):
             return
 
         print('starting move to',destination)
+        self.change_status('Moving')
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
@@ -222,6 +224,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.worker.finished.connect(self.enable_buttons)
+        self.worker.finished.connect(self.change_status)
         self.thread.finished.connect(self.thread.deleteLater)
         self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread

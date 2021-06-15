@@ -113,7 +113,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="status_lbl">
      <property name="geometry">
       <rect>
        <x>10</x>
