@@ -63,45 +63,35 @@ class MainWindow(qtw.QMainWindow):
 
     # connect all the buttons to their functions
     def connect_buttons(self):
-        #connect the recalibrate function to the recalibrate function below
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
-        #connect scan button to scan function below
         self.ui.scan_button.clicked.connect(self.scan)
-        #connect move button to move function below
         self.ui.move_button.clicked.connect(self.move)
-        #default to the double spectrometer
-        self.ui.radioButton.setChecked(True)
-        #connect the abort button
+        self.ui.radioButton.setChecked(True)#default to the double spectrometer
         self.ui.abort_button.clicked.connect(self.abort)
-        #connect the dial
         self.ui.shutter_btn.clicked.connect(self.shutter)
-        #connect radio buttons
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
-            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
-            self.autoscale_lbls() #autoscale the labels so they don't cut off
+            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))
+            self.autoscale_lbls()
         else:
-            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))#display the current position
-            self.autoscale_lbls() #autoscale the labels so they don't cut off
+            self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))
+            self.autoscale_lbls()
 
     #update the plots with data
     def update_plots(self,data):
         self.wavelength_plot.update(self.double.position,data)
         self.energy_plot.update(self.double.position,data)
 
-    #update the spectrometer position
+    #update the spectrometer position and display
     def update_position(self,position):
         position = round(position, 3)
         self.double.position = position
         if self.ui.radioButton.isChecked():#only update the display with double if double is selected
             current = self.ui.current_wavelength_lbl.text()
-            #keep up to the ': ' of the current string
             keep = current[:current.find(':')+2]
-            #append on the new position
             new_string = keep + str(position)
-            #set the new label
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
@@ -133,8 +123,9 @@ class MainWindow(qtw.QMainWindow):
             self.ui.shutter_btn.setText('Close Shutter')
 
     def scan(self):
-        #try to read the entries
+
         try:
+            #read data from the input boxes
             start = float(self.ui.scan_start_input.text())
             end = float(self.ui.scan_end_input.text())
             step = float(self.ui.scan_step_input.text())
@@ -142,10 +133,10 @@ class MainWindow(qtw.QMainWindow):
             filename = self.ui.file_name_input.text()
             sample_id = self.ui.sample_ID_input.text()
 
-        #raise exception if there is an issue
+
         except:
             print('scan did not recieve valid inputs')
-            return #leave the function
+            return
 
 
         #disable the buttons to prevent crashing
@@ -234,22 +225,19 @@ class MainWindow(qtw.QMainWindow):
 
 
     def recalibrate(self):
-        #try to load in the data as a float
         try:
             actual = float(self.ui.recalibrate_input.text())
-        #if we encounter an error print messagge
         except:
             print('the recalibrate input was invalid')
-        #if no issue run the recalibrate method of the spectrometer see spectrometer.py
-        else:
-            if self.ui.radioButton.isChecked():
-                self.double.recalibrate(actual)
-            else:
-                self.single.recalibrate(actual)
+            return
 
-            self.update_position(actual)
-            #print success message and the new postion
-            print('succesfully recalibrated', self.double.position)
+        if self.ui.radioButton.isChecked():
+            self.double.recalibrate(actual)
+        else:
+            self.single.recalibrate(actual)
+
+        self.update_position(actual)
+        print('succesfully recalibrated', self.double.position)
 
 
     def check_intent(self):
@@ -264,8 +252,7 @@ class MainWindow(qtw.QMainWindow):
         else:
             return False
 
-    #this overwrites the close button of the UI, therefore it doesn't
-    #need to be connected to another button
+    #this overwrites the close button of the UI
     def closeEvent(self,event):
 
 
@@ -287,7 +274,8 @@ class MainWindow(qtw.QMainWindow):
 
 
     def abort(self):
-        #changes the abort flag inside the worker to be true
+        #changes the abort flag inside the worker to be true which will trigger
+        #abort on next scan step, cannot currently abort a move
         self.worker.abort = True
 
 

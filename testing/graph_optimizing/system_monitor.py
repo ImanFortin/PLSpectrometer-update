@@ -101,14 +101,18 @@ class Plots(qtch.QChartView):
         self.timer = qtc.QTimer(interval = 200, timeout = self.refresh_stats)
         self.timer.start()
 
+
+
+
     def refresh_stats(self):
+
         xdata = 1
         ydata = random.randint(0,150)
         self.xdata.append(xdata)
         self.ydata.append(ydata)
 
         if ydata > 0.9*self.max:
-            self.max = 1.1*ydata
+            self.max = 1.2*ydata
             y_axis = qtch.QValueAxis()
             y_axis.setRange(0,self.max)
             self.chart.setAxisY(y_axis,self.series)
