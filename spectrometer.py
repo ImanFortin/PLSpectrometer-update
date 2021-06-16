@@ -10,7 +10,7 @@ class Spectrometer():
     with the DAQ is handled in this class and not the UI, it will eventually also
     store a DAQ instance'''
 
-    #init function
+
     def __init__(self,device):
         #open file where we will store the last position
         try:
@@ -26,9 +26,9 @@ class Spectrometer():
         else:
             print(f'successfully loaded last position for {device}\n')
 
-        try:#try to make the tasks for the shutter and direction
-            self.shutter = nidaqmx.Task()
-            #probably need to change the path name when in real spectrometer
+        try:
+            self.shutter = nidaqmx.Task()#task to control the shutter
+            #port that we send signals to, if the port changes change this
             self.shutter.do_channels.add_do_chan(device +'/port1/line1')
             self.shutter.start()
 
@@ -41,7 +41,7 @@ class Spectrometer():
             print(f'you will be unable to send commands to this daq: {device}\n')
 
         self.name = device
-        self.frequency = 2000
+        self.frequency = 2000#frequency of pulses generated
 
     #getter method google @property for reasoning
     #short description it allows us to sanitaze the inputs while keeping the syntax neat
@@ -62,8 +62,7 @@ class Spectrometer():
 
     #print function for the spectrometer function
     def __str__(self):
-        #for now will only print the position
-        return float(self.position)
+        return str(self.position)
 
     def open_shutter(self):
         #set voltage to zero
@@ -102,14 +101,18 @@ class Spectrometer():
 
         if distance == 0:
             return
-
+        #calculate the amount of pulses its 4 pulses for 0.001nm of movement
         pulse_count = int(distance * 4000)
         print(pulse_count)
+        #ensures that the task is closed properly when done
         with nidaqmx.Task() as task:
+            #can't have two counter channels at once (co or ci), so important that this is closed
             task.co_channels.add_co_pulse_chan_time(self.name + "/ctr0",**kwargs)
+            #AcquisitionType.FINITE changes the mode to send a set number of pulses
+            #samps per chan is the number of pulses to send
             task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE, samps_per_chan=pulse_count)
             task.start()
-            task.wait_until_done(timeout = math.inf)
+            task.wait_until_done(timeout = math.inf)#need to wait until done before continuing
         print('done')
 
 
@@ -125,12 +128,13 @@ class Spectrometer():
         return data/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
-        self.position = wavelength
+        self.position = wavelength#change the stored position
 
 
-    #closes the tasks properly
+    #closes the tasks properly upon closing the application
     def close_channels(self):
         try:
+            #sets the voltages to zero
             self.shutter.write(False)
             self.direction.write(False)
             self.shutter.stop()

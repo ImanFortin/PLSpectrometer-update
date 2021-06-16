@@ -8,7 +8,6 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer
-from matplotlib_embedding import PlotWidget
 import time
 from graphing import Plots, LogPlots
 from workers.move import moveWorker

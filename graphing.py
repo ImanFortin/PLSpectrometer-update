@@ -4,6 +4,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtChart as qtch
 
+#the linear plots
 class Plots(qtch.QChartView):
 
     max = 100
@@ -44,12 +45,14 @@ class Plots(qtch.QChartView):
 
         self.xdata.append(xdata)
         self.ydata.append(ydata)
+        #autoscaling
         if ydata > 0.9*self.max:
             self.max = 1.2*ydata
             y_axis = qtch.QValueAxis()
             y_axis.setRange(0,self.max)
             self.chart.setAxisY(y_axis,self.series)
 
+        #to add data follow this procedure
         new_data = [
         qtc.QPointF(x,self.ydata[index])
         for index, x in enumerate(self.xdata)]
@@ -60,6 +63,7 @@ class Plots(qtch.QChartView):
         self.ydata = []
         self.xdata = []
 
+#the log plots
 class LogPlots(qtch.QChartView):
 
     max = 100
