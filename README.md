@@ -41,7 +41,7 @@ in order for us to be able to interrupt and update our UI in real time we have t
 
 this is a file with a few functions that I need frequently or don't want to write in the existing functions as they would be uneccesarily large. Right now it consists of a function to make the header, a function to check if the filename is in use and return the next free filename and a precise clock.
 
-#dependencies
+# dependencies
 1. numpy: pip install numpy
 2. pyqt5: pip install pyqt5
 3. nidaqmx: pip install nidaqmx
