@@ -100,6 +100,9 @@ class Spectrometer():
 
     def move(self,distance,**kwargs):
 
+        if distance == 0:
+            return
+
         pulse_count = int(distance * 4000)
         print(pulse_count)
         with nidaqmx.Task() as task:

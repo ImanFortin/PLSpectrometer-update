@@ -10,6 +10,7 @@ from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer
 from matplotlib_embedding import PlotWidget
 import time
+from graphing import Plots
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -31,15 +32,9 @@ class MainWindow(qtw.QMainWindow):
         self.single = Spectrometer('Dev3') #initialize the single spectrometer
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
+        print('done init')
 
-    def make_plots(self):
-        #make the wavelength plot
-        self.wavelength_plot = PlotWidget(parent = self)
-        self.wavelength_plot.setGeometry(400,0,900,500)
 
-        #make the energy plot
-        self.energy_plot = PlotWidget(parent = self, scale = 'log')
-        self.energy_plot.setGeometry(400,500,900,500)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -58,9 +53,6 @@ class MainWindow(qtw.QMainWindow):
         self.ui.count_time_lbl.adjustSize()
         self.ui.spect_select_lbl.adjustSize()
 
-
-
-
     # connect all the buttons to their functions
     def connect_buttons(self):
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
@@ -71,6 +63,24 @@ class MainWindow(qtw.QMainWindow):
         self.ui.shutter_btn.clicked.connect(self.shutter)
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
 
+    def make_plots(self):
+        self.plot_frame = qtw.QFrame(self.ui.centralwidget)
+        layout = qtw.QVBoxLayout()
+
+        self.wavelength_plot = Plots('Wavelength')
+        layout.addWidget(self.wavelength_plot)
+
+
+        self.energy_plot = Plots('Energy')
+        layout.addWidget(self.energy_plot)
+        self.plot_frame.setLayout(layout)
+        self.plot_frame.setGeometry(400,0,1000,1000)
+
+    #update the plots with data
+    def update_plots(self,data):
+        self.wavelength_plot.refresh_stats(self.double.position,data)
+        self.energy_plot.refresh_stats(self.double.position,data)
+
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
             self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))
@@ -79,10 +89,7 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))
             self.autoscale_lbls()
 
-    #update the plots with data
-    def update_plots(self,data):
-        self.wavelength_plot.update(self.double.position,data)
-        self.energy_plot.update(self.double.position,data)
+
 
     #update the spectrometer position and display
     def update_position(self,position):
@@ -123,7 +130,6 @@ class MainWindow(qtw.QMainWindow):
             self.ui.shutter_btn.setText('Close Shutter')
 
     def scan(self):
-
         try:
             #read data from the input boxes
             start = float(self.ui.scan_start_input.text())
@@ -144,11 +150,13 @@ class MainWindow(qtw.QMainWindow):
         self.change_status('Scanning')
 
         #clear the plots
-        self.wavelength_plot.clear()
-        self.energy_plot.clear()
+        # self.wavelength_plot.clear()
+        # self.energy_plot.clear()
         #set the range
-        self.wavelength_plot.range = (start,end)
-        self.energy_plot.range = (start,end)
+        self.wavelength_plot.set_xlim(start,end)
+        self.energy_plot.set_xlim(start,end)
+        self.wavelength_plot.cla()
+        self.energy_plot.cla()
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
