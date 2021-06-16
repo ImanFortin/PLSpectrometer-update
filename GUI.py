@@ -10,7 +10,7 @@ from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer
 from matplotlib_embedding import PlotWidget
 import time
-from graphing import Plots
+from graphing import Plots, LogPlots
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -64,22 +64,43 @@ class MainWindow(qtw.QMainWindow):
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
 
     def make_plots(self):
-        self.plot_frame = qtw.QFrame(self.ui.centralwidget)
+        tabs = qtw.QTabWidget(self.ui.centralwidget)
+        #first tab creation
+        self.wavelength_frame = qtw.QFrame()
         layout = qtw.QVBoxLayout()
 
         self.wavelength_plot = Plots('Wavelength')
         layout.addWidget(self.wavelength_plot)
 
 
+        self.wavelength_plot_log = LogPlots('Log')
+        layout.addWidget(self.wavelength_plot_log)
+
+        self.wavelength_frame.setLayout(layout)
+        tabs.addTab(self.wavelength_frame, 'Wavelength')
+
+        #second tab creation
+        self.energy_frame = qtw.QFrame()
+        layout = qtw.QVBoxLayout()
+
         self.energy_plot = Plots('Energy')
         layout.addWidget(self.energy_plot)
-        self.plot_frame.setLayout(layout)
-        self.plot_frame.setGeometry(400,0,1000,1000)
+
+
+        self.energy_plot_log = LogPlots('Log')
+        layout.addWidget(self.energy_plot_log)
+
+        self.energy_frame.setLayout(layout)
+        tabs.addTab(self.energy_frame, 'Energy')
+
+        tabs.setGeometry(400,0,1000,1000)
 
     #update the plots with data
     def update_plots(self,data):
         self.wavelength_plot.refresh_stats(self.double.position,data)
+        self.wavelength_plot_log.refresh_stats(self.double.position,data)
         self.energy_plot.refresh_stats(self.double.position,data)
+        self.energy_plot_log.refresh_stats(self.double.position,data)
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
@@ -155,8 +176,13 @@ class MainWindow(qtw.QMainWindow):
         #set the range
         self.wavelength_plot.set_xlim(start,end)
         self.energy_plot.set_xlim(start,end)
+        self.wavelength_plot_log.set_xlim(start,end)
+        self.energy_plot_log.set_xlim(start,end)
         self.wavelength_plot.cla()
         self.energy_plot.cla()
+        self.wavelength_plot_log.cla()
+        self.energy_plot_log.cla()
+
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
