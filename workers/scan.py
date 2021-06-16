@@ -78,7 +78,7 @@ class scanWorker(QObject):
                 return
 
             counts = self.spectrometer.read(self.time)
-            #self.data.emit(counts)
+            self.data.emit(counts)
             print(counts)
             #opening and closing in here means in case of a crash we keep the data
             f = open(self.filename, 'a')

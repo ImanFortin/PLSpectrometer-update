@@ -34,11 +34,11 @@ class MainWindow(qtw.QMainWindow):
 
     def make_plots(self):
         #make the wavelength plot
-        self.wavelength_plot = PlotWidget(parent = self, width = 6, height = 4)
+        self.wavelength_plot = PlotWidget(parent = self)
         self.wavelength_plot.setGeometry(400,0,900,500)
 
         #make the energy plot
-        self.energy_plot = PlotWidget(parent = self, width = 6, height = 4, scale = 'log')
+        self.energy_plot = PlotWidget(parent = self, scale = 'log')
         self.energy_plot.setGeometry(400,500,900,500)
 
     #method for adjusting the labels so they are consistent between machines

@@ -41,6 +41,12 @@ this is where the spectrometer class is created which is then imported and loade
 
 in order for us to be able to interrupt and update our UI in real time we have to use QThreads. The move.py file holds the class and the functions that the thread will run in, the thread being set up and connected occurs in the GUI.py file under the corresponding method name ex. move, scan.
 
+#dependencies
+1. numpy: pip install numpy
+2. pyqt5: pip install pyqt5
+3. nidaqmx: pip install nidaqmx
+
+
 # additonal comments
 this modular approach can be a bit confusing when looking at the whole picture, however it makes working with pieces of the code much easier and cleaner. I have done my best to make it clear, some things that may cause you trouble when first working with this directory or being new to classes.
 
