@@ -81,12 +81,12 @@ class Plots(qtch.QChartView):
 
         self.series = qtch.QSplineSeries(name = 'Counts')
         self.chart.addSeries(self.series)
-        self.xdata = []
-        self.ydata = []
 
+        self.ydata = []
+        self.xdata = []
         self.series.append([
-        qtc.QPoint(self.xdata[i],self.ydata[i])
-        for i in range(len(self.xdata))
+        qtc.QPoint(x,y)
+        for x,y in enumerate(self.xdata)
         ])
 
         x_axis = qtch.QValueAxis()
@@ -94,24 +94,24 @@ class Plots(qtch.QChartView):
         y_axis = qtch.QValueAxis()
         y_axis.setRange(0,self.max)
 
-        self.chart.setAxisX(x_axis)
-        self.chart.setAxisY(y_axis)
-
+        self.chart.setAxisX(x_axis,self.series)
+        self.chart.setAxisY(y_axis,self.series)
+        self.chart.setTheme(qtch.QChart.ChartThemeBlueCerulean)
         self.setRenderHint(qtg.QPainter.Antialiasing)
         self.timer = qtc.QTimer(interval = 200, timeout = self.refresh_stats)
         self.timer.start()
 
     def refresh_stats(self):
         xdata = 1
-        ydata = random.randint(0,200)
+        ydata = random.randint(0,150)
         self.xdata.append(xdata)
         self.ydata.append(ydata)
 
-        if ydata > self.max*0.9:
+        if ydata > 0.9*self.max:
             self.max = 1.1*ydata
             y_axis = qtch.QValueAxis()
             y_axis.setRange(0,self.max)
-            self.chart.setAxisY(y_axis)
+            self.chart.setAxisY(y_axis,self.series)
 
         new_data = [
         qtc.QPoint(x,y)

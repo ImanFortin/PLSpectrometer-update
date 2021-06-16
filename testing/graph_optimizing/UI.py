@@ -5,6 +5,7 @@ from PyQt5 import QtGui as gtg
 from PyQt5 import QtCore as qtc
 from plotWidget import Canvas
 from Blit import BlitManager
+import random
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5.QtWidgets import (
     QApplication,
@@ -34,7 +35,7 @@ class MainWindow(qtw.QWidget):
 
         for j in range(500):
             # update the artists
-            self.wavelength_plot.add_data(x[:j],np.sin(x[:j]  * np.pi))
+            self.wavelength_plot.add_data(x[j],2*np.sin(x[j]  * np.pi))
 
 
 if __name__ == '__main__':
