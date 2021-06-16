@@ -123,7 +123,7 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
-    def change_status(self,status = ''):
+    def change_status(self,status = 'Idle'):
         self.ui.status_lbl.setText('Status: ' + status)
 
     #function that sets the buttons to enabled, to be called after
@@ -145,10 +145,10 @@ class MainWindow(qtw.QMainWindow):
     def shutter(self):
         if self.ui.shutter_btn.isChecked():
             self.double.close_shutter()
-            self.ui.shutter_btn.setText('Open Shutter')
+            self.ui.shutter_btn.setText('Shutter Closed')
         else:
             self.double.open_shutter()
-            self.ui.shutter_btn.setText('Close Shutter')
+            self.ui.shutter_btn.setText('Shutter Opened')
 
     def scan(self):
         try:
@@ -170,10 +170,7 @@ class MainWindow(qtw.QMainWindow):
         self.disable_buttons()
         self.change_status('Scanning')
 
-        #clear the plots
-        # self.wavelength_plot.clear()
-        # self.energy_plot.clear()
-        #set the range
+        #set the range and clear the data from plots
         self.wavelength_plot.set_xlim(start,end)
         self.energy_plot.set_xlim(start,end)
         self.wavelength_plot_log.set_xlim(start,end)
@@ -187,8 +184,6 @@ class MainWindow(qtw.QMainWindow):
         self.scan_thread = QThread()
         # Step 3: Create a worker object
         self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input the double spectrometer
-
-
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
