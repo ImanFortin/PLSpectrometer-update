@@ -149,6 +149,10 @@ class MainWindow(qtw.QMainWindow):
             self.double.open_shutter()
             self.ui.shutter_btn.setText('Shutter Opened')
 
+    def check_repeat(self):
+        if self.ui.repeat_btn.isChecked():
+            self.scan()
+
     def scan(self):
         try:
             #read data from the input boxes
@@ -192,6 +196,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.enable_buttons)#enable buttons when done
         self.worker.finished.connect(self.change_status)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
+        self.scan_thread.finished.connect(self.check_repeat)
         self.worker.position.connect(self.update_position)#update the position as we go
         self.worker.data.connect(self.update_plots)#update the plots as we take data
 

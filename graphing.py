@@ -115,7 +115,6 @@ class LogPlots(qtch.QChartView):
         new_data = [
         qtc.QPointF(x,self.ydata[index])
         for index, x in enumerate(self.xdata)]
-        print(new_data)
         self.series.replace(new_data)
 
     def cla(self):

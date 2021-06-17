@@ -714,6 +714,22 @@ QPushButton::pressed{
       <set>Qt::ImhDigitsOnly</set>
      </property>
     </widget>
+    <widget class="QPushButton" name="repeat_btn">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>70</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>repeat</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="perform_scan_lbl">
     <property name="geometry">
