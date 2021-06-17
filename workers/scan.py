@@ -19,7 +19,6 @@ class scanWorker(QObject):
         self.step = step
         self.time = time
         self.abort = False
-        #leaving these empty for now so i don't have to input them when testing
         self.filename = available_name(filename)
         self.sample_id = sample_id
 
@@ -34,24 +33,23 @@ class scanWorker(QObject):
         distance = abs(end - start)
 
         try:
-            direction = int((end - start)/distance)
+            direction = int((end - start)/distance)#catch divide by zero error
         except:
-            direction = 1 #this will need to be changed when we are actaully sending pulses
+            direction = 1
 
-        #unfortunately we just have to copy in the move function here
         high = 1/(2*self.spectrometer.frequency)
         low = high
         #set the direction voltage
         self.spectrometer.set_direction(direction)#see spectrometer.py for the method
 
-        if direction < 0:#if the direction is backwards
+        if direction < 0:
             self.spectrometer.move(distance + 10, high_time = high, low_time = low)#first move to ten nm back
             direction = 1
             self.spectrometer.set_direction(direction) #change directions
             self.spectrometer.move(9.97, high_time = high, low_time = low) #move to 0.03 nm of the position
             self.spectrometer.move(0.03, high_time = high, low_time = 0.25) #do the last 0.03 nm with 1s in between each pulse
 
-        elif direction >= 0:#if the direction is forwards
+        elif direction >= 0:
             if distance < 0.03:#if distance is less than ten we need to go backwards
                 self.spectrometer.move(distance, high_time = high, low_time = 0.25)
             else:#otherwise just move forwards within 0.03 and then slow down
@@ -78,9 +76,9 @@ class scanWorker(QObject):
                 return
 
             counts = self.spectrometer.read(self.time)
-            self.data.emit(counts)
+            self.data.emit(counts)#send data to be plotted
             print(counts)
-            #opening and closing in here means in case of a crash we keep the data
+            #opening and closing in loop means in case of a crash we keep the data
             f = open(self.filename, 'a')
             f.write(str(self.spectrometer.position) + '\t' + str(counts) + '\n')
             f.close()
@@ -88,9 +86,6 @@ class scanWorker(QObject):
             if i != number_of_steps:
                 self.spectrometer.move(self.step, high_time = high, low_time = low)
                 self.position.emit(self.spectrometer.position + self.step)
-
-
-
 
 
         self.finished.emit()#emit that we're done

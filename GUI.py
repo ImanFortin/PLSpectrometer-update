@@ -8,8 +8,8 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore as qtc
 from spectrometer import Spectrometer
-from matplotlib_embedding import PlotWidget
 import time
+from graphing import Plots, LogPlots
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -31,15 +31,9 @@ class MainWindow(qtw.QMainWindow):
         self.single = Spectrometer('Dev3') #initialize the single spectrometer
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
+        print('done init')
 
-    def make_plots(self):
-        #make the wavelength plot
-        self.wavelength_plot = PlotWidget(parent = self)
-        self.wavelength_plot.setGeometry(400,0,900,500)
 
-        #make the energy plot
-        self.energy_plot = PlotWidget(parent = self, scale = 'log')
-        self.energy_plot.setGeometry(400,500,900,500)
 
     #method for adjusting the labels so they are consistent between machines
     def autoscale_lbls(self):
@@ -58,9 +52,6 @@ class MainWindow(qtw.QMainWindow):
         self.ui.count_time_lbl.adjustSize()
         self.ui.spect_select_lbl.adjustSize()
 
-
-
-
     # connect all the buttons to their functions
     def connect_buttons(self):
         self.ui.recalibrate_button.clicked.connect(self.recalibrate)
@@ -71,6 +62,45 @@ class MainWindow(qtw.QMainWindow):
         self.ui.shutter_btn.clicked.connect(self.shutter)
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
 
+    def make_plots(self):
+        tabs = qtw.QTabWidget(self.ui.centralwidget)
+        #first tab creation
+        self.wavelength_frame = qtw.QFrame()
+        layout = qtw.QVBoxLayout()
+
+        self.wavelength_plot = Plots('Wavelength')
+        layout.addWidget(self.wavelength_plot)
+
+
+        self.wavelength_plot_log = LogPlots('Log')
+        layout.addWidget(self.wavelength_plot_log)
+
+        self.wavelength_frame.setLayout(layout)
+        tabs.addTab(self.wavelength_frame, 'Wavelength')
+
+        #second tab creation
+        self.energy_frame = qtw.QFrame()
+        layout = qtw.QVBoxLayout()
+
+        self.energy_plot = Plots('Energy')
+        layout.addWidget(self.energy_plot)
+
+
+        self.energy_plot_log = LogPlots('Log')
+        layout.addWidget(self.energy_plot_log)
+
+        self.energy_frame.setLayout(layout)
+        tabs.addTab(self.energy_frame, 'Energy')
+
+        tabs.setGeometry(400,0,1000,1000)
+
+    #update the plots with data
+    def update_plots(self,data):
+        self.wavelength_plot.refresh_stats(self.double.position,data)
+        self.wavelength_plot_log.refresh_stats(self.double.position,data)
+        self.energy_plot.refresh_stats(self.double.position,data)
+        self.energy_plot_log.refresh_stats(self.double.position,data)
+
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
             self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))
@@ -79,10 +109,7 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))
             self.autoscale_lbls()
 
-    #update the plots with data
-    def update_plots(self,data):
-        self.wavelength_plot.update(self.double.position,data)
-        self.energy_plot.update(self.double.position,data)
+
 
     #update the spectrometer position and display
     def update_position(self,position):
@@ -95,7 +122,7 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
-    def change_status(self,status = ''):
+    def change_status(self,status = 'Idle'):
         self.ui.status_lbl.setText('Status: ' + status)
 
     #function that sets the buttons to enabled, to be called after
@@ -117,13 +144,16 @@ class MainWindow(qtw.QMainWindow):
     def shutter(self):
         if self.ui.shutter_btn.isChecked():
             self.double.close_shutter()
-            self.ui.shutter_btn.setText('Open Shutter')
+            self.ui.shutter_btn.setText('Shutter Closed')
         else:
             self.double.open_shutter()
-            self.ui.shutter_btn.setText('Close Shutter')
+            self.ui.shutter_btn.setText('Shutter Opened')
+
+    def check_repeat(self):
+        if self.ui.repeat_btn.isChecked():
+            self.scan()
 
     def scan(self):
-
         try:
             #read data from the input boxes
             start = float(self.ui.scan_start_input.text())
@@ -143,18 +173,20 @@ class MainWindow(qtw.QMainWindow):
         self.disable_buttons()
         self.change_status('Scanning')
 
-        #clear the plots
-        self.wavelength_plot.clear()
-        self.energy_plot.clear()
-        #set the range
-        self.wavelength_plot.range = (start,end)
-        self.energy_plot.range = (start,end)
+        #set the range and clear the data from plots
+        self.wavelength_plot.set_xlim(start,end)
+        self.energy_plot.set_xlim(start,end)
+        self.wavelength_plot_log.set_xlim(start,end)
+        self.energy_plot_log.set_xlim(start,end)
+        self.wavelength_plot.cla()
+        self.energy_plot.cla()
+        self.wavelength_plot_log.cla()
+        self.energy_plot_log.cla()
+
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
         self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input the double spectrometer
-
-
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
@@ -164,6 +196,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.enable_buttons)#enable buttons when done
         self.worker.finished.connect(self.change_status)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
+        self.scan_thread.finished.connect(self.check_repeat)
         self.worker.position.connect(self.update_position)#update the position as we go
         self.worker.data.connect(self.update_plots)#update the plots as we take data
 
