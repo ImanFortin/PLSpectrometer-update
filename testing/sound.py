@@ -1,4 +1,1 @@
-import winsound
-
-for i in range(10):
-    winsound.Beep(3000,100)
+from PL_pkg.pl_class import PL_data
