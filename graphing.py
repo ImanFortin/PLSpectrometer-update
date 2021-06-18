@@ -62,6 +62,10 @@ class Plots(qtch.QChartView):
 
         self.ydata = []
         self.xdata = []
+        self.max = 100
+        y_axis = qtch.QValueAxis()
+        y_axis.setRange(0,self.max)
+        self.chart.setAxisY(y_axis,self.series)
 
 #the log plots
 class LogPlots(qtch.QChartView):

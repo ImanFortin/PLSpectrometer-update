@@ -181,10 +181,9 @@ class MainWindow(qtw.QMainWindow):
         soundboard = qtw.QWidget()
         soundboard.setLayout(qtw.QGridLayout())
         self.setCentralWidget(soundboard)
-        for c in range(columns):
-            for r in range(rows):
-                sw = SoundWidget()
-                soundboard.layout().addWidget(sw, c, r)
+
+        sw = SoundWidget()
+        soundboard.layout().addWidget(sw)
 
         # Code ends here
         self.show()

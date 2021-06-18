@@ -98,8 +98,10 @@ class MainWindow(qtw.QMainWindow):
     def update_plots(self,data):
         self.wavelength_plot.refresh_stats(self.double.position,data)
         self.wavelength_plot_log.refresh_stats(self.double.position,data)
-        self.energy_plot.refresh_stats(self.double.position,data)
-        self.energy_plot_log.refresh_stats(self.double.position,data)
+
+        energy_x = 1239841.662/(1.000289*self.double.position)
+        self.energy_plot.refresh_stats(energy_x,data)
+        self.energy_plot_log.refresh_stats(energy_x,data)
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
@@ -175,9 +177,13 @@ class MainWindow(qtw.QMainWindow):
 
         #set the range and clear the data from plots
         self.wavelength_plot.set_xlim(start,end)
-        self.energy_plot.set_xlim(start,end)
         self.wavelength_plot_log.set_xlim(start,end)
-        self.energy_plot_log.set_xlim(start,end)
+        energy_start = 1239841.662/(1.000289 * end)
+        energy_end = 1239841.662/(1.000289 * start)
+        print(energy_start)
+        print(energy_end)
+        self.energy_plot.set_xlim(energy_start,energy_end)
+        self.energy_plot_log.set_xlim(energy_start,energy_end)
         self.wavelength_plot.cla()
         self.energy_plot.cla()
         self.wavelength_plot_log.cla()
