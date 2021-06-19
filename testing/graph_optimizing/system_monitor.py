@@ -51,11 +51,8 @@ class DiskUsageChartView(qtch.QChartView):
         series.append(bar_set)
 
         partitions = []
-        for part in psutil.disk_partitions():
-            if 'rw' in part.opts.split(','):
-                partitions.append(part.device)
-                usage = psutil.disk_usage(part.mountpoint)
-                bar_set.append(usage.percent)
+
+        bar_set.append(20)
 
         x_axis = qtch.QBarCategoryAxis()
         x_axis.append(partitions)
