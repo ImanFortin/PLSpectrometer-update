@@ -7,9 +7,10 @@ from qt_designer import Ui_MainWindow
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 from spectrometer import Spectrometer
 import time
-from graphing import Plots, LogPlots
+from graphing import Plots, LogPlots, BarChartView
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -29,6 +30,7 @@ class MainWindow(qtw.QMainWindow):
         self.make_plots() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
         self.single = Spectrometer('Dev3') #initialize the single spectrometer
+        self.add_optimize()
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
         print('done init')
@@ -61,6 +63,15 @@ class MainWindow(qtw.QMainWindow):
         self.ui.abort_button.clicked.connect(self.abort)
         self.ui.shutter_btn.clicked.connect(self.shutter)
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
+
+    def add_optimize(self):
+        self.count_display = BarChartView(self.ui.centralwidget)
+        self.count_display.setGeometry(310,710,65,130)
+        self.count_display.refresh_stats(1030)
+
+    def update_bar(self,ydata):
+        pass
+
 
     def make_plots(self):
         tabs = qtw.QTabWidget(self.ui.centralwidget)
@@ -110,8 +121,6 @@ class MainWindow(qtw.QMainWindow):
         else:
             self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.single.position))
             self.autoscale_lbls()
-
-
 
     #update the spectrometer position and display
     def update_position(self,position):
@@ -164,8 +173,6 @@ class MainWindow(qtw.QMainWindow):
             time = float(self.ui.count_time_input.text())
             filename = self.ui.file_name_input.text()
             sample_id = self.ui.sample_ID_input.text()
-
-
         except:
             print('scan did not recieve valid inputs')
             return
@@ -212,11 +219,8 @@ class MainWindow(qtw.QMainWindow):
 
 
     def move(self):
-        #try to load the data
         try:
             destination = float(self.ui.move_input.text())
-
-        #print a message if it fails
         except:
             print('move recieved invalid input')
             return
@@ -233,7 +237,6 @@ class MainWindow(qtw.QMainWindow):
                     return
 
             self.worker = moveWorker(self.double,destination)#input double
-
         else:#if single is selected
             if abs(destination - self.single.position) > 100:
                 intent = self.check_intent()
@@ -241,15 +244,11 @@ class MainWindow(qtw.QMainWindow):
                     return
 
             self.worker = moveWorker(self.single,destination)#input single
-
         #disable the buttons to prevent crashing
         self.disable_buttons()
-
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
-
         # # Step 5: Connect signals and slots see scan fordetailed documentation
-
         self.thread.started.connect(self.worker.move)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)

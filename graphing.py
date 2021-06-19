@@ -125,3 +125,65 @@ class LogPlots(qtch.QChartView):
 
         self.ydata = []
         self.xdata = []
+
+
+
+class BarChartView(qtch.QChartView):
+
+    max = 100
+    min = 0
+    def __init__(self,parent):
+        super().__init__()
+        self.chart = qtch.QChart()
+        self.setChart(self.chart)
+        self.series = qtch.QBarSeries()
+        self.series.setBarWidth(1)
+        self.chart.addSeries(self.series)
+        self.chart.legend().setVisible(False)
+        self.chart.setContentsMargins(-10, -10, -10, -10)
+        self.bar_set = qtch.QBarSet('')
+        self.series.append(self.bar_set)
+
+        self.bar_set.append(20)
+
+        self.x_axis = qtch.QBarCategoryAxis()
+
+        self.x_axis.setVisible(False)
+        self.chart.setAxisX(self.x_axis)
+        self.series.attachAxis(self.x_axis)
+
+        self.y_axis = qtch.QValueAxis()
+
+        self.y_axis.setRange(0,100)
+        self.y_axis.setTickCount(5)
+        self.y_axis.setVisible(False)
+        self.chart.setAxisY(self.y_axis)
+        self.series.attachAxis(self.y_axis)
+
+        self.series.setLabelsVisible(True)
+        self.chart.layout().setContentsMargins(0,0,0,0)
+        self.chart.setTheme(qtch.QChart.ChartThemeDark)
+        self.setMinimumSize(10,50)
+
+        self.setParent(parent)
+
+    def refresh_stats(self,ydata):
+        while ydata > self.max:
+            self.min = self.max
+            self.max *= 10
+
+            self.y_axis.setRange(0,self.max)
+
+
+        while ydata < self.min:
+            self.max /= 10
+            if self.min == 100:
+                self.min = 0
+            else:
+                self.min /= 10
+
+            self.y_axis.setRange(self.min,self.max)
+
+
+        self.bar_set.replace(0,ydata)
+        self.series.append(self.bar_set)
