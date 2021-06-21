@@ -36,8 +36,10 @@ class MainWindow(qtw.QMainWindow):
         tabs.addTab(plot, 'test plot')
         plot_cursor = View()
         tabs.addTab(plot_cursor,'test')
-
-
+        plot_cursor.refresh_stats(5.2,7)
+        plot_cursor.refresh_stats(6,8)
+        plot_cursor.refresh_stats(7,9)
+        plot_cursor.set_xlim(4,8)
         self.show()
 
 
@@ -68,7 +70,6 @@ class DiskUsageChartView(qtch.QChartView):
         y_axis.setRange(0,100)
         chart.setAxisY(y_axis)
         series.attachAxis(y_axis)
-
         series.setLabelsVisible(True)
 
 
@@ -178,7 +179,7 @@ class CPUUsageView(qtch.QChartView):
         self.data.append(usage)
 
         new_data = [
-        qtc.QPoint(x,y)
+        qtc.QPointF(x,y)
         for x,y in enumerate(self.data)]
         self.series.replace(new_data)
 

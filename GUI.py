@@ -10,7 +10,8 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 from spectrometer import Spectrometer
 import time
-from graphing import Plots, LogPlots, BarChartView
+from graphing import BarChartView
+from testing.graph_optimizing.callout import View
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -78,22 +79,21 @@ class MainWindow(qtw.QMainWindow):
         #first tab creation
         self.wavelength_frame = qtw.QFrame()
         layout = qtw.QVBoxLayout()
-        self.wavelength_plot = Plots('Wavelength')
+        self.wavelength_plot = View(name = 'Wavelength')
         layout.addWidget(self.wavelength_plot)
-        self.wavelength_plot_log = LogPlots('Log')
+        self.wavelength_plot_log = View(name = 'Log', log = True)
         layout.addWidget(self.wavelength_plot_log)
         self.wavelength_frame.setLayout(layout)
         tabs.addTab(self.wavelength_frame, 'Wavelength')
         #second tab creation
         self.energy_frame = qtw.QFrame()
         layout = qtw.QVBoxLayout()
-        self.energy_plot = Plots('Energy')
+        self.energy_plot = View(name = 'Energy')
         layout.addWidget(self.energy_plot)
-        self.energy_plot_log = LogPlots('Log')
+        self.energy_plot_log = View(name = 'Log', log = True)
         layout.addWidget(self.energy_plot_log)
         self.energy_frame.setLayout(layout)
         tabs.addTab(self.energy_frame, 'Energy')
-
         tabs.setGeometry(400,0,1000,1000)
 
     #update the plots with data

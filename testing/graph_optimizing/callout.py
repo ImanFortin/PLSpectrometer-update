@@ -1,6 +1,11 @@
 import sys
 from typing import List
 
+
+from PyQt5 import QtWidgets as qtw
+from PyQt5 import QtGui as qtg
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtChart as qtch
 from PyQt5.QtChart import QChart, QLineSeries, QSplineSeries
 from PyQt5.QtCore import QPointF, QRect, QRectF, QSizeF, Qt
 from PyQt5.QtGui import QColor, QFont, QFontMetrics, QMouseEvent, QPainter, QPainterPath, QResizeEvent
@@ -105,7 +110,9 @@ class Callout(QGraphicsItem):
 
 class View(QGraphicsView):
 
-    def __init__(self, parent=None):
+    max = 10
+
+    def __init__(self, parent=None, name = '', log = False):
         super().__init__(parent)
         self.m_callouts: List[Callout] = []
         self.setDragMode(QGraphicsView.NoDrag)
@@ -115,29 +122,15 @@ class View(QGraphicsView):
         # chart
         self.m_chart = QChart(parent)
         self.m_chart.setMinimumSize(640, 480)
-        self.m_chart.setTitle("Hover the line to show callout. Click the line to make it stay")
+        self.m_chart.setTitle(name)
         self.m_chart.legend().hide()
-        series = QLineSeries()
-        series.append(1, 3)
-        series.append(4, 5)
-        series.append(5, 4.5)
-        series.append(7, 1)
-        series.append(11, 2)
-        self.x = [1,4,5,7,11]
-        self.y = [3,5,4.5,1,2]
-        self.m_chart.addSeries(series)
-
-        series2 = QSplineSeries()
-        series2.append(1.6, 1.4)
-        series2.append(2.4, 3.5)
-        series2.append(3.7, 2.5)
-        series2.append(7, 4)
-        series2.append(10, 2)
-        self.m_chart.addSeries(series2)
-
+        self.series = QLineSeries()
+        self.m_chart.addSeries(self.series)
         self.m_chart.createDefaultAxes()
         self.m_chart.setAcceptHoverEvents(True)
-
+        self.m_chart.setTheme(qtch.QChart.ChartThemeDark)
+        self.xdata = []
+        self.ydata = []
         self.setRenderHint(QPainter.Antialiasing)
 
         self.setScene(QGraphicsScene())
@@ -150,13 +143,25 @@ class View(QGraphicsView):
         self.m_coordY.setPos(self.m_chart.size().width() / 2 + 50, self.m_chart.size().height() - 20)
         self.m_coordY.setText("Y: ")
 
+        x_axis = qtch.QValueAxis()
+        x_axis.setRange(0, 10)
+
+        if log:
+            y_axis = qtch.QLogValueAxis()
+            y_axis.setBase(10)
+            y_axis.setRange(1,self.max)
+        else:
+            y_axis = qtch.QValueAxis()
+            y_axis.setRange(0,self.max)
+
+        self.m_chart.setAxisX(x_axis,self.series)
+        self.m_chart.setAxisY(y_axis,self.series)
+
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
+        self.m_tooltip.hide()
+        self.series.hovered.connect(self.tooltip)
 
-        series.clicked.connect(self.keep_callout)
-        series.hovered.connect(self.tooltip)
-        series2.clicked.connect(self.keep_callout)
-        series2.hovered.connect(self.tooltip)
 
         self.setMouseTracking(True)
 
@@ -178,25 +183,57 @@ class View(QGraphicsView):
         self.m_coordY.setText(f"Y: {from_chart.y():.3f}")
         super().mouseMoveEvent(event)
 
-    def keep_callout(self):
-        self.m_callouts.append(self.m_tooltip)
-        self.m_tooltip = Callout(self.m_chart)
-        self.scene().addItem(self.m_tooltip)
-
     def tooltip(self, point: QPointF, state: bool):
         if not self.m_tooltip:
             self.m_tooltip = Callout(self.m_chart)
 
         if state:
-            minx = min(self.x, key = lambda x: abs(x - point.x()))
-            i = self.x.index(minx)
-            self.m_tooltip.setText(f"X: {self.x[i]} \nY: {self.y[i]} ")
-            self.m_tooltip.m_anchor = QPointF(self.x[i],self.y[i])
+            minx = min(self.xdata, key = lambda x: abs(x - point.x()))
+            i = self.xdata.index(minx)
+            self.m_tooltip.setText(f"X: {self.xdata[i]} \nY: {self.ydata[i]} ")
+            self.m_tooltip.m_anchor = QPointF(self.xdata[i],self.ydata[i])
             self.m_tooltip.setZValue(11)
             self.m_tooltip.updateGeometry()
             self.m_tooltip.show()
         else:
             self.m_tooltip.hide()
+
+    def keep_callout(self):
+        self.m_callouts.append(self.m_tooltip)
+        self.m_tooltip = Callout(self.m_chart)
+        self.scene().addItem(self.m_tooltip)
+
+    def refresh_stats(self,xdata,ydata):
+
+        self.xdata.append(xdata)
+        self.ydata.append(ydata)
+        #autoscaling
+        if ydata > 0.9*self.max:
+            self.max = 1.2*ydata
+            y_axis = qtch.QValueAxis()
+            y_axis.setRange(0,self.max)
+            self.m_chart.setAxisY(y_axis,self.series)
+
+        #to add data follow this procedure
+        new_data = [
+        qtc.QPointF(x,self.ydata[index])
+        for index, x in enumerate(self.xdata)]
+        self.series.replace(new_data)
+
+    def set_xlim(self,min,max):
+        x_axis = qtch.QValueAxis()
+        x_axis.setRange(min, max)
+        self.m_chart.setAxisX(x_axis,self.series)
+
+    def cla(self):
+
+        self.ydata = []
+        self.xdata = []
+        self.max = 1
+        y_axis = qtch.QValueAxis()
+        y_axis.setRange(0,self.max)
+        self.chart.setAxisY(y_axis,self.series)
+
 
 
 if __name__ == '__main__':
