@@ -118,7 +118,7 @@ class View(QGraphicsView):
         self.setDragMode(QGraphicsView.NoDrag)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
+        self.log = log
         # chart
         self.m_chart = QChart(parent)
         self.m_chart.setMinimumSize(640, 480)
@@ -146,16 +146,16 @@ class View(QGraphicsView):
         x_axis = qtch.QValueAxis()
         x_axis.setRange(0, 10)
 
-        if log:
-            y_axis = qtch.QLogValueAxis()
-            y_axis.setBase(10)
-            y_axis.setRange(1,self.max)
+        if self.log:
+            self.y_axis = qtch.QLogValueAxis()
+            self.y_axis.setBase(10)
+            self.y_axis.setRange(1,self.max)
         else:
-            y_axis = qtch.QValueAxis()
-            y_axis.setRange(0,self.max)
+            self.y_axis = qtch.QValueAxis()
+            self.y_axis.setRange(0,self.max)
 
         self.m_chart.setAxisX(x_axis,self.series)
-        self.m_chart.setAxisY(y_axis,self.series)
+        self.m_chart.setAxisY(self.y_axis,self.series)
 
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
@@ -188,7 +188,8 @@ class View(QGraphicsView):
             self.m_tooltip = Callout(self.m_chart)
 
         if state:
-            minx = min(self.xdata, key = lambda x: abs(x - point.x()))
+            pos = zip(self.xdata, self.ydata)
+            min = min(pos, key = lambda point: abs((point[0] - point.x())**2 + (point[1] - point.y())**2))
             i = self.xdata.index(minx)
             self.m_tooltip.setText(f"X: {self.xdata[i]} \nY: {self.ydata[i]} ")
             self.m_tooltip.m_anchor = QPointF(self.xdata[i],self.ydata[i])
@@ -210,8 +211,12 @@ class View(QGraphicsView):
         #autoscaling
         if ydata > 0.9*self.max:
             self.max = 1.2*ydata
-            y_axis = qtch.QValueAxis()
-            y_axis.setRange(0,self.max)
+
+            if self.log:
+                y_axis.setRange(1,self.max)
+            else:
+                y_axis.setRange(0,self.max)
+
             self.m_chart.setAxisY(y_axis,self.series)
 
         #to add data follow this procedure
@@ -229,10 +234,11 @@ class View(QGraphicsView):
 
         self.ydata = []
         self.xdata = []
-        self.max = 1
-        y_axis = qtch.QValueAxis()
-        y_axis.setRange(0,self.max)
-        self.chart.setAxisY(y_axis,self.series)
+        self.max = 10
+        if self.log:
+            self.y_axis.setRange(1,self.max)
+        else:
+            self.y_axis.setRange(0,self.max)
 
 
 

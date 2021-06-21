@@ -27,7 +27,6 @@ class MainWindow(qtw.QMainWindow):
         super().__init__(*args, **kwargs) #run the init mathod of the parent class (MainWindow)
         self.ui = Ui_MainWindow() #initiate an instance of the compiled qt designer class
         self.ui.setupUi(self) #run the setup method to create the window
-
         self.connect_buttons() #connect all the buttons
         self.make_tabs() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
@@ -97,6 +96,8 @@ class MainWindow(qtw.QMainWindow):
         tabs.addTab(self.energy_frame, 'Energy')
         #adding the SearchUI
         tabs.addTab(SearchUI(),'Search')
+
+        #set size and shape
         tabs.setGeometry(400,0,1000,1000)
 
     #update the plots with data
