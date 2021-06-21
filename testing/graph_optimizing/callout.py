@@ -1,6 +1,6 @@
 import sys
 from typing import List
-
+from miscellaneous import find_minimum
 
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
@@ -147,15 +147,15 @@ class View(QGraphicsView):
         x_axis.setRange(0, 10)
 
         if self.log:
-            self.y_axis = qtch.QLogValueAxis()
-            self.y_axis.setBase(10)
-            self.y_axis.setRange(1,self.max)
+            y_axis = qtch.QLogValueAxis()
+            y_axis.setBase(10)
+            y_axis.setRange(1,self.max);
         else:
-            self.y_axis = qtch.QValueAxis()
-            self.y_axis.setRange(0,self.max)
+            y_axis = qtch.QValueAxis()
+            y_axis.setRange(0,self.max)
 
         self.m_chart.setAxisX(x_axis,self.series)
-        self.m_chart.setAxisY(self.y_axis,self.series)
+        self.m_chart.setAxisY(y_axis,self.series)
 
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
@@ -188,11 +188,9 @@ class View(QGraphicsView):
             self.m_tooltip = Callout(self.m_chart)
 
         if state:
-            pos = zip(self.xdata, self.ydata)
-            min = min(pos, key = lambda point: abs((point[0] - point.x())**2 + (point[1] - point.y())**2))
-            i = self.xdata.index(minx)
-            self.m_tooltip.setText(f"X: {self.xdata[i]} \nY: {self.ydata[i]} ")
-            self.m_tooltip.m_anchor = QPointF(self.xdata[i],self.ydata[i])
+            min_i = find_minimum(self.xdata, self.ydata, point.x(), point.y())
+            self.m_tooltip.setText(f"X: {self.xdata[min_i]} \nY: {self.ydata[min_i]} ")
+            self.m_tooltip.m_anchor = QPointF(self.xdata[min_i],self.ydata[min_i])
             self.m_tooltip.setZValue(11)
             self.m_tooltip.updateGeometry()
             self.m_tooltip.show()
@@ -213,8 +211,11 @@ class View(QGraphicsView):
             self.max = 1.2*ydata
 
             if self.log:
-                y_axis.setRange(1,self.max)
+                y_axis = qtch.QLogValueAxis()
+                y_axis.setBase(10)
+                y_axis.setRange(1,self.max);
             else:
+                y_axis = qtch.QValueAxis()
                 y_axis.setRange(0,self.max)
 
             self.m_chart.setAxisY(y_axis,self.series)
@@ -235,10 +236,16 @@ class View(QGraphicsView):
         self.ydata = []
         self.xdata = []
         self.max = 10
+
         if self.log:
-            self.y_axis.setRange(1,self.max)
+            y_axis = qtch.QLogValueAxis()
+            y_axis.setBase(10)
+            y_axis.setRange(1,self.max)
         else:
-            self.y_axis.setRange(0,self.max)
+            y_axis = qtch.QValueAxis()
+            y_axis.setRange(0,self.max)
+
+        self.m_chart.setAxisY(y_axis,self.series)
 
 
 

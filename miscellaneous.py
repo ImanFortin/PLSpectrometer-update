@@ -41,3 +41,15 @@ def make_header(f, sample_id, time_avg):
     dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     f.write('start Time:\t\t' + dt_string + '\n')
     f.write('Averaging Time:\t\t' + str(time_avg) + '\n\n')
+
+def find_minimum(xdata,ydata, cmpr_x, cmpr_y):
+    if len(xdata) == 0:
+        return None
+    minimum = cmpr_x**2 + cmpr_y**2
+    min_i = 0
+    for i in range(len(xdata)):
+        distance = (cmpr_x - xdata[i])**2 + (cmpr_y - ydata[i])**2
+        if distance < minimum:
+            minimum = distance
+            min_i = i
+    return min_i
