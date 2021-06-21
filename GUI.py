@@ -10,8 +10,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 from spectrometer import Spectrometer
 import time
-from graphing import BarChartView
-from testing.graph_optimizing.callout import View
+from graphing import BarChartView, View
 from searchUI import SearchUI
 from workers.move import moveWorker
 from workers.scan import scanWorker
