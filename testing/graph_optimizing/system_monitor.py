@@ -5,6 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtChart as qtch
 from collections import deque
+from callout import View
 import random
 import time
 import psutil
@@ -33,6 +34,10 @@ class MainWindow(qtw.QMainWindow):
         tabs.addTab(cpu_view, 'CPU Usage')
         plot = Plots('wavelength', Xrange = (0,200))
         tabs.addTab(plot, 'test plot')
+        plot_cursor = View()
+        tabs.addTab(plot_cursor,'test')
+
+
         self.show()
 
 
@@ -121,6 +126,9 @@ class Plots(qtch.QChartView):
         qtc.QPoint(x,y)
         for x,y in enumerate(self.ydata)]
         self.series.replace(new_data)
+
+
+
 
 class CPUUsageView(qtch.QChartView):
 
