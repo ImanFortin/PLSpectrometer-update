@@ -12,6 +12,7 @@ from spectrometer import Spectrometer
 import time
 from graphing import BarChartView
 from testing.graph_optimizing.callout import View
+from searchUI import SearchUI
 from workers.move import moveWorker
 from workers.scan import scanWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
@@ -28,7 +29,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.setupUi(self) #run the setup method to create the window
 
         self.connect_buttons() #connect all the buttons
-        self.make_plots() #add the plots to the UI
+        self.make_tabs() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
         self.single = Spectrometer('Dev3') #initialize the single spectrometer
         self.add_optimize()
@@ -74,7 +75,7 @@ class MainWindow(qtw.QMainWindow):
         pass
 
 
-    def make_plots(self):
+    def make_tabs(self):
         tabs = qtw.QTabWidget(self.ui.centralwidget)
         #first tab creation
         self.wavelength_frame = qtw.QFrame()
@@ -94,6 +95,8 @@ class MainWindow(qtw.QMainWindow):
         layout.addWidget(self.energy_plot_log)
         self.energy_frame.setLayout(layout)
         tabs.addTab(self.energy_frame, 'Energy')
+        #adding the SearchUI
+        tabs.addTab(SearchUI(),'Search')
         tabs.setGeometry(400,0,1000,1000)
 
     #update the plots with data
