@@ -8,6 +8,7 @@ class optimizeWorker(QObject):
     def __init__(self,spectrometer):
         super().__init__()
         self.abort = False
-
+        self.player = None
+        
     def optimize(self):
         pass

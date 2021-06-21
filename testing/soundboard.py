@@ -1,8 +1,11 @@
 import sys
+import time
+import random
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtMultimedia as qtmm
+from PyQt5 import QtChart as qtch
 
 
 class PlayButton(qtw.QPushButton):
@@ -44,6 +47,65 @@ class RecordButton(qtw.QPushButton):
             self.setText('Record')
 
 
+class BarChartView(qtch.QChartView):
+
+    max = 100
+    min = 0
+    def __init__(self):
+        super().__init__()
+        self.chart = qtch.QChart()
+        self.setChart(self.chart)
+        self.series = qtch.QBarSeries()
+        self.series.setBarWidth(1)
+        self.chart.addSeries(self.series)
+        self.chart.legend().setVisible(False)
+        self.chart.setContentsMargins(-10, -10, -10, -10)
+        self.bar_set = qtch.QBarSet('')
+        self.series.append(self.bar_set)
+
+        self.bar_set.append(20)
+
+        self.x_axis = qtch.QBarCategoryAxis()
+
+        self.x_axis.setVisible(False)
+        self.chart.setAxisX(self.x_axis)
+        self.series.attachAxis(self.x_axis)
+
+        self.y_axis = qtch.QValueAxis()
+
+        self.y_axis.setRange(0,100)
+        self.y_axis.setTickCount(5)
+        self.y_axis.setLabelFormat("%.1e")
+        self.chart.setAxisY(self.y_axis)
+        self.series.attachAxis(self.y_axis)
+
+        self.series.setLabelsVisible(True)
+        self.chart.layout().setContentsMargins(0,0,0,0)
+        self.chart.setTheme(qtch.QChart.ChartThemeDark)
+        self.chart.setMinimumSize(150,100)
+
+
+    def refresh_stats(self,ydata):
+        while ydata > self.max:
+            self.min = self.max
+            self.max *= 10
+
+            self.y_axis.setRange(0,self.max)
+
+
+        while ydata < self.min:
+            self.max /= 10
+            if self.min == 100:
+                self.min = 0
+            else:
+                self.min /= 10
+
+            self.y_axis.setRange(self.min,self.max)
+            
+
+        self.bar_set.replace(0,ydata)
+        self.series.append(self.bar_set)
+
 class SoundWidget(qtw.QWidget):
 
     def __init__(self):
@@ -64,7 +126,7 @@ class SoundWidget(qtw.QWidget):
         # Loading files
         self.file_button = qtw.QPushButton(
             'Load File', clicked=self.get_file)
-        self.layout().addWidget(self.file_button, 4, 0)
+        self.layout().addWidget(self.file_button, 4, 0,1,2)
 
         # Slider
         self.position = qtw.QSlider(
@@ -75,14 +137,6 @@ class SoundWidget(qtw.QWidget):
         self.player.durationChanged.connect(self.position.setMaximum)
         self.position.sliderMoved.connect(self.player.setPosition)
 
-
-        # Looping
-        self.loop_cb = qtw.QCheckBox(
-            'Loop',
-            stateChanged=self.on_loop_cb
-        )
-        self.layout().addWidget(self.loop_cb, 2, 0)
-
         # Volume
         self.volume = qtw.QSlider(
             minimum=0,
@@ -91,81 +145,44 @@ class SoundWidget(qtw.QWidget):
             orientation=qtc.Qt.Horizontal,
             sliderMoved=self.player.setVolume
         )
-        self.layout().addWidget(self.volume, 2, 1)
+        self.layout().addWidget(self.volume, 2, 0)
 
 
-        # Recording
-        self.recorder = qtmm.QAudioRecorder()
 
-        # supported audio inputs
-        print(self.recorder.audioInputs())
-        #self.recorder.setAudioInput('default:')
 
-        # Overriding sound recording settings
-        #settings = qtmm.QAudioEncoderSettings()
-        #settings.setCodec('audio/pcm')
-        #settings.setSampleRate(44100)
-        #settings.setQuality(qtmm.QMultimedia.HighQuality)
-        #self.recorder.setEncodingSettings(settings)
-        #self.recorder.setContainerFormat('audio/x-wav')
-        #self.recorder.setOutputLocation(
-        #    qtc.QUrl.fromLocalFile(qtc.QDir.home().filePath('sample1')))
-
-        self.record_button = RecordButton()
-        self.recorder.stateChanged.connect(
-            self.record_button.on_state_changed)
-        self.layout().addWidget(self.record_button, 4, 1)
-
-        self.record_button.clicked.connect(self.on_recordbutton)
 
 
     def on_playbutton(self):
         if self.player.state() == qtmm.QMediaPlayer.PlayingState:
             self.player.stop()
         else:
-            self.player.setPlaybackRate(2)
+            self.player.setPlaybackRate(1)
             self.player.play()
+
 
     def set_file(self, url):
         self.label.setText(url.fileName())
         if url.scheme() == '':
             url.setScheme('file')
         content = qtmm.QMediaContent(url)
-        #self.player.setMedia(content)
-        # Looping
-        # must retain a reference to the playlist
-        # hence self.playlist
+
         self.playlist = qtmm.QMediaPlaylist()
         self.playlist.addMedia(content)
         self.playlist.setCurrentIndex(1)
         self.player.setPlaylist(self.playlist)
-        self.loop_cb.setChecked(False)
+
 
     def get_file(self):
-        fn, _ = qtw.QFileDialog.getOpenFileUrl(
+        fn, _ = qtw.QFileDialog.getOpenFileName(
             self,
             "Select File",
-            qtc.QUrl(qtc.QDir.homePath()),
+            qtc.QUrl(qtc.QDir.currentPath()),
             "Audio files (*.wav *.flac *.mp3 *.ogg *.aiff);; All files (*)"
         )
         if fn:
             self.set_file(fn)
 
-    def on_loop_cb(self, state):
-        if state == qtc.Qt.Checked:
-            self.playlist.setPlaybackMode(
-                qtmm.QMediaPlaylist.CurrentItemInLoop)
-        else:
-            self.playlist.setPlaybackMode(
-                qtmm.QMediaPlaylist.CurrentItemOnce)
 
-    def on_recordbutton(self):
-        if self.recorder.state() == qtmm.QMediaRecorder.RecordingState:
-            self.recorder.stop()
-            url = self.recorder.actualLocation()
-            self.set_file(url)
-        else:
-            self.recorder.record()
 
 class MainWindow(qtw.QMainWindow):
 
@@ -182,10 +199,18 @@ class MainWindow(qtw.QMainWindow):
         soundboard.setLayout(qtw.QGridLayout())
         self.setCentralWidget(soundboard)
 
+        verticalSpacer = qtw.QSpacerItem(200, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        soundboard.layout().addItem(verticalSpacer,0,2)
+
+        self.bar = BarChartView()
+        soundboard.layout().addWidget(self.bar,0,4,0,4)
+
         sw = SoundWidget()
         soundboard.layout().addWidget(sw)
 
         # Code ends here
+        self.bar.refresh_stats(1000000)
+        # self.bar.refresh_stats(25)
         self.show()
 
 
@@ -194,4 +219,5 @@ if __name__ == '__main__':
     # it's required to save a reference to MainWindow.
     # if it goes out of scope, it will be destroyed.
     mw = MainWindow()
+    mw.resize(300,200)
     sys.exit(app.exec())

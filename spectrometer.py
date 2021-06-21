@@ -57,7 +57,7 @@ class Spectrometer():
         if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1300:
             self._position = wavelength
         else:
-            print('invalid input')
+            raise ValueError("spectrometer position must be between 0 and 1300")
         return
 
     #print function for the spectrometer function
