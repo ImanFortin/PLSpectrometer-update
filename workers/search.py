@@ -39,6 +39,7 @@ class searchWorker(QObject):
                     f = open(os.path.join(subdir, file))
                     try:
                         line = f.readline()
+                        f.close()
                         if i in line or i in os.path.join(subdir, file):
                             found = True
                             self.sample.emit(os.path.join(subdir, file) + '\n' + line)

@@ -30,8 +30,9 @@ class plotWorker(QObject):
             print('No input.')
             print()
             sys.exit()
-        
-        data = np.genfromtxt(file,skip_header=4)
+
+        data = np.genfromtxt(file,skip_header=4,delimiter = '\t')
+
 
         fig = make_subplots(rows=2,cols=1)
 
