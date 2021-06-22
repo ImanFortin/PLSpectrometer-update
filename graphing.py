@@ -129,6 +129,7 @@ class View(QGraphicsView):
         self.m_chart.createDefaultAxes()
         self.m_chart.setAcceptHoverEvents(True)
         self.m_chart.setTheme(qtch.QChart.ChartThemeDark)
+        self.m_chart.setCursor(qtg.QCursor(qtc.Qt.CrossCursor))
         self.xdata = []
         self.ydata = []
         self.setRenderHint(QPainter.Antialiasing)
@@ -196,7 +197,7 @@ class View(QGraphicsView):
             arr_x = np.array(self.xdata)/self.rangeX
             arr_y = np.array(self.ydata)/self.max
             min_i = find_minimum(arr_x, arr_y, point.x()/self.rangeX, point.y()/self.max)
-            self.m_tooltip.setText(f"X: {self.xdata[min_i]} \nY: {self.ydata[min_i]} ")
+            self.m_tooltip.setText(f"X: {self.xdata[min_i]:.3f} \nY: {self.ydata[min_i]:.3f} ")
             self.m_tooltip.m_anchor = QPointF(self.xdata[min_i],self.ydata[min_i])
             self.m_tooltip.setZValue(11)
             self.m_tooltip.updateGeometry()
