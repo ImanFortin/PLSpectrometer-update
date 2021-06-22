@@ -129,7 +129,6 @@ class View(QGraphicsView):
         self.m_chart.createDefaultAxes()
         self.m_chart.setAcceptHoverEvents(True)
         self.m_chart.setTheme(qtch.QChart.ChartThemeDark)
-        self.m_chart.setMargins(qtc.QMargins(30,30,30,40))
         self.xdata = []
         self.ydata = []
         self.setRenderHint(QPainter.Antialiasing)
@@ -187,6 +186,7 @@ class View(QGraphicsView):
         self.m_coordY.setText(f"Y: {from_chart.y():.3f}")
         super().mouseMoveEvent(event)
 
+    #draws the little boxes that show the point value
     def tooltip(self, point: QPointF, state: bool):
         if not self.m_tooltip:
             self.m_tooltip = Callout(self.m_chart)
@@ -204,11 +204,13 @@ class View(QGraphicsView):
         else:
             self.m_tooltip.hide()
 
+    #not in use but can make a box stay if you click on it
     def keep_callout(self):
         self.m_callouts.append(self.m_tooltip)
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
 
+    #adds a point and scales the axis if necessary
     def refresh_stats(self,xdata,ydata):
 
         self.xdata.append(xdata)
@@ -228,10 +230,7 @@ class View(QGraphicsView):
             self.m_chart.setAxisY(y_axis,self.series)
 
         #to add data follow this procedure
-        new_data = [
-        qtc.QPointF(x,self.ydata[index])
-        for index, x in enumerate(self.xdata)]
-        self.series.replace(new_data)
+        self.series.append(xdata,ydata)
 
     def set_xlim(self,min,max):
         x_axis = qtch.QValueAxis()
@@ -239,21 +238,13 @@ class View(QGraphicsView):
         self.m_chart.setAxisX(x_axis,self.series)
         self.rangeX = max - min
 
+    #resets the plot
     def cla(self):
 
         self.ydata = []
         self.xdata = []
         self.max = 10
-
-        if self.log:
-            y_axis = qtch.QLogValueAxis()
-            y_axis.setBase(10)
-            y_axis.setRange(1,self.max)
-        else:
-            y_axis = qtch.QValueAxis()
-            y_axis.setRange(0,self.max)
-
-        self.m_chart.setAxisY(y_axis,self.series)
+        self.series.clear()
 
 class BarChartView(qtch.QChartView):
 
