@@ -1,7 +1,7 @@
 import sys
 from typing import List
 from miscellaneous import find_minimum
-
+import numpy as np
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
@@ -129,6 +129,7 @@ class View(QGraphicsView):
         self.m_chart.createDefaultAxes()
         self.m_chart.setAcceptHoverEvents(True)
         self.m_chart.setTheme(qtch.QChart.ChartThemeDark)
+        self.m_chart.setMargins(qtc.QMargins(30,30,30,40))
         self.xdata = []
         self.ydata = []
         self.setRenderHint(QPainter.Antialiasing)
@@ -137,14 +138,17 @@ class View(QGraphicsView):
         self.scene().addItem(self.m_chart)
 
         self.m_coordX = QGraphicsSimpleTextItem(self.m_chart)
-        self.m_coordX.setPos(self.m_chart.size().width() / 2 - 50, self.m_chart.size().height() - 20)
+        self.m_coordX.setPos(self.m_chart.size().width() / 2 - 50, self.m_chart.size().height() - 30)
+        self.m_coordX.setBrush(qtg.QColor('green'))
         self.m_coordX.setText("X: ")
         self.m_coordY = QGraphicsSimpleTextItem(self.m_chart)
-        self.m_coordY.setPos(self.m_chart.size().width() / 2 + 50, self.m_chart.size().height() - 20)
+        self.m_coordY.setPos(self.m_chart.size().width() / 2 + 50, self.m_chart.size().height() - 30)
+        self.m_coordY.setBrush(qtg.QColor('green'))
         self.m_coordY.setText("Y: ")
 
         x_axis = qtch.QValueAxis()
         x_axis.setRange(0, 10)
+        self.rangeX = 10
 
         if self.log:
             y_axis = qtch.QLogValueAxis()
@@ -169,8 +173,8 @@ class View(QGraphicsView):
         if scene := self.scene():
             scene.setSceneRect(QRectF(QPointF(0, 0), QSizeF(event.size())))
             self.m_chart.resize(QSizeF(event.size()))
-            self.m_coordX.setPos(self.m_chart.size().width() / 2 - 50, self.m_chart.size().height() - 20)
-            self.m_coordY.setPos(self.m_chart.size().width() / 2 + 50, self.m_chart.size().height() - 20)
+            self.m_coordX.setPos(self.m_chart.size().width() / 2 - 50, self.m_chart.size().height() - 30)
+            self.m_coordY.setPos(self.m_chart.size().width() / 2 + 50, self.m_chart.size().height() - 30)
 
             for callout in self.m_callouts:
                 callout.updateGeometry()
@@ -188,7 +192,10 @@ class View(QGraphicsView):
             self.m_tooltip = Callout(self.m_chart)
 
         if state:
-            min_i = find_minimum(self.xdata, self.ydata, point.x(), point.y())
+            #normalize the axis not perfect since the aspect ratio is not square
+            arr_x = np.array(self.xdata)/self.rangeX
+            arr_y = np.array(self.ydata)/self.max
+            min_i = find_minimum(arr_x, arr_y, point.x()/self.rangeX, point.y()/self.max)
             self.m_tooltip.setText(f"X: {self.xdata[min_i]} \nY: {self.ydata[min_i]} ")
             self.m_tooltip.m_anchor = QPointF(self.xdata[min_i],self.ydata[min_i])
             self.m_tooltip.setZValue(11)
@@ -230,6 +237,7 @@ class View(QGraphicsView):
         x_axis = qtch.QValueAxis()
         x_axis.setRange(min, max)
         self.m_chart.setAxisX(x_axis,self.series)
+        self.rangeX = max - min
 
     def cla(self):
 
