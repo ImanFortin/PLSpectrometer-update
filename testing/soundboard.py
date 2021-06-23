@@ -30,23 +30,6 @@ class PlayButton(qtw.QPushButton):
             self.setText('Play')
 
 
-class RecordButton(qtw.QPushButton):
-
-    record_stylesheet = 'background-color: black; color: white;'
-    stop_stylesheet = 'background-color: darkred; color: white;'
-
-    def __init__(self):
-        super().__init__('Record')
-
-    def on_state_changed(self, state):
-        if state == qtmm.QAudioRecorder.RecordingState:
-            self.setStyleSheet(self.stop_stylesheet)
-            self.setText('Stop')
-        else:
-            self.setStyleSheet(self.record_stylesheet)
-            self.setText('Record')
-
-
 class BarChartView(qtch.QChartView):
 
     max = 100
@@ -101,7 +84,7 @@ class BarChartView(qtch.QChartView):
                 self.min /= 10
 
             self.y_axis.setRange(self.min,self.max)
-            
+
 
         self.bar_set.replace(0,ydata)
         self.series.append(self.bar_set)
@@ -146,10 +129,8 @@ class SoundWidget(qtw.QWidget):
             sliderMoved=self.player.setVolume
         )
         self.layout().addWidget(self.volume, 2, 0)
-
-
-
-
+        url = qtc.QUrl(qtc.QDir.currentPath()+'/testing/beep.mp3')
+        self.set_file(url)
 
 
     def on_playbutton(self):
@@ -170,17 +151,6 @@ class SoundWidget(qtw.QWidget):
         self.playlist.addMedia(content)
         self.playlist.setCurrentIndex(1)
         self.player.setPlaylist(self.playlist)
-
-
-    def get_file(self):
-        fn, _ = qtw.QFileDialog.getOpenFileName(
-            self,
-            "Select File",
-            qtc.QUrl(qtc.QDir.currentPath()),
-            "Audio files (*.wav *.flac *.mp3 *.ogg *.aiff);; All files (*)"
-        )
-        if fn:
-            self.set_file(fn)
 
 
 

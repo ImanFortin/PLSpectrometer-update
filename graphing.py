@@ -146,20 +146,20 @@ class View(QGraphicsView):
         self.m_coordY.setBrush(qtg.QColor('green'))
         self.m_coordY.setText("Y: ")
 
-        x_axis = qtch.QValueAxis()
-        x_axis.setRange(0, 10)
+        self.x_axis = qtch.QValueAxis()
+        self.x_axis.setRange(0, 10)
         self.rangeX = 10
 
         if self.log:
-            y_axis = qtch.QLogValueAxis()
-            y_axis.setBase(10)
-            y_axis.setRange(1,self.max);
+            self.y_axis = qtch.QLogValueAxis()
+            self.y_axis.setBase(10)
+            self.y_axis.setRange(1,self.max);
         else:
-            y_axis = qtch.QValueAxis()
-            y_axis.setRange(0,self.max)
+            self.y_axis = qtch.QValueAxis()
+            self.y_axis.setRange(0,self.max)
 
-        self.m_chart.setAxisX(x_axis,self.series)
-        self.m_chart.setAxisY(y_axis,self.series)
+        self.m_chart.setAxisX(self.x_axis,self.series)
+        self.m_chart.setAxisY(self.y_axis,self.series)
 
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
@@ -219,24 +219,19 @@ class View(QGraphicsView):
         #autoscaling
         if ydata > 0.9*self.max:
             self.max = 1.2*ydata
-
             if self.log:
-                y_axis = qtch.QLogValueAxis()
-                y_axis.setBase(10)
-                y_axis.setRange(1,self.max);
+                self.y_axis.setRange(1,self.max);
             else:
-                y_axis = qtch.QValueAxis()
-                y_axis.setRange(0,self.max)
+                self.y_axis.setRange(0,self.max)
 
-            self.m_chart.setAxisY(y_axis,self.series)
+
 
         #to add data follow this procedure
         self.series.append(xdata,ydata)
 
     def set_xlim(self,min,max):
-        x_axis = qtch.QValueAxis()
-        x_axis.setRange(min, max)
-        self.m_chart.setAxisX(x_axis,self.series)
+
+        self.x_axis.setRange(min, max)
         self.rangeX = max - min
 
     #resets the plot
@@ -247,6 +242,7 @@ class View(QGraphicsView):
         self.max = 10
         self.series.clear()
 
+#the bar chart for the optimizing
 class BarChartView(qtch.QChartView):
 
     max = 100
