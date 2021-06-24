@@ -213,7 +213,7 @@ class View(QGraphicsView):
 
     #adds a point and scales the axis if necessary
     def refresh_stats(self,xdata,ydata):
-
+        #keep track of the data for cursor
         self.xdata.append(xdata)
         self.ydata.append(ydata)
         #autoscaling
