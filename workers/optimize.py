@@ -46,6 +46,7 @@ class optimizeWorker(QObject):
             print(playStart)
             self.player.setPosition(playStart)
             print(self.player.isMuted())
+            print(self.player.mediaStream())
             self.player.play()
             time.sleep(1)
             self.player.stop()
