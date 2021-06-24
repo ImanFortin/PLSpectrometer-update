@@ -272,7 +272,7 @@ class MainWindow(qtw.QMainWindow):
         self.update_position(actual)
         print('succesfully recalibrated', self.double.position)
 
-
+    #the message box that pops up when requestion a move of over 100
     def check_intent(self):
         check = QMessageBox()
         check.setText("you have requested to move over 100nm is this correct")
@@ -293,10 +293,10 @@ class MainWindow(qtw.QMainWindow):
 
         close.setText("Are you sure?")
         close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
-
         close = close.exec()
 
         if close == QMessageBox.Yes:
+            #do the close procedure
             self.double.save()
             self.double.close_channels()
             self.single.save()

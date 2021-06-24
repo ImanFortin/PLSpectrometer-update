@@ -12,7 +12,7 @@ from PyQt5.QtGui import QColor, QFont, QFontMetrics, QMouseEvent, QPainter, QPai
 from PyQt5.QtWidgets import QApplication, QGraphicsItem, QGraphicsScene, QGraphicsSceneMouseEvent, \
     QGraphicsSimpleTextItem, QGraphicsView, QStyleOptionGraphicsItem, QWidget
 
-
+#this is the little messageBox I didn't make this found it on the internet
 class Callout(QGraphicsItem):
 
     def __init__(self, parent: QChart):
@@ -224,13 +224,10 @@ class View(QGraphicsView):
             else:
                 self.y_axis.setRange(0,self.max)
 
-
-
-        #to add data follow this procedure
+        #add the data
         self.series.append(xdata,ydata)
 
     def set_xlim(self,min,max):
-
         self.x_axis.setRange(min, max)
         self.rangeX = max - min
 

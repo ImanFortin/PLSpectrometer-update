@@ -42,14 +42,15 @@ def make_header(f, sample_id, time_avg):
     f.write('start Time:\t\t' + dt_string + '\n')
     f.write('Averaging Time:\t\t' + str(time_avg) + '\n\n')
 
+#find minimum function for finding the the minimum distance in cursors
 def find_minimum(xdata,ydata, cmpr_x, cmpr_y):
     if len(xdata) == 0:
         return None
-    minimum = cmpr_x**2 + cmpr_y**2
+    minimum = cmpr_x**2 + cmpr_y**2#set a baseline minimum
     min_i = 0
     for i in range(len(xdata)):
         distance = (cmpr_x - xdata[i])**2 + (cmpr_y - ydata[i])**2
         if distance < minimum:
             minimum = distance
             min_i = i
-    return min_i
+    return min_i#returns the index that this happens at not the value

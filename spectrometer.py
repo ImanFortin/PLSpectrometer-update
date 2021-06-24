@@ -18,14 +18,14 @@ class Spectrometer():
             self._position = float(f.readline())
             print(self.position)
             f.close()
-        #if file was missing or empty set the value to zero
         except:
             print("there was an error trying to load the data from last_position.txt")
             self._position = 0.0
-        #print success if the except doesn't trigger
         else:
             print(f'successfully loaded last position for {device}\n')
 
+        #makes testing easier since trying to access a channel that doesn't exist
+        #or is in use will cause the program to crash
         try:
             self.shutter = nidaqmx.Task()#task to control the shutter
             #port that we send signals to, if the port changes change this
@@ -56,11 +56,11 @@ class Spectrometer():
         #check these conditons before accepting a value when assigning a value to position
         if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1300:
             self._position = wavelength
-        else:
+        else:#will crash the program stopping the scan (can't stop a move)
             raise ValueError("spectrometer position must be between 0 and 1300")
         return
 
-    #print function for the spectrometer function
+    #print function for the spectrometer function (useless might delete)
     def __str__(self):
         return str(self.position)
 
@@ -79,26 +79,21 @@ class Spectrometer():
         else:
             self.direction.write(False)
 
-
+    #save the last position
     def save(self):
         try:
-            #open the file where we save the information
             f = open(self.name + '_last_position.txt', 'w')
-            #write the last position
             f.write(str(self.position))
-            #close
             f.close()
-        #if there is an error with the write print
         except:
             print(f'there was an error writing to {self.name}_last_position.txt')
-        #if we succeed print success message
         else:
             print(self.position)
             print(f'position of {self.name} saved')
 
 
     def move(self,distance,**kwargs):
-
+        #passing zero pulses to the channnel will cause an error
         if distance == 0:
             return
         #calculate the amount of pulses its 4 pulses for 0.001nm of movement
@@ -118,13 +113,11 @@ class Spectrometer():
 
     def read(self, count_time):
         with nidaqmx.Task() as task:#open a task
-
              task.ci_channels.add_ci_count_edges_chan(self.name +"/ctr0")#start a count channel
              task.ci_channels[0].ci_count_edges_term = '/'+self.name+'/PFI0'#set the terminal
              task.start()#start counting
              sleep(count_time)#wait the count time
              data = task.read()#read the counts
-
         return data/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
@@ -134,14 +127,14 @@ class Spectrometer():
     #closes the tasks properly upon closing the application
     def close_channels(self):
         try:
-            #sets the voltages to zero
+            #sets the voltages to zero, if not done daq will continue to ouput
+            #this could be desirable I'm not sure
             self.shutter.write(False)
             self.direction.write(False)
             self.shutter.stop()
             self.shutter.close()
             self.direction.stop()
             self.direction.close()
-
         except:
             print('there was an error when closing the tasks')
         else:
