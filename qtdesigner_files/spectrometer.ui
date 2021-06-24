@@ -895,7 +895,7 @@ QPushButton::pressed{
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="optimize_btn_2">
+    <widget class="QPushButton" name="optimize_stp_btn">
      <property name="geometry">
       <rect>
        <x>10</x>

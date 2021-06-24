@@ -106,11 +106,7 @@ class SoundWidget(qtw.QWidget):
         self.play_button.clicked.connect(self.on_playbutton)
         self.player.stateChanged.connect(self.play_button.on_state_changed)
 
-        # Loading files
-        self.file_button = qtw.QPushButton(
-            'Load File', clicked=self.get_file)
-        self.layout().addWidget(self.file_button, 4, 0,1,2)
-
+        
         # Slider
         self.position = qtw.QSlider(
             minimum=0, orientation=qtc.Qt.Horizontal)

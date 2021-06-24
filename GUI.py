@@ -30,7 +30,7 @@ class MainWindow(qtw.QMainWindow):
         self.make_tabs() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
         self.single = Spectrometer('Dev3') #initialize the single spectrometer
-        self.add_optimize()
+        self.add_optimize_bar()
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
         print('done init')
@@ -63,15 +63,13 @@ class MainWindow(qtw.QMainWindow):
         self.ui.abort_button.clicked.connect(self.abort)
         self.ui.shutter_btn.clicked.connect(self.shutter)
         self.ui.radioButton.toggled.connect(self.switch_spectrometer)
+        self.ui.optimize_btn.clicked.connect(self.optimize)
+        self.ui.optimize_stp_btn.clicked.connect(self.abort)
 
-    def add_optimize(self):
+    def add_optimize_bar(self):
         self.count_display = BarChartView(self.ui.centralwidget)
         self.count_display.setGeometry(310,710,65,130)
         self.count_display.refresh_stats(1030)
-
-    def update_bar(self,ydata):
-        pass
-
 
     def make_tabs(self):
         tabs = qtw.QTabWidget(self.ui.centralwidget)
@@ -154,6 +152,7 @@ class MainWindow(qtw.QMainWindow):
             self.double.open_shutter()
             self.ui.shutter_btn.setText('Shutter Opened')
 
+    #repeats the scan if repeat is checked
     def check_repeat(self):
         if self.ui.repeat_btn.isChecked():
             self.scan()
@@ -254,6 +253,8 @@ class MainWindow(qtw.QMainWindow):
 
         self.thread.start()
 
+    def optimize(self):
+        pass
 
 
     def recalibrate(self):
