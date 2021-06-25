@@ -59,7 +59,7 @@ class optimizeWorker(QObject):
             print(playStart)
             self.player.setPosition(playStart)
             self.player.play()
-            self.spectrometer.read(0.2)
+            counts = self.spectrometer.read(0.2)
             self.player.stop()
 
         self.finished.emit()
