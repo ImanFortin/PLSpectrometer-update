@@ -3,6 +3,8 @@ import random
 from PyQt5 import QtMultimedia as qtmm
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtCore as qtc
+from PyQt5 import QtWidgets as qtw
+import sys
 
 class optimizeWorker(QObject):
 
@@ -13,10 +15,16 @@ class optimizeWorker(QObject):
         super().__init__()
         self.abort = False
         self.player = qtmm.QMediaPlayer()
-        url = qtc.QUrl(qtc.QDir.currentPath()+'/chirp.wav')
-        self.set_source(url)
+        # Volume
+        url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
+        print(url)
+        self.player.setVolume(10)
+        self.set_file(url)
+        self.spectrometer = spectrometer
 
-    def set_source(self, url):
+    def set_file(self, url):
+        if url.scheme() == '':
+            url.setScheme('file')
         content = qtmm.QMediaContent(url)
         self.playlist = qtmm.QMediaPlaylist()
         self.playlist.addMedia(content)
@@ -24,31 +32,32 @@ class optimizeWorker(QObject):
         self.player.setPlaylist(self.playlist)
 
     def optimize(self):
+
         counts = []
         maximum = 100
         changeScale = True
         number = 0
+
         while not self.abort:
-            counts = spectrometer.read(0.1)
+
+            counts = self.spectrometer.read()
 
             while changeScale:
-                if counts > maximum:
+                if counts >= maximum:
                     maximum *= 10
 
                 elif counts < maximum/10:
                     maximum /= 10
 
-                if (counts < maximum and counts > maximum/10) or counts == 0:
+                if (counts < maximum and counts >= maximum/10) or counts == 0:
                     changeScale = False
 
             self.bar_update.emit(counts)
             playStart = int(60*1000*(counts/maximum))
             print(playStart)
-            self.player.setPosition(playStart)
-            print(self.player.isMuted())
-            print(self.player.mediaStream())
+            # self.player.setPosition(playStart)
             self.player.play()
-            time.sleep(1)
+            time.sleep(0.2)
             self.player.stop()
             number += 1
             if number >= 10:
@@ -58,10 +67,16 @@ class optimizeWorker(QObject):
 
 class spectrometer():
 
+    def __init__(self):
+        self.x = 5
+        pass
+
     def read(self):
-        return random.randint(100,1000)
+        return 999
 
 if __name__ == '__main__':
     spec = spectrometer()
+    ans = spec.read()
+    print(ans)
     opt = optimizeWorker(spec)
     opt.optimize()
