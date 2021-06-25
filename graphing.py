@@ -165,7 +165,7 @@ class View(QGraphicsView):
         self.scene().addItem(self.m_tooltip)
         self.m_tooltip.hide()
         self.series.hovered.connect(self.tooltip)
-
+        
 
         self.setMouseTracking(True)
 
@@ -186,6 +186,23 @@ class View(QGraphicsView):
         self.m_coordX.setText(f"X: {from_chart.x():.3f}")
         self.m_coordY.setText(f"Y: {from_chart.y():.3f}")
         super().mouseMoveEvent(event)
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
+
+
+        if event.buttons() & Qt.LeftButton:
+            print('left')
+            event.setAccepted(True)
+            self.keep_callout()
+
+        elif event.buttons() & Qt.RightButton:
+            self.remove_callout()
+            event.setAccepted(True)
+
+        else:
+            event.setAccetped(False)
+
+
 
     #draws the little boxes that show the point value
     def tooltip(self, point: QPointF, state: bool):
@@ -210,6 +227,9 @@ class View(QGraphicsView):
         self.m_callouts.append(self.m_tooltip)
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
+
+    def remove_callout(self):
+        self.scene().removeItem(self.m_callouts.pop())
 
     #adds a point and scales the axis if necessary
     def refresh_stats(self,xdata,ydata):
