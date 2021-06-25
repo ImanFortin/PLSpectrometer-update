@@ -18,6 +18,7 @@ class optimizeWorker(QObject):
         # Volume
         #current path is the dir containing the file being run so the 'GUI' file in our case
         #if you're not hearing sound print this value and make sure its what you expect
+        #this file is a tone that goes from 800Hz to 400Hz of 60 seconds
         url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
         print(url)
         self.player.setVolume(70)
@@ -39,17 +40,16 @@ class optimizeWorker(QObject):
         maximum = 100
         changeScale = True
         counts = 1
-        number = 0
         self.player.play()
         while not self.abort:
-            counts = self.spectrometer.read()
+
             playStart = int(60*1000*(counts/maximum))
             print(playStart)
+            #There's something really weird going on with the ordering of the two lines below
             self.player.setPosition(playStart)
+            counts = self.spectrometer.read(0.1)
 
-            # self.player.play()
-            # self.player.pause()
-            time.sleep(0.1)
+
             while changeScale:
                 if counts >= maximum:
                     maximum *= 10
@@ -60,14 +60,13 @@ class optimizeWorker(QObject):
                 if (counts < maximum and counts >= maximum/10) or counts == 0:
                     changeScale = False
             print(maximum)
-            self.bar_update.emit(counts)
-            number += 1
-            if number >= 10:
-                break
         self.player.stop()
         self.player.setPosition(0)
         self.finished.emit()
 
+
+
+#dummy class for testing
 class spectrometer():
 
     def __init__(self,start,end):
@@ -76,15 +75,16 @@ class spectrometer():
         self.end = end
         pass
 
-    def read(self):
+    def read(self,duration):
+        time.sleep(duration)
         return random.randint(self.start,self.end)
 
-
+#test
 if __name__ == '__main__':
     spec = spectrometer(800,900)
     opt = optimizeWorker(spec)
     opt.optimize()
-    time.sleep(3)
-    spec2 = spectrometer(100,200)
-    opt2 = optimizeWorker(spec2)
-    opt2.optimize()
+    # time.sleep(3)
+    # spec2 = spectrometer(100,200)
+    # opt2 = optimizeWorker(spec2)
+    # opt2.optimize()
