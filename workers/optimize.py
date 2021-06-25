@@ -20,7 +20,7 @@ class optimizeWorker(QObject):
         #if you're not hearing sound print this value and make sure its what you expect
         url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
         print(url)
-        self.player.setVolume(30)
+        self.player.setVolume(70)
         self.set_file(url)
         self.spectrometer = spectrometer
 
