@@ -21,11 +21,11 @@ class scanWorker(QObject):
         self.time = time
         self.abort = False
 
-        absolute = 'C:/User/Admin/Documents/PL/Data'
+        absolute = 'C:/Admin/Documents/PL/Data'
         dt_string = datetime.now().strftime("%Y %m %d")
-        dir = os.path.join(absolute,dt_string)
+        dir = absolute + '/' + dt_string
         if not os.path.isdir(dir):
-            os.mkdir(dir)
+            os.makedirs(dir)
 
         filepath = os.path.join(dir,filename)
         print(filepath)
