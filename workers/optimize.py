@@ -16,6 +16,7 @@ class optimizeWorker(QObject):
         self.abort = False
         self.player = qtmm.QMediaPlayer()
         # Volume
+        #current path is the dir containing the file being run so the 'GUI' file in our case
         url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
         print(url)
         self.player.setVolume(10)
