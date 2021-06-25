@@ -52,7 +52,6 @@ class optimizeWorker(QObject):
             changeScale = True
             while changeScale:
                 if counts >= maximum:
-                    print('increase')
                     maximum *= 10
 
                 elif counts < maximum/10:
