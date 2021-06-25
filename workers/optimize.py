@@ -42,7 +42,7 @@ class optimizeWorker(QObject):
 
         while not self.abort:
 
-            counts = self.spectrometer.read(0.1)
+            counts = 0
 
             while changeScale:
                 if counts >= maximum:
@@ -59,7 +59,7 @@ class optimizeWorker(QObject):
             print(playStart)
             self.player.setPosition(playStart)
             self.player.play()
-            time.sleep(0.2)
+            self.spectrometer.read(0.2)
             self.player.stop()
 
         self.finished.emit()
