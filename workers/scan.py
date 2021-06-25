@@ -2,6 +2,7 @@ import time
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from miscellaneous import available_name, make_header
 from datetime import datetime
+import os
 #this is the scan worker he does the scanning
 class scanWorker(QObject):
 
@@ -19,7 +20,16 @@ class scanWorker(QObject):
         self.step = step
         self.time = time
         self.abort = False
-        self.filename = available_name(filename)
+
+        absolute = 'C:/User/Admin/Documents/PL/Data'
+        dt_string = datetime.now().strftime("%Y %m %d")
+        dir = os.path.join(absolute,dt_string)
+        if not os.path.isdir(dir):
+            os.mkdir(dir)
+
+        filepath = os.path.join(dir,filename)
+        print(filepath)
+        self.filename = available_name(filepath)
         self.sample_id = sample_id
 
 
@@ -63,9 +73,7 @@ class scanWorker(QObject):
         end = self.end
         distance = abs(end - start)
         direction = 1
-        absolute = 'C:/User/Admin/Documents/PL/Data'
-        dt_string = datetime.now().strftime("%Y %m %d")
-        f = open(absolute + dt_string + self.filename, 'w')
+        f = open(self.filename, 'w')
         make_header(f,self.sample_id,self.time)
         f.close()
         number_of_steps = int(distance/self.step)
