@@ -38,9 +38,18 @@ class optimizeWorker(QObject):
         counts = []
         maximum = 100
         changeScale = True
-        counts = 0
-
+        counts = 1
+        number = 0
+        self.player.play()
         while not self.abort:
+            counts = self.spectrometer.read()
+            playStart = int(60*1000*(counts/maximum))
+            print(playStart)
+            self.player.setPosition(playStart)
+
+            # self.player.play()
+            # self.player.pause()
+            time.sleep(0.1)
             while changeScale:
                 if counts >= maximum:
                     maximum *= 10
@@ -52,27 +61,30 @@ class optimizeWorker(QObject):
                     changeScale = False
             print(maximum)
             self.bar_update.emit(counts)
-            playStart = int(60*1000*(counts/maximum))
-            print(playStart)
-            self.player.setPosition(playStart)
-            self.player.play()
-            counts = self.spectrometer.read(0.2)
-            self.player.stop()
-
+            number += 1
+            if number >= 10:
+                break
+        self.player.stop()
+        self.player.setPosition(0)
         self.finished.emit()
 
 class spectrometer():
 
-    def __init__(self):
+    def __init__(self,start,end):
         self.x = 5
+        self.start = start
+        self.end = end
         pass
 
     def read(self):
-        return 100
+        return random.randint(self.start,self.end)
+
 
 if __name__ == '__main__':
-    spec = spectrometer()
-    ans = spec.read()
-    print(ans)
+    spec = spectrometer(800,900)
     opt = optimizeWorker(spec)
     opt.optimize()
+    time.sleep(3)
+    spec2 = spectrometer(100,200)
+    opt2 = optimizeWorker(spec2)
+    opt2.optimize()
