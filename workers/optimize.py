@@ -17,9 +17,10 @@ class optimizeWorker(QObject):
         self.player = qtmm.QMediaPlayer()
         # Volume
         #current path is the dir containing the file being run so the 'GUI' file in our case
+        #if you're not hearing sound print this value and make sure its what you expect
         url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
         print(url)
-        self.player.setVolume(10)
+        self.player.setVolume(30)
         self.set_file(url)
         self.spectrometer = spectrometer
 
@@ -52,11 +53,11 @@ class optimizeWorker(QObject):
 
                 if (counts < maximum and counts >= maximum/10) or counts == 0:
                     changeScale = False
-
+            print(maximum)
             self.bar_update.emit(counts)
             playStart = int(60*1000*(counts/maximum))
             print(playStart)
-            # self.player.setPosition(playStart)
+            self.player.setPosition(playStart)
             self.player.play()
             time.sleep(0.2)
             self.player.stop()
@@ -73,7 +74,7 @@ class spectrometer():
         pass
 
     def read(self):
-        return 999
+        return 100
 
 if __name__ == '__main__':
     spec = spectrometer()

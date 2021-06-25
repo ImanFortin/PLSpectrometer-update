@@ -14,6 +14,7 @@ from graphing import BarChartView, View
 from searchUI import SearchUI
 from workers.move import moveWorker
 from workers.scan import scanWorker
+from workers.optimize import optimizeWorker
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 
@@ -93,7 +94,6 @@ class MainWindow(qtw.QMainWindow):
         tabs.addTab(self.energy_frame, 'Energy')
         #adding the SearchUI
         tabs.addTab(SearchUI(),'Search')
-
         #set size and shape
         tabs.setGeometry(400,0,1000,1000)
 
@@ -250,12 +250,26 @@ class MainWindow(qtw.QMainWindow):
         self.thread.finished.connect(self.thread.deleteLater)
         self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread
-
         self.thread.start()
 
     def optimize(self):
-        pass
 
+        self.thread = QThread()
+        self.worker = optimizeWorker(self.double)#input single
+        #disable the buttons to prevent crashing
+        self.disable_buttons()
+        # # Step 4: Move worker to the thread
+        self.worker.moveToThread(self.thread)
+        # # Step 5: Connect signals and slots see scan fordetailed documentation
+        self.thread.started.connect(self.worker.optimize)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.worker.finished.connect(self.enable_buttons)
+        self.worker.finished.connect(self.change_status)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.worker.bar_update.connect(self.count_display.refresh_stats)
+        # # Step 6: Start the thread
+        self.thread.start()
 
     def recalibrate(self):
         try:
