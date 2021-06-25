@@ -47,11 +47,12 @@ class optimizeWorker(QObject):
             print(playStart)
             #There's something really weird going on with the ordering of the two lines below
             self.player.setPosition(playStart)
-            counts = self.spectrometer.read(0.1)
-
-
+            counts = self.spectrometer.read(0.12)
+            self.bar_update.emit(counts)
+            changeScale = True
             while changeScale:
                 if counts >= maximum:
+                    print('increase')
                     maximum *= 10
 
                 elif counts < maximum/10:
@@ -59,7 +60,7 @@ class optimizeWorker(QObject):
 
                 if (counts < maximum and counts >= maximum/10) or counts == 0:
                     changeScale = False
-            print(maximum)
+
         self.player.stop()
         self.player.setPosition(0)
         self.finished.emit()
@@ -81,7 +82,7 @@ class spectrometer():
 
 #test
 if __name__ == '__main__':
-    spec = spectrometer(800,900)
+    spec = spectrometer(0,20000)
     opt = optimizeWorker(spec)
     opt.optimize()
     # time.sleep(3)
