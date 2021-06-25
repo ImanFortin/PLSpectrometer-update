@@ -38,12 +38,9 @@ class optimizeWorker(QObject):
         counts = []
         maximum = 100
         changeScale = True
-
+        counts = 0
 
         while not self.abort:
-
-            counts = 0
-
             while changeScale:
                 if counts >= maximum:
                     maximum *= 10
