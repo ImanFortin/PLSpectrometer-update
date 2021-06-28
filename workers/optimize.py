@@ -40,13 +40,14 @@ class optimizeWorker(QObject):
         maximum = 100
         changeScale = True
         counts = 1
+        interval = 0.15
         self.player.play()
         while not self.abort:
 
             playStart = int(60*1000*(counts/maximum))
             #There's something really weird going on with the ordering of the two lines below
             self.player.setPosition(playStart)
-            counts = self.spectrometer.read(0.15)
+            counts = self.spectrometer.read(interval) * 1/interval
             self.bar_update.emit(counts)
             changeScale = True
             while changeScale:
@@ -80,7 +81,7 @@ class spectrometer():
 
 #test
 if __name__ == '__main__':
-    spec = spectrometer(0,100)
+    spec = spectrometer(0,1000)
     opt = optimizeWorker(spec)
     opt.optimize()
     # time.sleep(3)
