@@ -165,8 +165,6 @@ class View(QGraphicsView):
         self.scene().addItem(self.m_tooltip)
         self.m_tooltip.hide()
         self.series.hovered.connect(self.tooltip)
-        
-
         self.setMouseTracking(True)
 
     def resizeEvent(self, event: QResizeEvent):
@@ -189,18 +187,16 @@ class View(QGraphicsView):
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
 
-
-        if event.buttons() & Qt.LeftButton:
-            print('left')
-            event.setAccepted(True)
+        if event.buttons() & Qt.LeftButton & self.m_tooltip.isVisible():
             self.keep_callout()
+            event.setAccepted(True)
 
         elif event.buttons() & Qt.RightButton:
             self.remove_callout()
             event.setAccepted(True)
 
         else:
-            event.setAccetped(False)
+            event.setAccepted(False)
 
 
 
@@ -227,9 +223,11 @@ class View(QGraphicsView):
         self.m_callouts.append(self.m_tooltip)
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
+        self.m_tooltip.hide()
 
     def remove_callout(self):
-        self.scene().removeItem(self.m_callouts.pop())
+        if len(self.m_callouts) != 0:
+            self.scene().removeItem(self.m_callouts.pop())
 
     #adds a point and scales the axis if necessary
     def refresh_stats(self,xdata,ydata):
@@ -258,6 +256,8 @@ class View(QGraphicsView):
         self.xdata = []
         self.max = 10
         self.series.clear()
+
+
 
 #the bar chart for the optimizing
 class BarChartView(qtch.QChartView):
@@ -296,7 +296,6 @@ class BarChartView(qtch.QChartView):
         self.chart.layout().setContentsMargins(0,0,0,0)
         self.chart.setTheme(qtch.QChart.ChartThemeDark)
         self.setMinimumSize(10,50)
-
         self.setParent(parent)
 
     def refresh_stats(self,ydata):
@@ -324,6 +323,9 @@ class BarChartView(qtch.QChartView):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = View()
+    window.refresh_stats(0,0)
+    window.refresh_stats(1,1)
+    window.refresh_stats(2,2)
     window.resize(640, 480)
     window.show()
     sys.exit(app.exec_())
