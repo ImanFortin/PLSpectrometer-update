@@ -11,7 +11,7 @@ class Spectrometer():
     store a DAQ instance'''
 
 
-    def __init__(self,device):
+    def __init__(self,device, shutter_prt = '/port1/line1', direction_prt = '/port1/line3'):
         #open file where we will store the last position
         try:
             f = open(device + '_last_position.txt', 'r')
@@ -29,11 +29,11 @@ class Spectrometer():
         try:
             self.shutter = nidaqmx.Task()#task to control the shutter
             #port that we send signals to, if the port changes change this
-            self.shutter.do_channels.add_do_chan(device +'/port1/line1')
+            self.shutter.do_channels.add_do_chan(device + shutter_prt)
             self.shutter.start()
 
             self.direction = nidaqmx.Task()
-            self.direction.do_channels.add_do_chan(device +'/port1/line3')
+            self.direction.do_channels.add_do_chan(device + direction_prt)
             self.direction.start()
 
         except:
