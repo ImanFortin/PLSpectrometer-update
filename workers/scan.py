@@ -20,7 +20,7 @@ class scanWorker(QObject):
         self.step = step
         self.time = time
         self.abort = False
-
+        #add /Users back
         absolute = 'C:/Users/Admin/Documents/PL/Data'
         dt_string = datetime.now().strftime("%Y %m %d")
         dir = absolute + '/' + dt_string
@@ -36,7 +36,6 @@ class scanWorker(QObject):
 
 
     def scan(self):
-
         #first copy the move function to get into position
         start = self.spectrometer.position
         end = self.start#we want to move to the start point
@@ -73,7 +72,7 @@ class scanWorker(QObject):
         end = self.end
         distance = abs(end - start)
         direction = 1
-        f = open(self.filename, 'w')
+        f = open(self.filename, 'a')
         make_header(f,self.sample_id,self.time)
         f.close()
         number_of_steps = int(distance/self.step)
