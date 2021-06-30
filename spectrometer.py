@@ -60,10 +60,6 @@ class Spectrometer():
             raise ValueError("spectrometer position must be between 0 and 1300")
         return
 
-    #print function for the spectrometer function (useless might delete)
-    def __str__(self):
-        return str(self.position)
-
     def open_shutter(self):
         #set voltage to zero
         self.shutter.write(False)
