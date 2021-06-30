@@ -135,13 +135,14 @@ class MainWindow(qtw.QMainWindow):
         self.ui.move_button.setEnabled(True)
         self.ui.scan_button.setEnabled(True)
         self.ui.optimize_btn.setEnabled(True)
-
+        self.ui.optimize_stp_btn.setEnabled(True)
     #disable buttons
     def disable_buttons(self):
         self.ui.recalibrate_button.setEnabled(False)
         self.ui.move_button.setEnabled(False)
         self.ui.scan_button.setEnabled(False)
         self.ui.optimize_btn.setEnabled(False)
+        self.ui.optimize_stp_btn.setEnabled(False)
 
     #shutter function
     def shutter(self):
@@ -258,6 +259,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker = optimizeWorker(self.double)#input single
         #disable the buttons to prevent crashing
         self.disable_buttons()
+        self.ui.optimize_stp_btn.setEnabled(True)
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
         # # Step 5: Connect signals and slots see scan fordetailed documentation
