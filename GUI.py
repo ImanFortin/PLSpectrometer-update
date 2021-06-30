@@ -39,6 +39,7 @@ class MainWindow(qtw.QMainWindow):
 
 
     #method for adjusting the labels so they are consistent between machines
+    #I think this might be uneccesary
     def autoscale_lbls(self):
         self.ui.position_lbl.adjustSize()
         self.ui.current_wavelength_lbl.adjustSize()
@@ -67,11 +68,13 @@ class MainWindow(qtw.QMainWindow):
         self.ui.optimize_btn.clicked.connect(self.optimize)
         self.ui.optimize_stp_btn.clicked.connect(self.abort)
 
+    #makes and positions the optimize bar
     def add_optimize_bar(self):
         self.count_display = BarChartView(self.ui.centralwidget)
         self.count_display.setGeometry(310,710,65,130)
         self.count_display.refresh_stats(1030)
 
+    #constructs and positions the tabs
     def make_tabs(self):
         tabs = qtw.QTabWidget(self.ui.centralwidget)
         #first tab creation
@@ -97,7 +100,7 @@ class MainWindow(qtw.QMainWindow):
         #set size and shape
         tabs.setGeometry(400,0,1000,1000)
 
-    #update the plots with data
+    #update the 4 plots with data
     def update_plots(self,data):
         self.wavelength_plot.refresh_stats(self.double.position,data)
         self.wavelength_plot_log.refresh_stats(self.double.position,data)
@@ -125,6 +128,7 @@ class MainWindow(qtw.QMainWindow):
             self.ui.current_wavelength_lbl.setText(new_string)
             self.ui.current_wavelength_lbl.adjustSize()
 
+    #changes the status displayed in the top left corner
     def change_status(self,status = 'Idle'):
         self.ui.status_lbl.setText('Status: ' + status)
 
@@ -136,6 +140,7 @@ class MainWindow(qtw.QMainWindow):
         self.ui.scan_button.setEnabled(True)
         self.ui.optimize_btn.setEnabled(True)
         self.ui.optimize_stp_btn.setEnabled(True)
+
     #disable buttons
     def disable_buttons(self):
         self.ui.recalibrate_button.setEnabled(False)
@@ -229,15 +234,15 @@ class MainWindow(qtw.QMainWindow):
                 intent = self.check_intent()
                 if not intent:
                     return
-
             self.worker = moveWorker(self.double,destination)#input double
+
         else:#if single is selected
             if abs(destination - self.single.position) > 100:
                 intent = self.check_intent()
                 if not intent:
                     return
-
             self.worker = moveWorker(self.single,destination)#input single
+            
         #disable the buttons to prevent crashing
         self.disable_buttons()
         # # Step 4: Move worker to the thread
