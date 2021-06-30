@@ -6,9 +6,8 @@ from miscellaneous import sleep
 
 class Spectrometer():
 
-    '''spectrometer class the only object is the position but the communication
-    with the DAQ is handled in this class and not the UI, it will eventually also
-    store a DAQ instance'''
+    '''spectrometer class the this is where the signals are sent to and from the daq, it
+    also tracks the position of the spectrometer'''
 
 
     def __init__(self,device, shutter_prt = '/port1/line1', direction_prt = '/port1/line3'):
