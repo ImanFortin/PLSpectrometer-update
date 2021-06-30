@@ -27,7 +27,6 @@ class Spectrometer():
         #or is in use will cause the program to crash
         try:
             self.shutter = nidaqmx.Task()#task to control the shutter
-            #port that we send signals to, if the port changes change this
             self.shutter.do_channels.add_do_chan(device + shutter_prt)
             self.shutter.start()
 
