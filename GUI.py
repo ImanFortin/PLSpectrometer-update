@@ -242,7 +242,7 @@ class MainWindow(qtw.QMainWindow):
                 if not intent:
                     return
             self.worker = moveWorker(self.single,destination)#input single
-            
+
         #disable the buttons to prevent crashing
         self.disable_buttons()
         # # Step 4: Move worker to the thread
@@ -289,9 +289,14 @@ class MainWindow(qtw.QMainWindow):
             self.double.recalibrate(actual)
         else:
             self.single.recalibrate(actual)
+            
+        current = self.ui.current_wavelength_lbl.text()
+        keep = current[:current.find(':')+2]
+        new_string = keep + str(actual)
+        self.ui.current_wavelength_lbl.setText(new_string)
+        self.ui.current_wavelength_lbl.adjustSize()
 
-        self.update_position(actual)
-        print('succesfully recalibrated', self.double.position)
+        print('succesfully recalibrated')
 
     #the message box that pops up when requestion a move of over 100
     def check_intent(self):
