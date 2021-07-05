@@ -8,7 +8,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
-from spectrometer import Spectrometer
+from spectrometer import Double, Single
 import time
 from graphing import BarChartView, View
 from searchUI import SearchUI
@@ -29,8 +29,8 @@ class MainWindow(qtw.QMainWindow):
         self.ui.setupUi(self) #run the setup method to create the window
         self.connect_buttons() #connect all the buttons
         self.make_tabs() #add the plots to the UI
-        self.double = Spectrometer('Dev2') #initialize the double spectrometer
-        self.single = Spectrometer('Dev3', direction_prt = '/port1/line7') #initialize the single spectrometer
+        self.double = Double('Dev2') #initialize the double spectrometer
+        self.single = Single('Dev3') #initialize the single spectrometer
         self.add_optimize_bar()
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
