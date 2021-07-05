@@ -21,7 +21,7 @@ class scanWorker(QObject):
         self.time = time
         self.abort = False
         #add /Users back
-        absolute = 'C:/Users/Admin/Documents/PL/Data'
+        absolute = 'C:/Admin/Documents/PL/Data'
         dt_string = datetime.now().strftime("%Y %m %d")
         dir = absolute + '/' + dt_string
         if not os.path.isdir(dir):

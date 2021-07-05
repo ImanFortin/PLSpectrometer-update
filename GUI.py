@@ -118,10 +118,21 @@ class MainWindow(qtw.QMainWindow):
             self.autoscale_lbls()
 
     #update the spectrometer position and display
-    def update_position(self,position):
+    def update_position_dbl(self,position):
         position = round(position, 3)
         self.double.position = position
         if self.ui.radioButton.isChecked():#only update the display with double if double is selected
+            current = self.ui.current_wavelength_lbl.text()
+            keep = current[:current.find(':')+2]
+            new_string = keep + str(position)
+            self.ui.current_wavelength_lbl.setText(new_string)
+            self.ui.current_wavelength_lbl.adjustSize()
+
+    #update the spectrometer position and display
+    def update_position_sngl(self,position):
+        position = round(position, 3)
+        self.single.position = position
+        if not self.ui.radioButton.isChecked():#only update the display with double if single is selected
             current = self.ui.current_wavelength_lbl.text()
             keep = current[:current.find(':')+2]
             new_string = keep + str(position)
@@ -209,7 +220,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.change_status)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
         self.scan_thread.finished.connect(self.check_repeat)
-        self.worker.position.connect(self.update_position)#update the position as we go
+        self.worker.position.connect(self.update_position_dbl)#update the position as we go
         self.worker.data.connect(self.update_plots)#update the plots as we take data
 
         #start the thread
@@ -235,6 +246,7 @@ class MainWindow(qtw.QMainWindow):
                 if not intent:
                     return
             self.worker = moveWorker(self.double,destination)#input double
+            self.worker.position.connect(self.update_position_dbl)
 
         else:#if single is selected
             if abs(destination - self.single.position) > 100:
@@ -242,6 +254,7 @@ class MainWindow(qtw.QMainWindow):
                 if not intent:
                     return
             self.worker = moveWorker(self.single,destination)#input single
+            self.worker.position.connect(self.update_position_sngl)
 
         #disable the buttons to prevent crashing
         self.disable_buttons()
@@ -254,7 +267,6 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.enable_buttons)
         self.worker.finished.connect(self.change_status)
         self.thread.finished.connect(self.thread.deleteLater)
-        self.worker.position.connect(self.update_position)
         # # Step 6: Start the thread
         self.thread.start()
 
@@ -289,7 +301,7 @@ class MainWindow(qtw.QMainWindow):
             self.double.recalibrate(actual)
         else:
             self.single.recalibrate(actual)
-            
+
         current = self.ui.current_wavelength_lbl.text()
         keep = current[:current.find(':')+2]
         new_string = keep + str(actual)
