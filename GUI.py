@@ -30,7 +30,7 @@ class MainWindow(qtw.QMainWindow):
         self.connect_buttons() #connect all the buttons
         self.make_tabs() #add the plots to the UI
         self.double = Spectrometer('Dev2') #initialize the double spectrometer
-        self.single = Spectrometer('Dev3') #initialize the single spectrometer
+        self.single = Spectrometer('Dev3', direction_prt = '/port1/line7') #initialize the single spectrometer
         self.add_optimize_bar()
         self.ui.current_wavelength_lbl.setText('Position (nm): '+str(self.double.position))#display the current position
         self.autoscale_lbls() #autoscale the labels so they don't cut off
