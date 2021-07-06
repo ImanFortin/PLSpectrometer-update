@@ -142,7 +142,7 @@ class Double():
 #The single spectrometer the same but simpler and different channels as well as directions are reversed
 class Single():
 
-    def __init__(self,device, direction_prt = '/port1/line7'):
+    def __init__(self,device, direction_prt = '/port2/line6'):
         #open file where we will store the last position
         try:
             f = open(device + '_last_position.txt', 'r')
@@ -189,9 +189,9 @@ class Single():
     #sets the direction of the move to be called before the move and
     def set_direction(self,direction):
         if direction > 0:
-            self.direction.write(False)
-        else:
             self.direction.write(True)
+        else:
+            self.direction.write(False)
 
     def move(self,distance,**kwargs):
         #passing zero pulses to the channnel will cause an error
@@ -214,6 +214,17 @@ class Single():
     def recalibrate(self,wavelength):
         self.position = wavelength#change the stored position
 
+    #save the last position
+    def save(self):
+        try:
+            f = open(self.name + '_last_position.txt', 'w')
+            f.write(str(self.position))
+            f.close()
+        except:
+            print(f'there was an error writing to {self.name}_last_position.txt')
+        else:
+            print(self.position)
+            print(f'position of {self.name} saved')
 
     #closes the tasks properly upon closing the application
     def close_channels(self):
