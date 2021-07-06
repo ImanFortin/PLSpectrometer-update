@@ -135,10 +135,6 @@ class Double():
             print('spectrometer closed')
 
 
-
-
-
-
 #The single spectrometer the same but simpler and different channels as well as directions are reversed
 class Single():
 
