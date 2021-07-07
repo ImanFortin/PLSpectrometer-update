@@ -298,11 +298,11 @@ class BarChartView(qtch.QChartView):
         self.setMinimumSize(10,50)
         self.setParent(parent)
 
+
     def refresh_stats(self,ydata):
         while ydata > self.max:
             self.min = self.max
             self.max *= 10
-
             self.y_axis.setRange(0,self.max)
 
 
@@ -312,9 +312,12 @@ class BarChartView(qtch.QChartView):
                 self.min = 0
             else:
                 self.min /= 10
+            self.y_axis.setRange(0,self.max)
 
-            self.y_axis.setRange(self.min,self.max)
-
+        #rounding if over 1 million to prevent cut off
+        if ydata > 1e6:
+            digits = len(str(ydata))
+            ydata = round(ydata,-(digits - 2))
 
         self.bar_set.replace(0,ydata)
         self.series.append(self.bar_set)
