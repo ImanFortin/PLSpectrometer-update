@@ -71,7 +71,7 @@ class MainWindow(qtw.QMainWindow):
     #makes and positions the optimize bar
     def add_optimize_bar(self):
         self.count_display = BarChartView(self.ui.centralwidget)
-        self.count_display.setGeometry(310,710,65,130)
+        self.count_display.setGeometry(310,710,75,130)
         self.count_display.refresh_stats(1030)
 
     #constructs and positions the tabs

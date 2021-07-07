@@ -317,7 +317,7 @@ class BarChartView(qtch.QChartView):
         #rounding if over 1 million to prevent cut off
         if ydata > 1e6:
             digits = len(str(ydata))
-            ydata = round(ydata,-(digits - 2))
+            ydata = round(ydata,-(digits - 3))
 
         self.bar_set.replace(0,ydata)
         self.series.append(self.bar_set)
