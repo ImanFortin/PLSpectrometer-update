@@ -52,7 +52,7 @@ class Double():
     @position.setter
     def position(self,wavelength):
         #check these conditons before accepting a value when assigning a value to position
-        if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1300:
+        if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1040:
             self._position = wavelength
         else:#will crash the program stopping the scan (can't stop a move)
             raise ValueError("spectrometer position must be between 0 and 1300")
@@ -176,7 +176,7 @@ class Single():
     @position.setter
     def position(self,wavelength):
         #check these conditons before accepting a value when assigning a value to position
-        if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1300:
+        if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1550:
             self._position = wavelength
         else:#will crash the program stopping the scan (can't stop a move)
             raise ValueError("spectrometer position must be between 0 and 1300")
