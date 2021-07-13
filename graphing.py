@@ -218,13 +218,14 @@ class View(QGraphicsView):
         else:
             self.m_tooltip.hide()
 
-    #not in use but can make a box stay if you click on it
+    #pins the callout to the chart
     def keep_callout(self):
         self.m_callouts.append(self.m_tooltip)
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
         self.m_tooltip.hide()
 
+    #removes the last pinned callout
     def remove_callout(self):
         if len(self.m_callouts) != 0:
             self.scene().removeItem(self.m_callouts.pop())
