@@ -18,13 +18,14 @@ class optimizeWorker(QObject):
         # Volume
         #current path is the dir containing the file being run so the 'GUI' file in our case
         #if you're not hearing sound print this value and make sure its what you expect
-        #this file is a tone that goes from 800Hz to 400Hz of 60 seconds
+        #this file is a tone that goes from 800Hz to 400Hz over 60 seconds
         url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
         print(url)
         self.player.setVolume(70)
         self.set_file(url)
         self.spectrometer = spectrometer
 
+    #set the target file for our audio
     def set_file(self, url):
         if url.scheme() == '':
             url.setScheme('file')
@@ -36,21 +37,22 @@ class optimizeWorker(QObject):
 
     def optimize(self):
 
-        counts = []
+
         maximum = 100
         changeScale = True
         counts = 1
         interval = 0.15
         self.player.play()
+        #keep running until abort is hit
         while not self.abort:
-
-            playStart = int(60*1000*(counts/maximum))
-            #There's something really weird going on with the ordering of the two lines below
+            #set the play position in the file in order to change the tone
+            playStart = int(60*1000*(counts/maximum))#higher counts higher frequency
             self.player.setPosition(playStart)
             self.player.play()
-            counts = self.spectrometer.read(interval)
+            counts = self.spectrometer.read(interval)#read the counts for 0.15 of a second
             self.player.pause()
-            self.bar_update.emit(counts)
+            self.bar_update.emit(counts)#update the displayed value
+            #update the scale of our sound
             changeScale = True
             while changeScale:
                 if counts >= maximum:
@@ -61,7 +63,7 @@ class optimizeWorker(QObject):
 
                 if (counts < maximum and counts >= maximum/10) or counts == 0:
                     changeScale = False
-
+        #stop the player
         self.player.stop()
         self.player.setPosition(0)
         self.finished.emit()
