@@ -266,11 +266,11 @@ class BarChartView(qtch.QChartView):
     min = 0
     def __init__(self,parent):
         super().__init__()
-        self.chart = qtch.QChart()
-        self.setChart(self.chart)
-        self.series = qtch.QBarSeries()
+        self.chart = qtch.QChart()#make a chart
+        self.setChart(self.chart)#set this ChartViews chart to the created chart
+        self.series = qtch.QBarSeries()#make a bar series for the chart
         self.series.setBarWidth(1)
-        self.chart.addSeries(self.series)
+        self.chart.addSeries(self.series)#add the bar to the chart
         self.chart.legend().setVisible(False)
         self.chart.setContentsMargins(-10, -10, -10, -10)
         self.bar_set = qtch.QBarSet('')
@@ -287,7 +287,6 @@ class BarChartView(qtch.QChartView):
         self.y_axis = qtch.QValueAxis()
 
         self.y_axis.setRange(0,100)
-        self.y_axis.setTickCount(5)
         self.y_axis.setVisible(False)
         self.chart.setAxisY(self.y_axis)
         self.series.attachAxis(self.y_axis)
