@@ -70,7 +70,10 @@ class scanWorker(QObject):
         #prepare for the scan
         start = self.start
         end = self.end
-        distance = abs(end - start)
+        print(start)
+        print(end)
+        distance = round(abs(end - start),3)
+        print(distance)
         direction = 1
         f = open(self.filename, 'a')
         make_header(f,self.sample_id,self.time)
