@@ -15,7 +15,7 @@ class searchWorker(QObject):
         self.year = year
 
     def search(self):
-        rootdir = 'C:\User\Admin\Documents\PL\Data'
+        rootdir = 'C:/Users/Admin/Documents/PL/Data'
 
 
         i = self.name
