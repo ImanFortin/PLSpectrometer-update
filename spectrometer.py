@@ -55,7 +55,7 @@ class Double():
         if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1040:
             self._position = wavelength
         else:#will crash the program stopping the scan (can't stop a move)
-            raise ValueError("spectrometer position must be between 0 and 1300")
+            raise ValueError("spectrometer position must be between 0 and 1040")
         return
 
     def open_shutter(self):
