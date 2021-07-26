@@ -209,7 +209,23 @@ class MainWindow(qtw.QMainWindow):
         # Step 2: Create a QThread object
         self.scan_thread = QThread()
         # Step 3: Create a worker object
-        self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input the double spectrometer
+        if self.ui.radioButton.isChecked():#if we have double selected
+            if abs(end - self.double.position) > 100:#safety measure
+                intent = self.check_intent()
+                if not intent:
+                    return
+            self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input double
+            self.worker.position.connect(self.update_position_dbl)
+            self.worker.data.connect(self.update_plots)#update the plots as we take data
+
+        else:#if single is selected
+            if abs(end - self.single.position) > 100:
+                intent = self.check_intent()
+                if not intent:
+                    return
+            self.worker = scanWorker(self.single,start,end,step,time,filename,sample_id)#input single
+            self.worker.position.connect(self.update_position_sngl)
+
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
@@ -220,8 +236,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.finished.connect(self.change_status)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)#delete the thread when done
         self.scan_thread.finished.connect(self.check_repeat)
-        self.worker.position.connect(self.update_position_dbl)#update the position as we go
-        self.worker.data.connect(self.update_plots)#update the plots as we take data
+
 
         #start the thread
         self.scan_thread.start()

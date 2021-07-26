@@ -207,6 +207,10 @@ class Single():
             task.wait_until_done(timeout = math.inf)#need to wait until done before continuing
         print('done')
 
+    #needs to have a read function for the scan
+    def read(self,time):
+        return 0
+
     def recalibrate(self,wavelength):
         self.position = wavelength#change the stored position
 
