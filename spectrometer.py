@@ -138,6 +138,9 @@ class Double():
 #The single spectrometer the same but simpler and different channels as well as directions are reversed
 class Single():
 
+    PMT_channel = 'Dev2/ctr0'
+    PMT_terminal = '/Dev2/PFI0'
+
     def __init__(self,device, direction_prt = '/port2/line6'):
         #open file where we will store the last position
         try:
@@ -208,8 +211,14 @@ class Single():
         print('done')
 
     #needs to have a read function for the scan
-    def read(self,time):
-        return 0
+    def read(self,count_time):
+        with nidaqmx.Task() as task:#open a task
+             task.ci_channels.add_ci_count_edges_chan(self.PMT_channel)#start a count channel
+             task.ci_channels[0].ci_count_edges_term = self.PMT_terminal#set the terminal
+             task.start()#start counting
+             sleep(count_time)#wait the count time
+             data = task.read()#read the counts
+        return data/count_time#return the average count/s
 
     def recalibrate(self,wavelength):
         self.position = wavelength#change the stored position

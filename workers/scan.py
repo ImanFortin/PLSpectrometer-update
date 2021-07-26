@@ -7,7 +7,7 @@ import os
 class scanWorker(QObject):
 
     #this is all the information we will be sending to UI while we run
-    data = pyqtSignal(float)
+    data = pyqtSignal(list)
     position = pyqtSignal(float)
     finished = pyqtSignal()
 
@@ -88,7 +88,7 @@ class scanWorker(QObject):
                 return
 
             counts = self.spectrometer.read(self.time)
-            self.data.emit(counts)#send data to be plotted
+            self.data.emit([self.spectrometer.position, counts])#send data to be plotted
             print(counts)
             #opening and closing in loop means in case of a crash we keep the data
             f = open(self.filename, 'a')

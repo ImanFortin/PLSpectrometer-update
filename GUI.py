@@ -102,12 +102,14 @@ class MainWindow(qtw.QMainWindow):
 
     #update the 4 plots with data
     def update_plots(self,data):
-        self.wavelength_plot.refresh_stats(self.double.position,data)
-        self.wavelength_plot_log.refresh_stats(self.double.position,data)
+        wavelength = data[0]
+        counts = data[1]
+        self.wavelength_plot.refresh_stats(wavelength,counts)
+        self.wavelength_plot_log.refresh_stats(wavelength,counts)
 
-        energy_x = 1239841.984/(1.000289*self.double.position)
-        self.energy_plot.refresh_stats(energy_x,data)
-        self.energy_plot_log.refresh_stats(energy_x,data)
+        energy_x = 1239841.984/(1.000289*wavelength)
+        self.energy_plot.refresh_stats(energy_x,counts)
+        self.energy_plot_log.refresh_stats(energy_x,counts)
 
     def switch_spectrometer(self):
         if self.ui.radioButton.isChecked():
@@ -216,7 +218,7 @@ class MainWindow(qtw.QMainWindow):
                     return
             self.worker = scanWorker(self.double,start,end,step,time,filename,sample_id)#input double
             self.worker.position.connect(self.update_position_dbl)
-            self.worker.data.connect(self.update_plots)#update the plots as we take data
+
 
         else:#if single is selected
             if abs(end - self.single.position) > 100:
@@ -230,6 +232,7 @@ class MainWindow(qtw.QMainWindow):
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
         self.scan_thread.started.connect(self.worker.scan)#connect to the scan method
+        self.worker.data.connect(self.update_plots)#update the plots as we take data
         self.worker.finished.connect(self.scan_thread.quit)#quit when done
         self.worker.finished.connect(self.worker.deleteLater)#delete when done
         self.worker.finished.connect(self.enable_buttons)#enable buttons when done
