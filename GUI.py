@@ -190,9 +190,7 @@ class MainWindow(qtw.QMainWindow):
             return
 
 
-        #disable the buttons to prevent crashing
-        self.disable_buttons()
-        self.change_status('Scanning')
+
 
         #set the range and clear the data from plots
         self.wavelength_plot.set_xlim(start,end)
@@ -228,6 +226,10 @@ class MainWindow(qtw.QMainWindow):
             self.worker = scanWorker(self.single,start,end,step,time,filename,sample_id)#input single
             self.worker.position.connect(self.update_position_sngl)
 
+        #disable the buttons to prevent crashing
+        self.disable_buttons()
+        self.change_status('Scanning')
+
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.scan_thread)#this makes the scan_thread methos be executed by the thread
         # # Step 5: Connect signals and slots
@@ -254,7 +256,7 @@ class MainWindow(qtw.QMainWindow):
             return
 
         print('starting move to',destination)
-        self.change_status('Moving')
+
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
@@ -276,6 +278,7 @@ class MainWindow(qtw.QMainWindow):
 
         #disable the buttons to prevent crashing
         self.disable_buttons()
+        self.change_status('Moving')
         # # Step 4: Move worker to the thread
         self.worker.moveToThread(self.thread)
         # # Step 5: Connect signals and slots see scan fordetailed documentation

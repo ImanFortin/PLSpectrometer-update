@@ -182,7 +182,7 @@ class Single():
         if isinstance(wavelength, float) and wavelength >= 0 and wavelength < 1550:
             self._position = wavelength
         else:#will crash the program stopping the scan (can't stop a move)
-            raise ValueError("spectrometer position must be between 0 and 1300")
+            raise ValueError("spectrometer position must be between 0 and 1550")
         return
 
     #sets the direction of the move to be called before the move and

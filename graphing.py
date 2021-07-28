@@ -113,6 +113,7 @@ class View(QGraphicsView):
     max = 10
 
     def __init__(self, parent=None, name = '', log = False):
+        '''configures the plot'''
         super().__init__(parent)
         self.m_callouts: List[Callout] = []
         self.setDragMode(QGraphicsView.NoDrag)
@@ -168,6 +169,7 @@ class View(QGraphicsView):
         self.setMouseTracking(True)
 
     def resizeEvent(self, event: QResizeEvent):
+        '''how to handle resizing'''
         if scene := self.scene():
             scene.setSceneRect(QRectF(QPointF(0, 0), QSizeF(event.size())))
             self.m_chart.resize(QSizeF(event.size()))
@@ -180,13 +182,14 @@ class View(QGraphicsView):
         super().resizeEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent):
+        '''update the display at the bottom of graph with mouse movement'''
         from_chart = self.m_chart.mapToValue(event.pos())
         self.m_coordX.setText(f"X: {from_chart.x():.3f}")
         self.m_coordY.setText(f"Y: {from_chart.y():.3f}")
         super().mouseMoveEvent(event)
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
-
+        '''add callouts and delete them with left and right clicks'''
         if event.buttons() & Qt.LeftButton & self.m_tooltip.isVisible():
             self.keep_callout()
             event.setAccepted(True)
@@ -231,7 +234,7 @@ class View(QGraphicsView):
             self.scene().removeItem(self.m_callouts.pop())
 
     #adds a point and scales the axis if necessary
-    def refresh_stats(self,xdata,ydata):
+    def refresh_stats(self,xdata: float, ydata: float):
         #keep track of the data for cursor
         self.xdata.append(xdata)
         self.ydata.append(ydata)
