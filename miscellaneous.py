@@ -28,7 +28,7 @@ def available_name(filename):
             if depth == 0:
                 filename = filename[:dot] + '(' + str(depth + 1) + ')' + filename[dot:] #add the brackets and number before the dot
             else:
-                filename = filename[:dot - 2] + str(depth + 1) + filename[dot - 1:]#replace the number
+                filename = filename[:filename.rfind('(')+1] + str(depth + 1) + filename[filename.rfind(')'):]#replace the number
 
         exists = os.path.exists(filename)
         depth += 1
