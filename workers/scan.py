@@ -87,6 +87,11 @@ class scanWorker(QObject):
                 self.finished.emit()
                 return
 
+            #we need to take one extra data point at the start point and not step forward
+            if i != 0:
+                self.spectrometer.move(self.step, high_time=high, low_time=low)
+                self.position.emit(self.spectrometer.position + self.step)
+
             counts = self.spectrometer.read(self.time)
             self.data.emit([self.spectrometer.position, counts])#send data to be plotted
             print(counts)
@@ -94,10 +99,7 @@ class scanWorker(QObject):
             f = open(self.filename, 'a')
             f.write(str(self.spectrometer.position) + '\t' + str(counts) + '\n')
             f.close()
-            #we need to take one extra data point at the last point and not step forward
-            if i != number_of_steps:
-                self.spectrometer.move(self.step, high_time = high, low_time = low)
-                self.position.emit(self.spectrometer.position + self.step)
+
 
 
         self.finished.emit()#emit that we're done
