@@ -52,16 +52,16 @@ class scanWorker(QObject):
         self.spectrometer.set_direction(direction)#see spectrometer.py for the method
 
         if direction < 0:
-            self.spectrometer.move(distance + 20, high_time = high, low_time = low)#first move to ten nm back
+            self.spectrometer.move(distance + 20, high_time = high, low_time = low)#first move to 20 nm back
             direction = 1
             self.spectrometer.set_direction(direction) #change directions
             self.spectrometer.move(19.97, high_time = high, low_time = low) #move to 0.03 nm of the position
-            self.spectrometer.move(0.03, high_time = high, low_time = 0.25) #do the last 0.03 nm with 1s in between each pulse
+            self.spectrometer.move(0.03, high_time = high, low_time = 0.25) #do the last 0.03 nm with 1s in between each step
 
-        elif direction >= 0:
-            if distance < 0.03:#if distance is less than ten we need to go backwards
+        elif direction >= 0:#move within 0.03nm and then slow down
+            if distance < 0.03:
                 self.spectrometer.move(distance, high_time = high, low_time = 0.25)
-            else:#otherwise just move forwards within 0.03 and then slow down
+            else:
                 self.spectrometer.move(distance - 0.03, high_time = high, low_time = low)
                 self.spectrometer.move(0.03, high_time = high, low_time = 0.25)
 
