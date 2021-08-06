@@ -25,7 +25,8 @@ class scanWorker(QObject):
         dt_string = datetime.now().strftime("%Y %m %d")
         dir = absolute + '/' + dt_string
         if not os.path.isdir(dir):
-            os.makedirs(dir)
+            # os.makedirs(dir)
+            pass
 
         filepath = os.path.join(dir,filename)
         print(filepath)
@@ -39,11 +40,11 @@ class scanWorker(QObject):
         #first copy the move function to get into position
         start = self.spectrometer.position
         end = self.start#we want to move to the start point
-        distance = abs(end - start)
+        distance = round(abs(end - start),3)
 
-        try:
-            direction = int((end - start)/distance)#catch divide by zero error
-        except:
+        if end < start:
+            direction = -1
+        else:
             direction = 1
 
         high = 1/(2*self.spectrometer.frequency)

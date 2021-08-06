@@ -19,15 +19,15 @@ class moveWorker(QObject):
 
         start = self.spectrometer.position#get the current position
         end = self.end#get the end position
-        distance = abs(end  - start)#get the distance
+        distance = round(abs(end - start),3)
 
-        #try block to catch divide by zero error
-        try:
-            direction = int((end - start)/distance)#get the direction
-        except:
-            #if we divide by zero we are at the destination
-            self.finished.emit() #emit done
-            return #return
+        if end < start:
+            direction = -1
+        elif end > start:
+            direction = 1
+        else:
+            self.finished.emit()
+            return
 
         high = 1/(2*self.spectrometer.frequency)
         low = high
