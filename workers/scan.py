@@ -25,8 +25,7 @@ class scanWorker(QObject):
         dt_string = datetime.now().strftime("%Y %m %d")
         dir = absolute + '/' + dt_string
         if not os.path.isdir(dir):
-            # os.makedirs(dir)
-            pass
+            os.makedirs(dir)
 
         filepath = os.path.join(dir,filename)
         print(filepath)
