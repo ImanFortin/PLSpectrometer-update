@@ -354,8 +354,8 @@ class MainWindow(qtw.QMainWindow):
         if close == QMessageBox.Yes:
             #do the close procedure
             self.double.save()
-            self.double.close_channels()
             self.single.save()
+            self.double.close_channels()
             self.single.close_channels()
             event.accept()
         else:
