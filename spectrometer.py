@@ -1,3 +1,5 @@
+# spectrometer.py
+
 import nidaqmx
 import math
 import time
