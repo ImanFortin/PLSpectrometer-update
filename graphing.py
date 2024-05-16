@@ -1,3 +1,11 @@
+# graphing.py
+#
+# Graphs for GUI
+# Created by Elliot Wadge
+# Edited by Alistair Bevan
+# July 2023
+#
+
 import sys
 from typing import List
 from miscellaneous import find_minimum
@@ -12,7 +20,8 @@ from PyQt5.QtGui import QColor, QFont, QFontMetrics, QMouseEvent, QPainter, QPai
 from PyQt5.QtWidgets import QApplication, QGraphicsItem, QGraphicsScene, QGraphicsSceneMouseEvent, \
     QGraphicsSimpleTextItem, QGraphicsView, QStyleOptionGraphicsItem, QWidget
 
-#this is the little messageBox I didn't make this found it on the internet
+
+# This is the little messageBox (not made by Elliot, he found it on the internet)
 class Callout(QGraphicsItem):
 
     def __init__(self, parent: QChart):
@@ -57,7 +66,7 @@ class Callout(QGraphicsItem):
             point1 = QPointF()
             point2 = QPointF()
 
-            # establish the position of the anchor point in relation to self.m_rect
+            # Establish the position of the anchor point in relation to self.m_rect
             above = anchor.y() <= mr.top()
             above_center = mr.top() < anchor.y() <= mr.center().y()
             below_center = mr.center().y() < anchor.y() <= mr.bottom()
@@ -68,7 +77,7 @@ class Callout(QGraphicsItem):
             right_of_center = mr.center().x() < anchor.x() <= mr.right()
             on_right = anchor.x() > mr.right()
 
-            # get the nearest self.m_rect corner.
+            # Get the nearest self.m_rect corner
             x = (on_right + right_of_center) * mr.width()
             y = (below + below_center) * mr.height()
             corner_case = (above and on_left) or (above and on_right) or (below and on_left) or (below and on_right)
@@ -120,7 +129,8 @@ class View(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.log = log
-        # chart
+
+        # Chart
         self.m_chart = QChart(parent)
         self.m_chart.setMinimumSize(640, 480)
         self.m_chart.setTitle(name)
@@ -169,7 +179,7 @@ class View(QGraphicsView):
         self.setMouseTracking(True)
 
     def resizeEvent(self, event: QResizeEvent):
-        '''how to handle resizing'''
+        '''How to handle resizing'''
         if scene := self.scene():
             scene.setSceneRect(QRectF(QPointF(0, 0), QSizeF(event.size())))
             self.m_chart.resize(QSizeF(event.size()))
@@ -182,14 +192,14 @@ class View(QGraphicsView):
         super().resizeEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent):
-        '''update the display at the bottom of graph with mouse movement'''
+        '''Update the display at the bottom of graph with mouse movement'''
         from_chart = self.m_chart.mapToValue(event.pos())
         self.m_coordX.setText(f"X: {from_chart.x():.3f}")
         self.m_coordY.setText(f"Y: {from_chart.y():.3f}")
         super().mouseMoveEvent(event)
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
-        '''add callouts and delete them with left and right clicks'''
+        '''Add callouts and delete them with left and right clicks'''
         if event.buttons() & Qt.LeftButton & self.m_tooltip.isVisible():
             self.keep_callout()
             event.setAccepted(True)
@@ -201,15 +211,13 @@ class View(QGraphicsView):
         else:
             event.setAccepted(False)
 
-
-
-    #draws the little boxes that show the point value
+    # Draws the little boxes that show the point value
     def tooltip(self, point: QPointF, state: bool):
         if not self.m_tooltip:
             self.m_tooltip = Callout(self.m_chart)
 
         if state:
-            #normalize the axis not perfect since the aspect ratio is not square
+            # Normalize the axis (not perfect since the aspect ratio is not square)
             arr_x = np.array(self.xdata)/self.rangeX
             arr_y = np.array(self.ydata)/self.max
             min_i = find_minimum(arr_x, arr_y, point.x()/self.rangeX, point.y()/self.max)
@@ -221,24 +229,24 @@ class View(QGraphicsView):
         else:
             self.m_tooltip.hide()
 
-    #pins the callout to the chart
+    # Pins the callout to the chart
     def keep_callout(self):
         self.m_callouts.append(self.m_tooltip)
         self.m_tooltip = Callout(self.m_chart)
         self.scene().addItem(self.m_tooltip)
         self.m_tooltip.hide()
 
-    #removes the last pinned callout
+    # Removes the last pinned callout
     def remove_callout(self):
         if len(self.m_callouts) != 0:
             self.scene().removeItem(self.m_callouts.pop())
 
-    #adds a point and scales the axis if necessary
+    # Adds a point and scales the axis if necessary
     def refresh_stats(self,xdata: float, ydata: float):
-        #keep track of the data for cursor
+        # Keep track of the data for cursor
         self.xdata.append(xdata)
         self.ydata.append(ydata)
-        #autoscaling
+        # Autoscaling
         if ydata > 0.9*self.max:
             self.max = 1.2*ydata
             if self.log:
@@ -246,14 +254,14 @@ class View(QGraphicsView):
             else:
                 self.y_axis.setRange(0,self.max)
 
-        #add the data
+        # Add the data
         self.series.append(xdata,ydata)
 
     def set_xlim(self,min,max):
         self.x_axis.setRange(min, max)
         self.rangeX = max - min
 
-    #resets the plot
+    # Resets the plot
     def cla(self):
         while len(self.m_callouts) != 0:
             self.scene().removeItem(self.m_callouts.pop())
@@ -263,10 +271,8 @@ class View(QGraphicsView):
         self.series.clear()
 
 
-
-#the bar chart for the optimizing
+# Bar chart for the optimizing
 class BarChartView(qtch.QChartView):
-
     max = 100
     min = 0
     def __init__(self,parent):
@@ -302,13 +308,11 @@ class BarChartView(qtch.QChartView):
         self.setMinimumSize(10,50)
         self.setParent(parent)
 
-
     def refresh_stats(self,ydata):
         while ydata > self.max:
             self.min = self.max
             self.max *= 10
             self.y_axis.setRange(0,self.max)
-
 
         while ydata < self.min:
             self.max /= 10
@@ -318,7 +322,7 @@ class BarChartView(qtch.QChartView):
                 self.min /= 10
             self.y_axis.setRange(0,self.max)
 
-        #rounding if over 1 million to prevent cut off
+        # Rounds if over 1 million to prevent cut off
         if ydata > 1e6:
             digits = len(str(ydata))
             ydata = round(ydata,-(digits - 3))

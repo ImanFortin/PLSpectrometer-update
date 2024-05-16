@@ -1,3 +1,11 @@
+# optimize.py
+#
+# Defines the optimize function
+# Created by Elliot Wadge
+# Edited by Alistair Bevan
+# July 2023
+#
+
 import time
 import random
 from PyQt5 import QtMultimedia as qtmm
@@ -6,26 +14,24 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtWidgets as qtw
 import sys
 
-class optimizeWorker(QObject):
 
+class optimizeWorker(QObject):
     bar_update = pyqtSignal(int)
     finished = pyqtSignal()
 
-    def __init__(self,spectrometer):
+    def __init__(self, spectrometer):
         super().__init__()
         self.abort = False
         self.player = qtmm.QMediaPlayer()
-        # Volume
-        #current path is the dir containing the file being run so the 'GUI' file in our case
-        #if you're not hearing sound print this value and make sure its what you expect
-        #this file is a tone that goes from 800Hz to 400Hz over 60 seconds
-        url = qtc.QUrl(qtc.QDir.currentPath()+'/workers/chirp.wav')
+        # If you're not hearing sound print the url value and make sure it's what you expect
+        # This file is a tone that goes from 800Hz to 400Hz over 60 seconds
+        url = qtc.QUrl(qtc.QDir.currentPath()+'/Documents/PLSpectrometer/workers/chirp.wav')
         print(url)
         self.player.setVolume(70)
         self.set_file(url)
         self.spectrometer = spectrometer
 
-    #set the target file for our audio
+    # Set the target file for our audio
     def set_file(self, url):
         if url.scheme() == '':
             url.setScheme('file')
@@ -36,44 +42,48 @@ class optimizeWorker(QObject):
         self.player.setPlaylist(self.playlist)
 
     def optimize(self):
-
-
+        rate_ma = 0
+        rate_IIR_factor = 0.1  # Infinite-impulse response factor for moving average
         maximum = 100
         changeScale = True
-        counts = 1
+        rate = 1
         interval = 0.15
         self.player.play()
-        #keep running until abort is hit
+        print("Starting optimize")
+        # Keep running until abort is hit
         while not self.abort:
-            #set the play position in the file in order to change the tone
-            playStart = int(60*1000*(counts/maximum))#higher counts higher frequency
+            # Set the play position in the file in order to change the tone
+            playStart = int(60*1000*(rate/maximum))  # Higher rate equals higher frequency
             self.player.setPosition(playStart)
             self.player.play()
-            counts = self.spectrometer.read(interval)#read the counts for 0.15 of a second
+            rate = self.spectrometer.read(interval)  # Reads the counts in the interval (note that spectrometer.read converts to counts/s)
+            rate_ma = int(rate*rate_IIR_factor + rate_ma*(1 - rate_IIR_factor))  # Takes a moving average
+            print(rate_ma)
             self.player.pause()
-            self.bar_update.emit(counts)#update the displayed value
-            #update the scale of our sound
+            self.bar_update.emit(rate_ma)  # Update the displayed value
+            # Update the scale of our sound
             changeScale = True
             while changeScale:
-                if counts >= maximum:
+                if rate >= maximum:
                     maximum *= 10
 
-                elif counts < maximum/10:
+                elif rate < maximum/10:
                     maximum /= 10
 
-                if (counts < maximum and counts >= maximum/10) or counts == 0:
+                if (rate < maximum and rate >= maximum/10) or rate == 0:
                     changeScale = False
-        #stop the player
+
+        # Stop the player
+        print("Stopping optimize")
         self.player.stop()
         self.player.setPosition(0)
         self.finished.emit()
 
 
-
-#dummy class for testing
+# Dummy class for testing (uses random number generator)
 class spectrometer():
 
-    def __init__(self,start,end):
+    def __init__(self, start, end):
         self.x = 5
         self.start = start
         self.end = end
@@ -81,14 +91,16 @@ class spectrometer():
 
     def read(self,duration):
         time.sleep(duration)
-        return random.randint(self.start,self.end)
+        return random.randint(self.start, self.end)
 
-#test
+
+
+# Test
 if __name__ == '__main__':
-    spec = spectrometer(0,1000)
+    spec = spectrometer(0, 1000)
     opt = optimizeWorker(spec)
     opt.optimize()
     # time.sleep(3)
-    # spec2 = spectrometer(100,200)
+    # spec2 = spectrometer(100, 200)
     # opt2 = optimizeWorker(spec2)
     # opt2.optimize()
